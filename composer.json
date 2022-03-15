@@ -1,0 +1,44 @@
+{
+    "name": "starkinfra/sdk",
+    "version": "0.0.0",
+    "type": "library",
+    "description": "SDK to facilitate PHP integrations with the Stark Infra API",
+    "homepage": "https://github.com/starkinfra/sdk-php",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "StarkInfra",
+            "email": "developers@starkbank.com",
+            "homepage": "https://starkinfra.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "starkbank/ecdsa": "^0.0.5"
+    },
+    "keywords": [
+        "starkinfra",
+        "bank",
+        "infra",
+        "open",
+        "banking",
+        "openbanking",
+        "card",
+        "issuing",
+        "sdk"
+    ],
+    "autoload": {
+        "psr-4": {
+            "StarkInfra\\": "src/",
+            "EllipticCurve\\": "vendor/starkbank/ecdsa/"
+        }
+    },
+    "scripts": {
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
