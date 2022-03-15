@@ -36,5 +36,6 @@ include_once("issuingPurchaseLog.php");
 include_once("issuingTransaction.php");
 include_once("issuingWithdrawal.php");
 include_once("issuingAuthorization.php");
+include_once("key.php");
 
 echo "\n\nAll tests concluded\n\n";
