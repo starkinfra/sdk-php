@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+## [0.0.1] - 2022-03-15
 ### Added
 - IssuingAuthorization resource
 - IssuingBalance resource
