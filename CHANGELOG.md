@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- Key resource
 
 ## [0.0.1] - 2022-03-15
 ### Added

@@ -101,12 +101,12 @@ You can use one of following methods:
 2.2. Use our SDK:
 
 ```php
-use StarkInfra\Key;
+use StarkInfra;
 
-list($privateKey, $publicKey) = Key::create();
+list($privateKey, $publicKey) = StarkInfra\Key::create();
 
 # or, to also save .pem files in a specific path
-list($privateKey, $publicKey) = Key::create("file/keys/");
+list($privateKey, $publicKey) = StarkInfra\Key::create("file/keys/");
 ```
 
 **NOTE**: When you are creating new credentials, it is recommended that you create the
@@ -139,7 +139,7 @@ Since this user is unique in your entire organization, only one credential can b
 3.1.6. Use the Project ID and private key to create the object below:
 
 ```php
-use StarkInfra\Project;
+use StarkInfra;
 
 // Get your private key from an environment variable or an encrypted database.
 // This is only an example of a private key content. You should use your own key.
@@ -154,7 +154,7 @@ IF16ZoTVt1FzZ8WkYQ3XomRD4HS13A==
 -----END EC PRIVATE KEY-----
 ";
 
-$project = new Project([
+$project = new StarkInfra\Project([
     "environment" => "sandbox",
     "id" => "5656565656565656",
     "privateKey" => $privateKeyContent
@@ -176,11 +176,11 @@ $project = new Project([
 3.2.6. Use the Organization ID and private key to create the object below:
 
 ```php
-use StarkInfra\Organization;
+use StarkInfra;
 
 // Get your private key from an environment variable or an encrypted database.
 // This is only an example of a private key content. You should use your own key.
-privateKeyContent = "
+$privateKeyContent = "
 -----BEGIN EC PARAMETERS-----
 BgUrgQQACg==
 -----END EC PARAMETERS-----
@@ -191,7 +191,7 @@ IF16ZoTVt1FzZ8WkYQ3XomRD4HS13A==
 -----END EC PRIVATE KEY-----
 ";
 
-$organization = new Organization([
+$organization = new StarkInfra\Organization([
     "environment" => "sandbox",
     "id" => "5656565656565656",
     "privateKey" => $privateKeyContent,
@@ -200,7 +200,7 @@ $organization = new Organization([
 
 // To dynamically use your organization credentials in a specific workspaceId,
 // you can use the Organization::replace() method:
-$balance = Balance::get(Organization::replace($organization, "4848484848484848"));
+$balance = StarkInfra\IssuingBalance::get(StarkInfra\Organization::replace($organization, "4848484848484848"));
 ```
 
 NOTE 1: Never hard-code your private key. Get it from an environment variable or an encrypted database.
