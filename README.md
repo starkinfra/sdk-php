@@ -25,6 +25,12 @@ is as easy as sending a text message to your client!
 - [Resource listing and manual pagination](#resource-listing-and-manual-pagination)
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
+    - [Pix](#pix)
+        - [PixRequests](#create-pix-requests): PIX receivables
+        - [PixReversals](#create-pix-reversals): Reverse PIX transactions
+        - [PixBalance](#get-pix-balance): Account balance
+        - [PixStatement](#create-pix-statement): Account statement entry
+        - [WebhookEvents](#process-webhook-events): Manage webhook events
     - [Issuing](#issuing)
         - [Transactions](#query-issuing-transactions): Account statement entries
         - [Balance](#get-issuing-balance): Account balance
@@ -84,9 +90,6 @@ require_once('vendor/autoload.php');
 ```sh
 require_once('/path/to/starkinfra/sdk-php/init.php');
 ```
-
-**Note**: This SDKs uses the starkbank SDK as its core dependency, so watch out for version and user conflicts if you are using both SDKs.
-Also, the rest of this setup is pretty much the same as the starkbank SDK, so if you already use it, feel free to skip the rest of the section.
 
 ## 2. Create your Private and Public Keys
 
@@ -308,6 +311,346 @@ for the value to be credited to your account.
 
 
 # Usage
+
+## Pix
+
+## Create pix requests
+You can create a Pix request to charge a user:
+
+```php
+use StarkInfra\PixRequest;
+use StarkInfra\Utils\EndToEndId;
+
+$requests = PixRequest::create([
+    new PixRequest([
+        "amount" => 1000,
+        "externalId" => "my-external-id:1",
+        "senderAccountNumber" => "76543-8",
+        "senderBranchCode" => "2201",
+        "senderAccountType" => "checking",
+        "senderName" => "checking",
+        "senderTaxId" => "594.739.480-42",
+        "receiverBankCode" => "341",
+        "receiverAccountNumber" => "00000-0",
+        "receiverBranchCode" => "0001",
+        "receiverAccountType" => "checking",
+        "receiverName" => "Daenerys Targaryen Stormborn",
+        "receiverTaxId" => "012.345.678-90",
+        "endToEndId" => EndToEndId.create("20018183"),
+    ]),
+    new PixRequest([
+        "amount" => 200,
+        "externalId" => "my-external-id:2",
+        "senderAccountNumber" => "76543-8",
+        "senderBranchCode" => "2201",
+        "senderAccountType" => "checking",
+        "senderName" => "checking",
+        "senderTaxId" => "594.739.480-42",
+        "receiverBankCode" => "341",
+        "receiverAccountNumber" => "00000-0",
+        "receiverBranchCode" => "0001",
+        "receiverAccountType" => "checking",
+        "receiverName" => "Daenerys Targaryen Stormborn",
+        "receiverTaxId" => "012.345.678-90",
+        "endToEndId" => EndToEndId.create("20018183"),
+    ])
+]);
+
+foreach($transfers as $transfer){
+    print_r($transfer);
+}
+```
+
+**Note**: Instead of using Pix Request objects, you can also pass each transaction element in dictionary format
+
+## Query pix requests
+
+You can query multiple pix requests according to filters.
+
+```php
+use StarkInfra\PixRequest;
+
+$requests = PixRequest::query([
+    "fields" => ['amount', 'senderName'],
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" => ['iron', 'suit'],
+    "endToEndIds" => ['E79457883202101262140HHX553UPqeq'],
+]);
+
+foreach($requests as $request){
+    print_r($request);
+}
+```
+
+## Get a pix request
+
+After its creation, information on a pix request may be retrieved by its id. Its status indicates whether it has been paid.
+
+```php
+use StarkInfra\PixRequest;
+
+$request = PixRequest::get("5155966664310784");
+
+print_r($request);
+```
+
+## Process pix request authorization requests
+
+It's easy to process authorization requests that arrived in your handler. Remember to pass the
+signature header so the SDK can make sure it's StarkInfra that sent you
+the event.
+
+```php
+use StarkInfra\PixRequest;
+
+$response = listen();  # this is your handler to listen for authorization requests
+
+$request = PixRequest::parse($response->content, $response->headers["Digital-Signature"]);
+
+print_r($request);
+```
+
+## Query pix request logs
+
+You can query pix request logs to better understand pix request life cycles.
+
+```php
+use StarkInfra\PixRequest;
+
+$logs = PixRequest\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+## Get a pix request log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixRequest;
+
+$log = PixRequest\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+## Create pix reversals
+
+You can reverse a pix request by whole or by a fraction of its amount using a pix reversal.
+
+```php
+use StarkInfra\PixReversal;
+
+$reversals = PixReversal::create([
+    new PixReversal([
+        "amount" => 100,
+        "externalId" => "my-external-id:3",
+        "endToEndId" => "E00000000202201060100rzsJzG9PzMg",
+        "reason" => "fraud",
+    ]),
+    new PixReversal([
+        "amount" => 200,
+        "externalId" => "my-external-id:4",
+        "endToEndId" => "E00000000202201060100rzsJzG9P1GH",
+        "reason" => "fraud",
+    ])
+]);
+
+foreach($reversals as $reversal){
+    print_r($reversal);
+}
+```
+
+## Query pix reversals
+
+You can query multiple pix reversals according to filters.
+
+```php
+use StarkInfra\PixReversal;
+
+$reversals = PixReversal::query([
+    "fields" => ['amount', 'senderName'],
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" => ['iron', 'suit'],
+    "returnIds" => ['D20018183202202030109X3OoBHG74wo'],
+]);
+
+foreach($reversals as $reversal){
+    print_r($reversals);
+}
+```
+
+## Get a pix reversal
+
+After its creation, information on a pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
+
+```php
+use StarkInfra\PixReversal;
+
+$reversal = PixReversal::get("5155966664310784");
+
+print_r($reversal);
+```
+
+## Process pix reversal authorization reversals
+
+It's easy to process authorization reversals that arrived in your handler. Remember to pass the
+signature header so the SDK can make sure it's StarkInfra that sent you
+the event.
+
+```php
+use StarkInfra\PixReversal;
+
+$response = listen();  # this is your handler to listen for authorization requests
+
+$reversal = PixReversal::parse($response->content, $response->headers["Digital-Signature"]);
+
+print_r($reversal);
+```
+
+## Query pix reversal logs
+
+You can query pix reversal logs to better understand pix reversal life cycles.
+
+```php
+use StarkInfra\PixReversal;
+
+$logs = PixReversal\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+## Get a pix reversal log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixReversal;
+
+$log = PixReversal\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+## Get pix balance
+
+To know how much money you have in your workspace, run:
+
+```php
+use StarkInfra\PixBalance;
+
+$balance = PixBalance::get("5155165527080960");
+
+print_r($balance);
+```
+
+## Create pix statement
+
+Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
+
+```php
+use StarkInfra\PixStatement;
+
+$statement = PixStatement::create(
+    new PixStatement([
+        "after" => "2022-01-01",
+        "before" => "2022-01-01",
+        "type" => "transaction",
+    ])
+)
+
+print_r($statement)
+```
+## Query pix statements
+
+You can query multiple pix statements according to filters.
+
+```php
+use StarkInfra\PixStatement;
+
+$statements = PixStatement::query([
+    "limit" => 10,
+    "ids" => ['5155165527080960'],
+]);
+
+foreach($statements as $statement){
+    print_r($statement);
+}
+```
+
+## Get a pix statement
+
+Statements are only available for direct participants. To get a pix statement by its id:
+
+```php
+use StarkInfra\PixStatement;
+
+$statement = PixStatement::get("5155966664310784");
+
+print_r($statement);
+```
+
+## Get a pix statement .csv file
+
+To get a .csv file of a pix statement using its id, run:
+
+```php
+use StarkInfra\PixStatement;
+
+$csv = PixStatement::csv("5656565656565656");
+
+$fp = fopen('statement.zip', 'w');
+fwrite($fp, $csv);
+fclose($fp);
+```
+
+## Process webhook events
+
+It's easy to process events delivered to your Webhook endpoint. Remember to pass the
+signature header so the SDK can make sure it was really StarkInfra that sent you
+the event.
+
+```php
+use StarkInfra\Event;
+
+$response = listen()  # this is the method you made to get the events posted to your webhook
+
+$event = Event::parse($response->content, $response->headers["Digital-Signature"]);
+
+if ($event->subscription == "pix-request.in"){
+    print_r($event->log->request);
+} elseif ($event->subscription == "pix-request.out"){
+    print_r($event->log->request);
+} elseif ($event->subscription == "pix-reversal.in"){
+    print_r($event->log->reversal);
+} elseif ($event->subscription == "pix-reversal.out"){
+    print_r($event->log->reversal);
+} elseif ($event->subscription == "issuing-card"){
+    print_r($event->log->card);
+} elseif ($event->subscription == "issuing-invoice"){
+    print_r($event->log->invoice);
+} elseif ($event->subscription == "issuing-purchase"){
+    print_r($event->log->purchase);
+} 
+```
 
 ## Issuing
 

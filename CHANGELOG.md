@@ -13,6 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PixRequest resource for Indirect and Direct Participants
+- PixReversal resource for Indirect and Direct Participants
+- PixBalance resource for Indirect and Direct Participants
+- PixStatement resource for Direct Participants
+- Event resource for webhook receptions
 
 ## [0.0.2] - 2022-03-15
 ### Added

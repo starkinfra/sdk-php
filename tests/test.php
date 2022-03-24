@@ -1,7 +1,6 @@
 <?php
 
 namespace Test;
-require_once("vendor/autoload.php");
 require_once("src/init.php");
 include_once("tests/utils/rule.php");
 require_once('vendor/autoload.php');
@@ -36,6 +35,13 @@ include_once("issuingPurchaseLog.php");
 include_once("issuingTransaction.php");
 include_once("issuingWithdrawal.php");
 include_once("issuingAuthorization.php");
+include_once("pixBalance.php");
+include_once("pixRequest.php");
+include_once("pixRequestLog.php");
+include_once("pixReversal.php");
+include_once("pixReversalLog.php");
+include_once("pixStatement.php");
+include_once("event.php");
 include_once("key.php");
 
 echo "\n\nAll tests concluded\n\n";
