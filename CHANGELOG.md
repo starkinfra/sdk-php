@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.0.3] - 2022-03-24
 ### Added
 - PixRequest resource for Indirect and Direct Participants
 - PixReversal resource for Indirect and Direct Participants
