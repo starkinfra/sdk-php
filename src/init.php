@@ -32,6 +32,13 @@ require_once(__DIR__."/issuingPurchase/log.php");
 require_once(__DIR__."/issuingTransaction/issuingTransaction.php");
 require_once(__DIR__."/issuingWithdrawal/issuingWithdrawal.php");
 require_once(__DIR__."/issuingAuthorization/issuingAuthorization.php");
+require_once(__DIR__."/pixBalance/pixBalance.php");
+require_once(__DIR__."/pixRequest/pixRequest.php");
+require_once(__DIR__."/pixRequest/log.php");
+require_once(__DIR__."/pixReversal/pixReversal.php");
+require_once(__DIR__."/pixReversal/log.php");
+require_once(__DIR__."/pixStatement/pixStatement.php");
+require_once(__DIR__."/event/event.php");
 require_once(__DIR__."/setting.php");
 
 ?>

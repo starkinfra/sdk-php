@@ -12,6 +12,7 @@ use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\API;
 use StarkInfra\Utils\Request;
 use StarkInfra\Utils\Cache;
+use StarkInfra\Utils\Parse;
 
 
 class IssuingAuthorization extends Resource
@@ -92,48 +93,17 @@ class IssuingAuthorization extends Resource
      */
     public static function parse($content, $signature, $user = null)
     {
-        $event = API::fromApiJson(IssuingAuthorization::resource()["maker"], json_decode($content, true));
-
-        try {
-            $signature = Signature::fromBase64($signature);
-        } catch (Exception $e) {
-            throw new InvalidSignatureError("The provided signature is not valid");
-        }
-
-        if (IssuingAuthorization::verifySignature($user, $content, $signature)) {
-            return $event;
-        }
-        if (IssuingAuthorization::verifySignature($user, $content, $signature, true)) {
-            return $event;
-        }
-
-        throw new InvalidSignatureError("The provided signature and content do not match the Stark Bank public key");
-    }
-
-    private static function verifySignature($user, $content, $signature, $refresh = false)
-    {
-        $publicKey = Cache::getStarkPublicKey();
-        if (is_null($publicKey) | $refresh) {
-            $pem = IssuingAuthorization::getPublicKeyPem($user);
-            $publicKey = PublicKey::fromPem($pem);
-            Cache::setStarkPublicKey($publicKey);
-        }
-        return Ecdsa::verify($content, $signature, $publicKey);
-    }
-
-    private static function getPublicKeyPem($user)
-    {
-        return Request::fetch($user, "GET", "/public-key", null, ["limit" => 1])->json()["publicKeys"][0]["content"];
+        return Parse::parseAndVerify($content, $signature, IssuingAuthorization::resource(), $user);
     }
 
     private static function resource()
     {
-        $event = function ($array) {
+        $authorization = function ($array) {
             return new IssuingAuthorization($array);
         };
         return [
             "name" => "IssuingAuthorization",
-            "maker" => $event,
+            "maker" => $authorization,
         ];
     }
 }
