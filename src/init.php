@@ -1,5 +1,6 @@
 <?php
 
+
 require_once(__DIR__."/key.php");
 require_once(__DIR__."/error.php");
 require_once(__DIR__."/utils/datetime.php");
@@ -18,26 +19,35 @@ require_once(__DIR__."/utils/url.php");
 require_once(__DIR__."/user/user.php");
 require_once(__DIR__."/user/organization.php");
 require_once(__DIR__."/user/project.php");
-require_once(__DIR__."/issuingRule/issuingRule.php");
-require_once(__DIR__."/issuingInvoice/issuingInvoice.php");
-require_once(__DIR__."/issuingInvoice/log.php");
+require_once(__DIR__."/infractionReport/infractionReport.php");
+require_once(__DIR__."/infractionReport/log.php");
+require_once(__DIR__."/issuingAuthorization/issuingAuthorization.php");
 require_once(__DIR__."/issuingBalance/issuingBalance.php");
 require_once(__DIR__."/issuingBin/issuingBin.php");
 require_once(__DIR__."/issuingCard/issuingCard.php");
 require_once(__DIR__."/issuingCard/log.php");
 require_once(__DIR__."/issuingHolder/issuingHolder.php");
 require_once(__DIR__."/issuingHolder/log.php");
+require_once(__DIR__."/issuingInvoice/issuingInvoice.php");
+require_once(__DIR__."/issuingInvoice/log.php");
 require_once(__DIR__."/issuingPurchase/issuingPurchase.php");
 require_once(__DIR__."/issuingPurchase/log.php");
+require_once(__DIR__."/issuingRule/issuingRule.php");
 require_once(__DIR__."/issuingTransaction/issuingTransaction.php");
 require_once(__DIR__."/issuingWithdrawal/issuingWithdrawal.php");
-require_once(__DIR__."/issuingAuthorization/issuingAuthorization.php");
 require_once(__DIR__."/pixBalance/pixBalance.php");
+require_once(__DIR__."/pixClaim/pixClaim.php");
+require_once(__DIR__."/pixClaim/log.php");
+require_once(__DIR__."/pixDirector/pixDirector.php");
+require_once(__DIR__."/pixKey/pixKey.php");
+require_once(__DIR__."/pixKey/log.php");
 require_once(__DIR__."/pixRequest/pixRequest.php");
 require_once(__DIR__."/pixRequest/log.php");
 require_once(__DIR__."/pixReversal/pixReversal.php");
 require_once(__DIR__."/pixReversal/log.php");
 require_once(__DIR__."/pixStatement/pixStatement.php");
+require_once(__DIR__."/reversalRequest/reversalRequest.php");
+require_once(__DIR__."/reversalRequest/log.php");
 require_once(__DIR__."/event/event.php");
 require_once(__DIR__."/setting.php");
 

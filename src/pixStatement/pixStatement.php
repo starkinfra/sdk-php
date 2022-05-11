@@ -58,7 +58,7 @@ class PixStatement extends Resource
      */
     public static function create($statement, $user = null)
     {
-        return Rest::postSingle($user, PixStatement ::resource(), $statement);
+        return Rest::postSingle($user, PixStatement::resource(), $statement);
     }
 
     /**
@@ -119,7 +119,7 @@ class PixStatement extends Resource
         return Rest::getPage($user, PixStatement ::resource(), $options);
     }
 
-    /**
+    /*
     # Retrieve a specific PixStatement
 
     Receive a single PixStatement  object previously created in the Stark Infra API by passing its id
@@ -144,7 +144,7 @@ class PixStatement extends Resource
             return new PixStatement ($array);
         };
         return [
-            "name" => "PixStatement ",
+            "name" => "PixStatement",
             "maker" => $statement,
         ];
     }
