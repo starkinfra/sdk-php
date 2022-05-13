@@ -26,11 +26,16 @@ is as easy as sending a text message to your client!
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
     - [Pix](#pix)
-        - [PixRequests](#create-pix-requests): PIX receivables
-        - [PixReversals](#create-pix-reversals): Reverse PIX transactions
-        - [PixBalance](#get-pix-balance): Account balance
-        - [PixStatement](#create-pix-statement): Account statement entry
-        - [WebhookEvents](#process-webhook-events): Manage webhook events
+        - [PixRequests](#create-pixrequests): Create Pix transactions
+        - [PixReversals](#create-pixreversals): Reverse Pix transactions
+        - [PixBalance](#get-your-pixbalance): View your account balance
+        - [PixStatement](#create-a-pixstatement): Request your account statement
+        - [PixKey](#create-a-pixkey): Create a Pix Key
+        - [PixClaim](#create-a-pixclaim): Claim a Pix Key
+        - [PixDirector](#create-a-pixdirector): Create a Pix Director
+        - [PixInfraction](#create-an-pixinfraction): Create a Pix Infraction
+        - [ReversalRequest](#create-a-reversalrequest): Claim a Pix Key
+        - [PixDomain](#query-pix-domain): View registered SPI participants certificates
     - [Issuing](#issuing)
         - [Transactions](#query-issuing-transactions): Account statement entries
         - [Balance](#get-issuing-balance): Account balance
@@ -314,8 +319,8 @@ for the value to be credited to your account.
 
 ## Pix
 
-## Create pix requests
-You can create a Pix request to charge a user:
+## Create Pix requests
+You can create Pix Requests to charge a user:
 
 ```php
 use StarkInfra\PixRequest;
@@ -363,9 +368,9 @@ foreach($transfers as $transfer){
 
 **Note**: Instead of using Pix Request objects, you can also pass each transaction element in dictionary format
 
-## Query pix requests
+## Query Pix requests
 
-You can query multiple pix requests according to filters.
+You can query multiple Pix Requests according to filters.
 
 ```php
 use StarkInfra\PixRequest;
@@ -385,9 +390,9 @@ foreach($requests as $request){
 }
 ```
 
-## Get a pix request
+## Get a Pix request
 
-After its creation, information on a pix request may be retrieved by its id. Its status indicates whether it has been paid.
+After its creation, information on a Pix Request may be retrieved by its id. Its status indicates whether it has been paid.
 
 ```php
 use StarkInfra\PixRequest;
@@ -397,7 +402,7 @@ $request = PixRequest::get("5155966664310784");
 print_r($request);
 ```
 
-## Process pix request authorization requests
+## Process Pix request authorization requests
 
 It's easy to process authorization requests that arrived in your handler. Remember to pass the
 signature header so the SDK can make sure it's StarkInfra that sent you
@@ -413,9 +418,9 @@ $request = PixRequest::parse($response->content, $response->headers["Digital-Sig
 print_r($request);
 ```
 
-## Query pix request logs
+## Query Pix request logs
 
-You can query pix request logs to better understand pix request life cycles.
+You can query Pix Request Logs to better understand Pix Request life cycles.
 
 ```php
 use StarkInfra\PixRequest;
@@ -431,7 +436,7 @@ foreach($logs as $log){
 }
 ```
 
-## Get a pix request log
+## Get a Pix request log
 
 You can also get a specific log by its id.
 
@@ -443,9 +448,9 @@ $log = PixRequest\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Create pix reversals
+## Create Pix reversals
 
-You can reverse a pix request by whole or by a fraction of its amount using a pix reversal.
+You can reverse a Pix Request by whole or by a fraction of its amount using a Pix Reversal.
 
 ```php
 use StarkInfra\PixReversal;
@@ -470,9 +475,9 @@ foreach($reversals as $reversal){
 }
 ```
 
-## Query pix reversals
+## Query Pix reversals
 
-You can query multiple pix reversals according to filters.
+You can query multiple Pix Reversals according to filters.
 
 ```php
 use StarkInfra\PixReversal;
@@ -492,9 +497,9 @@ foreach($reversals as $reversal){
 }
 ```
 
-## Get a pix reversal
+## Get a Pix reversal
 
-After its creation, information on a pix reversal may be retrieved by its id. Its status indicates whether it has been paid.
+After its creation, information on a Pix Reversal may be retrieved by its id. Its status indicates whether it has been paid.
 
 ```php
 use StarkInfra\PixReversal;
@@ -504,7 +509,7 @@ $reversal = PixReversal::get("5155966664310784");
 print_r($reversal);
 ```
 
-## Process pix reversal authorization reversals
+## Process Pix reversal authorization reversals
 
 It's easy to process authorization reversals that arrived in your handler. Remember to pass the
 signature header so the SDK can make sure it's StarkInfra that sent you
@@ -520,9 +525,9 @@ $reversal = PixReversal::parse($response->content, $response->headers["Digital-S
 print_r($reversal);
 ```
 
-## Query pix reversal logs
+## Query Pix reversal logs
 
-You can query pix reversal logs to better understand pix reversal life cycles.
+You can query Pix Reversal logs to better understand Pix Reversal life cycles.
 
 ```php
 use StarkInfra\PixReversal;
@@ -538,7 +543,7 @@ foreach($logs as $log){
 }
 ```
 
-## Get a pix reversal log
+## Get a Pix reversal log
 
 You can also get a specific log by its id.
 
@@ -550,7 +555,7 @@ $log = PixReversal\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Get pix balance
+## Get Pix balance
 
 To know how much money you have in your workspace, run:
 
@@ -562,7 +567,7 @@ $balance = PixBalance::get("5155165527080960");
 print_r($balance);
 ```
 
-## Create pix statement
+## Create Pix statement
 
 Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
 
@@ -579,9 +584,9 @@ $statement = PixStatement::create(
 
 print_r($statement)
 ```
-## Query pix statements
+## Query Pix statements
 
-You can query multiple pix statements according to filters.
+You can query multiple Pix Statements according to filters.
 
 ```php
 use StarkInfra\PixStatement;
@@ -596,9 +601,9 @@ foreach($statements as $statement){
 }
 ```
 
-## Get a pix statement
+## Get a Pix statement
 
-Statements are only available for direct participants. To get a pix statement by its id:
+Statements are only available for direct participants. To get a Pix Statement by its id:
 
 ```php
 use StarkInfra\PixStatement;
@@ -608,9 +613,9 @@ $statement = PixStatement::get("5155966664310784");
 print_r($statement);
 ```
 
-## Get a pix statement .csv file
+## Get a Pix statement .csv file
 
-To get a .csv file of a pix statement using its id, run:
+To get a .csv file of a Pix Statement using its id, run:
 
 ```php
 use StarkInfra\PixStatement;
@@ -621,6 +626,493 @@ $fp = fopen('statement.zip', 'w');
 fwrite($fp, $csv);
 fclose($fp);
 ```
+
+### Create a Pix key
+
+You can create a Pix Key to link a bank account information to a key id:
+
+```php
+use StarkInfra\PixKey;
+
+$keys = PixKey::create(
+    new PixKey([
+        "accountCreated" => "2022-01-01",
+        "accountNumber" => "76543",
+        "accountType" => "salary",
+        "branchCode" => "1234",
+        "name" => "Jamie Lannister",
+        "taxId" => "012.345.678-90"
+    );
+]);
+
+foreach($keys as $key){
+    print_r($key);
+}
+```
+
+### Query Pix keys
+
+You can query multiple Pix Keys you own according to filters.
+
+```php
+use StarkInfra\PixKey;
+
+$keys = PixKey::query([
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($keys as $key){
+    print_r($key);
+}
+```
+
+### Get a Pix key
+
+Information on a Pix Key may be retrieved by its id and the tax ID of the consulting agent.
+An endToEndId must be informed so you can link any resulting purchases to this query,
+avoiding sweep blocks by the Central Bank.
+
+```php
+use StarkInfra\PixKey;
+
+$key = PixKey::get("5915632394567680");
+
+print_r($key);
+
+```
+
+### Patch a Pix key
+
+Update the account information linked to a Pix Key.
+
+```php
+use StarkInfra\PixKey;
+
+$key PixKey::update(
+    "6203417408045056",
+    ["status" => "blocked"]
+);
+
+print_r($key);
+```
+
+### Cancel a Pix key
+
+Cancel a specific Pix Key using its id.
+
+```php
+use StarkInfra\PixKey;
+
+$key = PixKey::cancel("5915632394567680");
+
+print_r($key);
+                       
+```
+
+### Query Pix key logs
+
+You can query Pix Key logs to better understand a Pix Key life cycle. 
+
+```php
+use StarkInfra\PixKey;
+
+$logs = PixKey\Log::query([
+    "limit" => 50, 
+    "after" => "2022-01-01",
+    "before" => "2022-01-20",
+    "types" => [
+        "created"
+    ]
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a Pix key log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixKey;
+
+$log = PixKey\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create a Pix claim
+
+You can create a Pix Claim to request the transfer of a Pix Key from another bank to one of your accounts:
+
+```php
+use StarkInfra\PixClaim;
+
+$claim = PixClaim::create(
+    new PixClaim([
+        "accountCreated" => "2022-01-01",
+        "accountNumber" => "76549", 
+        "accountType" => "salary", 
+        "branchCode" => "1234",
+        "name" => "Random Name",
+        "taxId" => "012.345.678-90",
+        "keyId" => "+551165857989",
+    ]);
+);
+
+print_r($claim)
+```
+
+### Query Pix claims
+
+You can query multiple Pix Claims according to filters.
+
+```php
+use StarkInfra\PixClaim;
+
+$claims = PixClaim::query([
+    "limit" => 1,
+    "after" => "2022-01-01",
+    "before" => "2022-01-12",
+    "status" => "registered",
+    "ids" => ["5729405850615808"],
+    "type" => "ownership",
+    "agent" => "claimed",
+    "keyType" => "phone",
+    "keyId" => "+5511989898989"
+]);
+
+foreach $claim in $claims{
+    print_r($claim);
+}
+
+```
+
+### Get a Pix claim
+
+After its creation, information on a Pix Claim may be retrieved by its id.
+
+```php
+use StarkInfra\PixClaim;
+
+$claim = PixClaim::get("5155165527080960");
+
+print_r($claim);
+```
+
+### Patch a Pix claim
+
+A Pix Claim can be confirmed or canceled by patching its status.
+A received Pix Claim must be confirmed by the donor to be completed.
+Ownership Pix Claims can only be canceled by the donor if the reason is "fraud".
+A sent Pix Claim can also be canceled.
+
+```php
+use StarkInfra\PixClaim;
+
+$claim = PixClaim::update(
+    "id" => "5155165527080960",
+    ["status" => "confirmed"]
+);
+
+print_r($claim);
+```
+
+### Query Pix claim logs
+
+You can query Pix Claim logs to better understand Pix Claim life cycles.
+
+```php
+use StarkInfra\PixClaim;
+
+$logs = PixClaim\Log::query([
+    "limit" => 50, 
+    "ids" => ["5729405850615808"],
+    "after" => "2022-01-01",
+    "before" => "2022-01-20",
+    "types" => ["registered"],
+    "claimIds" => ["5719405850615809"]
+]);
+
+foreach $log in $logs{
+    print_r($log)
+};
+```
+
+### Get a Pix claim log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixClaim;
+
+$log = PixClaim\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create a Pix director
+
+To register the Pix Director contact information at the Central Bank, run the following:
+
+```php
+use StarkInfra\PixDirector;
+
+$director = PixDirector::create(
+    new PixDirector ([
+        "name" => "Edward Stark",
+        "taxId" => "03.300.300/0001-00",
+        "phone" => "+55-11999999999",
+        "email" => "ned.stark@company.com",
+        "password" => "12345678",
+        "teamEmail" => "pix.team@company.com",
+        "teamPhones" => [
+            "+55-11988889999", "+55-11988889998"
+        ]
+    ]);
+);
+
+print_r($director);
+```
+
+### Create an Pix infraction
+
+Pix Infractions are used to report transactions that raise fraud suspicion, to request a refund or to 
+reverse a refund. Pix Infractions can be created by either participant of a transaction.
+
+```php
+use StarkInfra\PixInfraction;
+
+$infraction = PixInfraction::create(
+    new PixInfraction([
+        "referenceId" => "E20018183202201201450u34sDGd19lz",
+        "type" => "fraud",
+    ]);
+);
+
+print_r($infraction);
+```
+
+### Query Pix infractions
+
+You can query multiple Pix Infractions according to filters.
+
+```php
+use StarkInfra\PixInfraction;
+
+$reports = PixInfraction::query([
+    "limit" => 1,
+    "after" => "2022-01-01",
+    "before" => "2022-01-12",
+    "status" => "delivered",
+    "ids" => ["5155165527080960"],
+]);
+
+for $report in $reports{
+    print_r($report);
+}
+```
+
+### Get an Pix infraction
+
+After its creation, information on an Pix Infraction may be retrieved by its id.
+
+```php
+use StarkInfra\PixInfraction;
+
+$report = PixInfraction::get("5155165527080960");
+
+print_r($report);
+```
+
+### Patch an Pix infraction
+
+A received Pix Infraction can be confirmed or declined by patching its status.
+After an Pix Infraction is patched, its status changes to closed.
+
+```php
+use StarkInfra\PixInfraction;
+
+$report = PixInfraction::update(
+    "id" => "5155165527080960",
+    ["status" => "blocked"]
+)
+
+print_r($report)
+```
+
+### Cancel an Pix infraction
+
+Cancel a specific Pix Infraction using its id.
+
+```php
+use StarkInfra\PixInfraction;
+
+$report = PixInfraction::cancel("5155165527080960");
+
+print_r($report);
+```
+
+### Query Pix infraction logs
+
+You can query Pix Infraction Logs to better understand their life cycles. 
+
+```php
+use StarkInfra\PixInfraction;
+
+$logs = PixInfraction\Log::query([
+    "limit" => 50, 
+    "ids" => ["5729405850615808"],
+    "after" =>"2022-01-01",
+    "before" =>"2022-01-20",
+    "types" => ["created"],
+    "reportIds" => ["5155165527080960"]
+]);
+
+for $log in $logs{
+    print_r($log)
+}
+```
+
+### Get an Pix infraction log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixInfraction;
+
+$log = PixInfraction\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create a Pix chargeback
+
+A Pix Chargeback can be created when fraud is detected on a transaction or a system malfunction 
+results in an erroneous transaction.
+
+```php
+use StarkInfra\PixChargeback;
+
+$request = PixChargeback::create(
+    new PixChargeback([
+        "amount" => 100,
+        "referenceId" => "E20018183202201201450u34sDGd19lz",
+        "reason" => "fraud"
+    ]);
+);
+
+print_r($request)
+```
+
+### Query Pix chargeback
+
+You can query multiple Pix Chargebacks according to filters.
+
+```php
+use StarkInfra\PixChargeback;
+
+$requests = PixChargeback::query([
+    "limit" => 1,
+    "after" => "2022-01-01",
+    "before" => "2022-01-12",
+    "status" => "registered",
+    "ids" => ["5155165527080960"]
+]);
+
+for $request in $requests{
+    print($request);
+}    
+```
+
+### Get a Pix chargeback
+
+After its creation, information on a Pix Chargeback may be retrieved by its.
+
+```php
+use StarkInfra\PixChargeback;
+
+$request = PixChargeback::get("5155165527080960");
+
+print_r($request);
+```
+
+### Patch a Pix chargeback
+
+A received Pix Chargeback can be accepted or rejected by patching its status.
+After a Pix Chargeback is patched, its status changes to closed.
+
+```php
+use StarkInfra\PixChargeback;
+
+$request = PixChargeback::update(
+    "id" => "5155165527080960",
+    ["status" => "blocked"]
+);
+
+print_r($request);
+```
+
+### Cancel a Pix chargeback
+
+Cancel a specific Pix Chargeback using its id.
+
+```php
+use StarkInfra\PixChargeback;
+
+$request = PixChargeback::cancel("5155165527080960");
+
+print_r($request);
+```
+
+### Query Pix chargeback logs
+
+You can query Pix Chargeback Logs to better understand reversal request life cycles. 
+
+```php
+use StarkInfra\PixChargeback;
+
+$logs = PixChargeback\Log::query([
+    "limit" => 50, 
+    "ids" => ["5729405850615808"],
+    "after" => "2022-01-01",
+    "before" => "2022-01-20",
+    "types" => ["created"],
+    "requestIds" => ["5155165527080960"]
+]);
+
+for $log in $logs{
+    print_r($log);
+}
+```
+
+### Get a Pix chargeback log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixChargeback;
+
+$log = PixChargeback\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Query Pix domain
+
+You can query for certificates of registered SPI participants able to issue dynamic QR Codes.
+
+```php
+use StarkInfra\PixDomain;
+
+$domains = PixDomain::query();
+
+for $domain in $domains{
+    print($domain);
+}
+```  
 
 ## Process webhook events
 

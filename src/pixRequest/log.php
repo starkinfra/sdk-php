@@ -20,19 +20,19 @@ class Log extends Resource
 
     ## Attributes:
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
-        - pixRequest [PixRequest]: PixRequest entity to which the log refers to.
+        - request [PixRequest]: PixRequest entity to which the log refers to.
         - errors [array of strings]: array of errors linked to this BoletoPayment event.
         - type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"
-        - created [DateTime]: creation datetime for the log.
+        - created [DateTime]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
-        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
-        $this->type = Checks::checkParam($params, "type");
-        $this->errors = Checks::checkParam($params, "errors");
-        $this->request = Checks::checkParam($params, "request");
+        $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this-> type = Checks::checkParam($params, "type");
+        $this-> errors = Checks::checkParam($params, "errors");
+        $this-> request = Checks::checkParam($params, "request");
 
         Checks::checkParams($params);
     }
@@ -62,9 +62,9 @@ class Log extends Resource
     Receive an enumerator of Log objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
         - requestIds [array of strings, default null]: array of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -88,8 +88,8 @@ class Log extends Resource
     ## Parameters (optional):
     - cursor [string, default null]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-    - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+    - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+    - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
     - types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
     - requestIds [list of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call

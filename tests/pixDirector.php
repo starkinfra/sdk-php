@@ -19,7 +19,7 @@ class TestPixDirector
     public static function example()
     {
         $params = [
-            "name" => "Matheus Ferraz",
+            "name" => "Nome Aleatorio",
             "taxId" => "012.345.678-90",
             "phone" => "+55-1141164616", 
             "email" => "bacen@starkbank.com", 

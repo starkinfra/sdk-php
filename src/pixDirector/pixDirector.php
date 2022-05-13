@@ -7,7 +7,7 @@ use StarkInfra\Utils\Rest;
 
 class PixDirector extends Resource
 {
-    /*
+    /**
     # PixDirector object
 
     Mandatory data that must be registered within the Central Bank for emergency contact purposes.
@@ -25,27 +25,27 @@ class PixDirector extends Resource
         - teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
     
     ## Attributes (return-only):
-        - id [string, default None]: unique id returned when the PixDirector is created. ex: "5656565656565656"
-        - status [string, default None]: current PixDirector status. ex: "success"
+        - id [string, default null]: unique id returned when the PixDirector is created. ex: "5656565656565656"
+        - status [string, default null]: current PixDirector status. ex: "success"
     */
 
     function __construct(array $params)
     {
         parent::__construct($params);
 
-        $this->email = Checks::checkParam($params, "email");
-        $this->name = Checks::checkParam($params, "name");
-        $this->password = Checks::checkParam($params, "password");
-        $this->phone = Checks::checkParam($params, "phone");
-        $this->taxId = Checks::checkParam($params, "taxId");
-        $this->teamEmail = Checks::checkParam($params, "teamEmail");
-        $this->teamPhones = Checks::checkParam($params, "teamPhones");
-        $this->status = Checks::checkParam($params, "status");
+        $this-> email = Checks::checkParam($params, "email");
+        $this-> name = Checks::checkParam($params, "name");
+        $this-> password = Checks::checkParam($params, "password");
+        $this-> phone = Checks::checkParam($params, "phone");
+        $this-> taxId = Checks::checkParam($params, "taxId");
+        $this-> teamEmail = Checks::checkParam($params, "teamEmail");
+        $this-> teamPhones = Checks::checkParam($params, "teamPhones");
+        $this-> status = Checks::checkParam($params, "status");
         
         Checks::checkParams($params);
     }
 
-    /*
+    /**
     # Create a PixDirector Object
     
     Send a PixDirector object for creation in the Stark Infra API
@@ -54,15 +54,14 @@ class PixDirector extends Resource
         - director [list of PixDirector Object]: list of PixDirector objects to be created in the API
     
     ## Parameters (optional):
-        - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - PixDirector objects with updated attributes
     */
-
-    public static function create($pixDirector, $user = null)
+    public static function create($directors, $user = null)
     {
-        return Rest::postSingle($user, PixDirector::resource(), $pixDirector);
+        return Rest::postSingle($user, PixDirector::resource(), $directors);
     }
 
     private static function resource()
@@ -75,5 +74,4 @@ class PixDirector extends Resource
             "maker" => $director,
         ];
     }
-
 }

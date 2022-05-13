@@ -13,6 +13,13 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PixChargeback resource for Indirect and Direct Participants
+- PixClaim resource for Indirect and Direct Participants
+- PixDirector resource for Indirect and Direct Participants
+- PixDomain resource for Indirect and Direct Participants
+- PixInfraction resource for Indirect and Direct Participants
+- PixKey resource for Indirect and Direct Participants
 
 ## [0.0.3] - 2022-03-24
 ### Added

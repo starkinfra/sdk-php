@@ -6,7 +6,7 @@ use StarkInfra\PixKey;
 
 class TestPixKey
 {
-    public function createAndDelete()
+    public function createAndCancel()
     {
         $keys = PixKey::create(TestPixKey::example());
         if (is_null($keys->id)){
@@ -15,7 +15,7 @@ class TestPixKey
 
         $keyId = $keys[0]->id;
 
-        $key = PixKey::delete($keyId);
+        $key = PixKey::cancel($keyId);
         if ($key->status != "canceled") {
             throw new Exception("failed");
         }
@@ -92,8 +92,8 @@ echo "\n\nPixKey:";
 
 $test = new TestPixKey();
 
-echo "\n\t- create and delete";
-$test->createAndDelete();
+echo "\n\t- create and cancel";
+$test->createAndCancel();
 echo " - OK";
 
 echo "\n\t- query and get";
@@ -107,4 +107,3 @@ echo " - OK";
 echo "\n\t- update";
 $test->update();
 echo " - OK";
-

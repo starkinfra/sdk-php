@@ -1,11 +1,11 @@
 <?php
 
-namespace Test\ReversalRequestLog;
+namespace Test\PixInfractionLog;
 
 use \Exception;
-use StarkInfra\ReversalRequest\Log;
+use StarkInfra\PixInfraction\Log;
 
-class TestReversalRequestLog
+class TestPixInfractionLog
 {
     public function query()
     {
@@ -20,10 +20,10 @@ class TestReversalRequestLog
 
     public function get()
     {
-        $reversalRequest = iterator_to_array(Log::query(["limit" => 1]))[0];
-        $reversalRequest = Log::get($reversalRequest->id);
+        $pixInfraction = iterator_to_array(Log::query(["limit" => 1]))[0];
+        $pixInfraction = Log::get($pixInfraction->id);
 
-        if (!is_string($reversalRequest->id)) {
+        if (!is_string($pixInfraction->id)) {
             throw new Exception("failed");
         }
     }
@@ -34,11 +34,11 @@ class TestReversalRequestLog
         $cursor = null;
         for ($i=0; $i < 2; $i++) { 
             list($page, $cursor) = Log::page($options = ["limit" => 5, "cursor" => $cursor]);
-            foreach ($page as $reversalRequestLog) {
-                if (in_array($reversalRequestLog->id, $ids)) {
+            foreach ($page as $pixInfractionLog) {
+                if (in_array($pixInfractionLog->id, $ids)) {
                     throw new Exception("failed");
                 }
-                array_push($ids, $reversalRequestLog->id);
+                array_push($ids, $pixInfractionLog->id);
             }
             if ($cursor == null) {
                 break;
@@ -50,9 +50,9 @@ class TestReversalRequestLog
     }
 }
 
-echo "\n\nInfractionReportLog:";
+echo "\n\nPixInfracionLog:";
 
-$test = new TestReversalRequestLog();
+$test = new TestPixInfractionLog();
 
 echo "\n\t- query";
 $test->query();

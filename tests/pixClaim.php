@@ -91,6 +91,23 @@ class TestPixClaim
         } 
     }
 
+    public function update()
+    {
+        $claims = PixClaim::query(["status" => "sucess", "limit" => 1]);
+        foreach ($claims as $claim) {
+            if (is_null($claim->id)) {
+                throw new Exception("failed");
+            }
+            if ($claim->status != "active") {
+                throw new Exception("failed");
+            }    
+            $updatedPixClaim = PixClaim::update($claim->id, ["status" => "canceled"]);
+            if ($updatedPixClaim->status != "failed") {
+                throw new Exception("failed");
+            }    
+        }
+    }
+
     const CONTENT = '{"receiverBranchCode": "0001", "cashierBankCode": "", "senderTaxId": "20.018.183/0001-80", "senderName": "Stark Bank S.A. - Instituicao de Pagamento", "id": "4508348862955520", "senderAccountType": "payment", "fee": 0, "receiverName": "Cora", "cashierType": "", "externalId": "", "method": "manual", "status": "processing", "updated": "2022-02-16T17:23:53.980250+00:00", "description": "", "tags": [], "receiverKeyId": "", "cashAmount": 0, "senderBankCode": "20018183", "senderBranchCode": "0001", "bankCode": "34052649", "senderAccountNumber": "5647143184367616", "receiverAccountNumber": "5692908409716736", "initiatorTaxId": "", "receiverTaxId": "34.052.649/0001-78", "created": "2022-02-16T17:23:53.980238+00:00", "flow": "in", "endToEndId": "E20018183202202161723Y4cqxlfLFcm", "amount": 1, "receiverAccountType": "checking", "reconciliationId": "", "receiverBankCode": "34052649"}';
     const VALID_SIGNATURE = "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o02X2QIgVwKfJKuIS5RDq50NC/+55h/7VccDkV1vm8Q/7jNu0VM=";
     const INVALID_SIGNATURE = "MEUCIQDOpo1j+V40DNZK2URL2786UQK/8mDXon9ayEd8U0/l7AIgYXtIZJBTs8zCRR3vmted6Ehz/qfw1GRut/eYyvf1yOk=";
@@ -141,9 +158,9 @@ class TestPixClaim
             "accountNumber" => "76549", 
             "accountType" => "salary", 
             "branchCode" => "1234",
-            "name" => "Random ame",
+            "name"=> "Random Name",
             "taxId" => "012.345.678-90",
-            "keyId" => "+5511788897989",
+            "keyId" => "+551165857989",
         ];
         return new PixClaim($params);
     }
@@ -171,6 +188,10 @@ echo " - OK";
 
 echo "\n\t- get page";
 $test->getPage();
+echo " - OK";
+
+echo "\n\t- update";
+$test->update();
 echo " - OK";
 
 echo "\n\t- parse right";

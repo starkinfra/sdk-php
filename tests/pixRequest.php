@@ -196,4 +196,3 @@ echo " - OK";
 echo "\n\t- parse malformed";
 $test->parseMalformed();
 echo " - OK";
-
