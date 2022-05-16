@@ -19,7 +19,7 @@ class Log extends Resource
 
     ## Attributes:
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
-        - created [DateTime or string, default null]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
+        - created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
         - type [string]: type of the PixChargeback event which triggered the log creation. 
         - errors [list of strings]: list of errors linked to this PixChargeback event
         - chargeback [PixChargeback]: PixChargeback entity to which the log refers to.
@@ -65,7 +65,7 @@ class Log extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+        - types [list of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "closed", "canceled".
         - chargebackIds [list of strings, default null]: list of PixChargeback IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
@@ -93,12 +93,12 @@ class Log extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - types [list of strings, default null]: filter retrieved objects by types. ex: "success" or "failed"
+        - types [list of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "closed", "canceled".
         - chargebackIds [list of strings, default null]: list of PixChargeback IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - list of PixChargebackLog objects with updated attributes
+        - list of PixChargeback\Log objects with updated attributes
         - cursor to retrieve the next page of PixChargeback\Log objects
     */
     public static function page($options = [], $user = null)

@@ -59,16 +59,16 @@ class TestPixKey
 
     public function update()
     {
-        $keys = PixKey::query(["status" => "active", "limit" => 1]);
+        $keys = PixKey::query(["status" => "registered", "limit" => 1]);
         foreach ($keys as $key) {
             if (is_null($key->id)) {
                 throw new Exception("failed");
             }
-            if ($key->status != "active") {
+            if ($key->status != "registered") {
                 throw new Exception("failed");
             }    
-            $updateKey = PixKey::update($key->id, ["status" => "blocked"]);
-            if ($updateKey->status != "blocked") {
+            $updateKey = PixKey::update($key->id, ["name" => "Novo Nome Aleatorio"]);
+            if ($updateKey->name != "Novo Nome Aleatorio") {
                 throw new Exception("failed");
             }    
         }

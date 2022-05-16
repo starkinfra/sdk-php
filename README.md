@@ -640,10 +640,10 @@ $keys = PixKey::create(
         "accountNumber" => "76543",
         "accountType" => "salary",
         "branchCode" => "1234",
-        "name" => "Jamie Lannister",
+        "name" => "Jamie Lannister",    
         "taxId" => "012.345.678-90"
-    );
-]);
+    ]);
+);
 
 foreach($keys as $key){
     print_r($key);
@@ -691,7 +691,7 @@ use StarkInfra\PixKey;
 
 $key PixKey::update(
     "6203417408045056",
-    ["status" => "blocked"]
+    ["name" => "Tony Stark"]
 );
 
 print_r($key);
@@ -814,7 +814,7 @@ use StarkInfra\PixClaim;
 
 $claim = PixClaim::update(
     "id" => "5155165527080960",
-    ["status" => "confirmed"]
+    ["status" => "canceled"]
 );
 
 print_r($claim);
@@ -902,7 +902,7 @@ You can query multiple Pix Infractions according to filters.
 ```php
 use StarkInfra\PixInfraction;
 
-$reports = PixInfraction::query([
+$infractions = PixInfraction::query([
     "limit" => 1,
     "after" => "2022-01-01",
     "before" => "2022-01-12",
@@ -910,8 +910,8 @@ $reports = PixInfraction::query([
     "ids" => ["5155165527080960"],
 ]);
 
-for $report in $reports{
-    print_r($report);
+for $infraction in $infractions{
+    print_r($infraction);
 }
 ```
 
@@ -922,9 +922,9 @@ After its creation, information on an Pix Infraction may be retrieved by its id.
 ```php
 use StarkInfra\PixInfraction;
 
-$report = PixInfraction::get("5155165527080960");
+$infraction = PixInfraction::get("5155165527080960");
 
-print_r($report);
+print_r($infraction);
 ```
 
 ### Patch an Pix infraction
@@ -935,12 +935,12 @@ After an Pix Infraction is patched, its status changes to closed.
 ```php
 use StarkInfra\PixInfraction;
 
-$report = PixInfraction::update(
+$infraction = PixInfraction::update(
     "id" => "5155165527080960",
-    ["status" => "blocked"]
+    ["result" => "agreed"]
 )
 
-print_r($report)
+print_r($infraction)
 ```
 
 ### Cancel an Pix infraction
@@ -950,9 +950,9 @@ Cancel a specific Pix Infraction using its id.
 ```php
 use StarkInfra\PixInfraction;
 
-$report = PixInfraction::cancel("5155165527080960");
+$infraction = PixInfraction::cancel("5155165527080960");
 
-print_r($report);
+print_r($infraction);
 ```
 
 ### Query Pix infraction logs
@@ -968,7 +968,7 @@ $logs = PixInfraction\Log::query([
     "after" =>"2022-01-01",
     "before" =>"2022-01-20",
     "types" => ["created"],
-    "reportIds" => ["5155165527080960"]
+    "infractionIds" => ["5155165527080960"]
 ]);
 
 for $log in $logs{
@@ -996,7 +996,7 @@ results in an erroneous transaction.
 ```php
 use StarkInfra\PixChargeback;
 
-$request = PixChargeback::create(
+$chargeback = PixChargeback::create(
     new PixChargeback([
         "amount" => 100,
         "referenceId" => "E20018183202201201450u34sDGd19lz",
@@ -1004,7 +1004,7 @@ $request = PixChargeback::create(
     ]);
 );
 
-print_r($request)
+print_r($chargeback)
 ```
 
 ### Query Pix chargeback
@@ -1014,7 +1014,7 @@ You can query multiple Pix Chargebacks according to filters.
 ```php
 use StarkInfra\PixChargeback;
 
-$requests = PixChargeback::query([
+$chargebacks = PixChargeback::query([
     "limit" => 1,
     "after" => "2022-01-01",
     "before" => "2022-01-12",
@@ -1022,8 +1022,8 @@ $requests = PixChargeback::query([
     "ids" => ["5155165527080960"]
 ]);
 
-for $request in $requests{
-    print($request);
+for $chargeback in $chargebacks{
+    print($chargeback);
 }    
 ```
 
@@ -1034,9 +1034,9 @@ After its creation, information on a Pix Chargeback may be retrieved by its.
 ```php
 use StarkInfra\PixChargeback;
 
-$request = PixChargeback::get("5155165527080960");
+$chargeback = PixChargeback::get("5155165527080960");
 
-print_r($request);
+print_r($chargeback);
 ```
 
 ### Patch a Pix chargeback
@@ -1047,12 +1047,12 @@ After a Pix Chargeback is patched, its status changes to closed.
 ```php
 use StarkInfra\PixChargeback;
 
-$request = PixChargeback::update(
+$chargeback = PixChargeback::update(
     "id" => "5155165527080960",
-    ["status" => "blocked"]
+    ["result" => "accepted"]
 );
 
-print_r($request);
+print_r($chargeback);
 ```
 
 ### Cancel a Pix chargeback
@@ -1062,9 +1062,9 @@ Cancel a specific Pix Chargeback using its id.
 ```php
 use StarkInfra\PixChargeback;
 
-$request = PixChargeback::cancel("5155165527080960");
+$chargeback = PixChargeback::cancel("5155165527080960");
 
-print_r($request);
+print_r($chargeback);
 ```
 
 ### Query Pix chargeback logs
@@ -1080,7 +1080,7 @@ $logs = PixChargeback\Log::query([
     "after" => "2022-01-01",
     "before" => "2022-01-20",
     "types" => ["created"],
-    "requestIds" => ["5155165527080960"]
+    "chargebackIds" => ["5155165527080960"]
 ]);
 
 for $log in $logs{

@@ -10,17 +10,14 @@ class PixDirector extends Resource
     /**
     # PixDirector object
 
-    Mandatory data that must be registered within the Central Bank for emergency contact purposes.
-    When you initialize a PixDirector, the entity will not be automatically
-    created in the Stark Infra API. The 'create' function sends the objects
-    to the Stark Infra API and returns the list of created objects.
+    Pix Directors are used for registering Pix participants` emergency contact information at the Brazilian Central Bank. This process is mandatory for all direct Pix participants.
     
     ## Parameters (required):
-        - name [string]: name of the PixDirector. ex: "Edward Stark".
-        - taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
-        - phone [string]: phone of the PixDirector. ex: "+55-1198989898"
         - email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
+        - name [string]: name of the PixDirector. ex: "Edward Stark".
         - password [string]: password of the PixDirector. ex: "12345678"
+        - phone [string]: phone of the PixDirector. ex: "+55-1198989898"
+        - taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
         - teamEmail [string]: team email. ex: "pix.team@company.com"
         - teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
     
@@ -51,13 +48,13 @@ class PixDirector extends Resource
     Send a PixDirector object for creation in the Stark Infra API
     
     ## Parameters (required):
-        - director [list of PixDirector Object]: list of PixDirector objects to be created in the API
+        - director [PixDirector Object]: list of PixDirector objects to be created in the API
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - PixDirector objects with updated attributes
+        - PixDirector object with updated attributes
     */
     public static function create($directors, $user = null)
     {

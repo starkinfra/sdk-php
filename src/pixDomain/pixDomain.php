@@ -8,6 +8,16 @@ use StarkInfra\Utils\Rest;
 
 class PixDomain extends Resource
 {
+    /**
+    # PixDomain object
+    
+    The PixDomain object displays the QR Code domain certificate information of Pix participants.
+    All certificates must be registered with the Central Bank.
+    
+    ## Attributes (return-only):
+        - certificates [list of PixDomain\Certificate]: certificate information of the Pix participant.
+        - name [string]: current active domain (URL) of the Pix participant.
+    */
     function __construct(array $params)
     {
         parent::__construct($params);

@@ -19,7 +19,7 @@ class PixKey extends Resource
     to the Stark Infra API and returns the created object.
 
     ## Parameters (required):
-        - accountCreated [DateTime, default null]: opening Date or DateTime for the linked account. ex: "2020-03-10 10:30:00.000"
+        - accountCreated [Date, Datetime or string]: opening Date or DateTime for the linked account. ex: "2020-03-10 10:30:00.000"
         - accountNumber [string]: number of the linked account. ex: "76543".
         - accountType [string]: type of the linked account. Options: "checking", "savings", "salary" or "payment".
         - branchCode [string]: branch code of the linked account. ex: "1234".
@@ -123,7 +123,7 @@ class PixKey extends Resource
     ## Return:
         - generator of PixKey objects with updated attributes
     */
-    public static function query ($options = [], $user = null)
+    public static function query($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));

@@ -19,7 +19,7 @@ class PixClaim extends Resource
     to the Stark Infra API and returns the created object.
 
     ## Parameters (required):
-        - accountCreated [DateTime, default null]: opening Date or DateTime for the account claiming the PixKey. ex: "2020-03-10 10:30:00.000"
+        - accountCreated [Date, Datetime or string]: opening Date or DateTime for the account claiming the PixKey. ex: "2020-03-10 10:30:00.000"
         - accountNumber [string]: number of the account claiming the PixKey. ex: "76543".
         - accountType [string]: type of the account claiming the PixKey. Options: "checking", "savings", "salary" or "payment".
         - branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".
@@ -50,6 +50,7 @@ class PixClaim extends Resource
         $this-> name = Checks::checkParam($params, "name");
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> keyId = Checks::checkParam($params, "keyId");
+        $this-> id = Checks::checkParam($params, "id");
         $this-> status = Checks::checkParam($params, "status");
         $this-> type = Checks::checkParam($params, "type");
         $this-> keyType = Checks::checkParam($params, "keyType");
@@ -102,7 +103,7 @@ class PixClaim extends Resource
     }
 
     /**
-    # Retrieve PixClaims
+    # Retrieve PixClaim objects
 
     Receive a generator of PixClaims objects previously created in the Stark Infra API
 
@@ -203,11 +204,6 @@ class PixClaim extends Resource
     public static function cancel($id, $user = null)
     {
         return Rest::deleteId($user, PixClaim::resource(), $id);
-    }
-
-    public static function parse($content, $signature, $user = null)
-    {
-        return Parse::parseAndVerify($content, $signature, PixClaim::resource(), $user);
     }
 
     private static function resource()

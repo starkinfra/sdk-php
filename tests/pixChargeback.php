@@ -97,7 +97,7 @@ class TestPixChargeback
 
     public function update()
     {
-        $chargebacks = PixChargeback::query(["status" => "active", "limit" => 1]);
+        $chargebacks = PixChargeback::query(["status" => "delivered", "limit" => 1]);
         foreach ($chargebacks as $chargeback) {
             if (is_null($chargeback->id)) {
                 throw new Exception("failed");
@@ -105,8 +105,8 @@ class TestPixChargeback
             if ($chargeback->status != "active") {
                 throw new Exception("failed");
             }    
-            $updatedChargeback = PixChargeback::update($chargeback->id, ["status" => "blocked"]);
-            if ($updatedChargeback->status != "blocked") {
+            $updatedChargeback = PixChargeback::update($chargeback->id, ["result" => "accepted"]);
+            if ($updatedChargeback->result != "accepted") {
                 throw new Exception("failed");
             }    
         }

@@ -16,8 +16,8 @@ class PixStatement extends Resource
     to the Stark Infra API and returns the array of created objects.
 
     ## Parameters (required):
-        - after [Date or string, default null]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: "2020-04-03"
-        - before [Date or string, default null]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: "2020-04-03"
+        - after [Date, Datetime or string]: transactions that happened at this date are stored in the PixStatement, must be the same as before. ex: "2020-04-03"
+        - before [Date, Datetime or string]: transactions that happened at this date are stored in the PixStatement, must be the same as after. ex: "2020-04-03"
         - type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]
 
     ## Attributes (return-only):

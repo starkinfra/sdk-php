@@ -12,7 +12,7 @@ class PixChargeback extends Resource
     /**
     # PixChargeback object
 
-    A charge back request can be created when fraud is detected on a transaction or a system malfunction
+    A PixChargeback can be created when fraud is detected on a transaction or a system malfunction
     results in an erroneous transaction.
     It notifies another participant of your request to reverse the payment they have received.
     When you initialize a PixChargeback, the entity will not be automatically
@@ -33,7 +33,7 @@ class PixChargeback extends Resource
         - senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
         - receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
         - rejectionReason [string]: reason for the rejection of the Pix chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-        - chargebackReferenceId [string]: return id of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
+        - chargebackId [string]: return id of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
         - id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
         - result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
@@ -64,18 +64,18 @@ class PixChargeback extends Resource
     }
 
     /**
-    # Create a PixChargeback object
+    # Create PixChargeback objects
 
-    Create a PixChargeback in the Stark Infra API
+    Create PixChargebacks in the Stark Infra API
 
     ## Parameters (optional):
-        - chargeback [PixChargeback object]: PixChargeback object to be created in the API.
+        - chargeback [array of PixChargeback objects]: PixChargeback objects to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - PixChargeback object with updated attributes.
+        - Array of PixChargeback objects with updated attributes.
      */
     public static function create($chargeback, $user = null)
     {
@@ -85,7 +85,7 @@ class PixChargeback extends Resource
     /**
     # Retrieve a PixChargeback object
 
-    Retrieve the PixChargeback object linked to your Workspace in the Stark Infra API using its id.
+    Retrieve a PixChargeback object linked to your Workspace in the Stark Infra API using its id.
     
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656".
@@ -102,9 +102,9 @@ class PixChargeback extends Resource
     }
 
     /**
-    # Retrieve PixChargeback
+    # Retrieve PixChargeback objects
 
-    Receive a generator of PixChargeback objects previously created in the Stark Infra API
+    Receive a generator of PixChargebacks objects previously created in the Stark Infra API
     
         ## Parameters (optional):
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
@@ -125,9 +125,10 @@ class PixChargeback extends Resource
     }
 
     /**
-    # Retrieve PixChargeback
+    # Retrieve paged PixChargebacks
     
-    Receive a generator of PixChargeback objects previously created in the Stark Infra API
+    Receive a list of up to 100 PixChargebacks objects previously created in the Stark Infra API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
     
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call.

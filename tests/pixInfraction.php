@@ -116,8 +116,8 @@ class TestPixInfraction
             if ($infraction->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedInfraction = PixInfraction::update($infraction->id, ["status" => "blocked"]);
-            if ($updatedInfraction->status != "blocked") {
+            $updatedInfraction = PixInfraction::update($infraction->id, ["result" => "agreed"]);
+            if ($updatedInfraction->result != "agreed") {
                 throw new Exception("failed");
             }    
         }
