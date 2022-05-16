@@ -145,6 +145,8 @@ class PixInfraction extends Resource
     */
     public static function page($options = [], $user=null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, PixInfraction::resource(), $options);
     }
 
