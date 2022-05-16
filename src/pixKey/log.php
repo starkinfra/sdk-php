@@ -24,7 +24,6 @@ class Log extends Resource
         - type [string]: type of the PixKey event which triggered the log creation. ex: "created", "registered", "updated", "failed", "canceling" and "canceled".
         - errors [list of strings]: list of errors linked to this PixKey event
         - key [PixKey]: PixKey entity to which the log refers to.
-
     */    
 
     function __construct(array $params)

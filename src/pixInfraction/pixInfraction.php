@@ -21,11 +21,9 @@ class PixInfraction extends Resource
         - referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
         - type [string]: type of Pix infraction. Options: "fraud", "reversal", "reversalChargeback"
     
-    ## Parameters (optional):
+    ## Attributes (return-only):
         - description [string, Default null]: description for any details that can help with the infraction investigation.
         - creditedBankCode [string, Default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-    
-    ## Attributes (return-only):
         - agent [string, Default null]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
         - analysis [string, Default null]: analysis that led to the result.
         - bacenId [string, Default null]: central bank's unique UUID that identifies the Pix Infraction.
@@ -59,12 +57,12 @@ class PixInfraction extends Resource
     }
 
     /**
-    # Create a PixInfraction object
+    # Create PixInfraction objects
 
     Create a PixInfraction in the Stark Infra API
     
     ## Parameters (optional):
-        - report [PixInfraction object]: PixInfraction object to be created in the API.
+        - infraction [PixInfraction object]: PixInfraction object to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -74,7 +72,7 @@ class PixInfraction extends Resource
     */
     public static function create($infractions, $user=null)
     {
-        return Rest::postSingle($user, PixInfraction::resource(), $infractions);
+        return Rest::post($user, PixInfraction::resource(), $infractions);
     }
 
     /** 
@@ -97,7 +95,7 @@ class PixInfraction extends Resource
     }
 
     /** 
-    # Retrieve PixInfraction
+    # Retrieve PixInfraction objects
     
     Receive a generator of PixInfraction objects previously created in the Stark Infra API
     
@@ -125,7 +123,7 @@ class PixInfraction extends Resource
     }
 
     /** 
-    # Retrieve paged PixInfraction
+    # Retrieve paged PixInfractions
 
     Receive a list of up to 100 PixInfraction objects previously created in the Stark Infra API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.

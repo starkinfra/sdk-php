@@ -93,16 +93,16 @@ class TestPixClaim
 
     public function update()
     {
-        $claims = PixClaim::query(["status" => "confirmed", "limit" => 1]);
+        $claims = PixClaim::query(["status" => "delivered", "limit" => 1]);
         foreach ($claims as $claim) {
             if (is_null($claim->id)) {
                 throw new Exception("failed");
             }
-            if ($claim->status != "active") {
+            if ($claim->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedPixClaim = PixClaim::update($claim->id, ["status" => "canceled"]);
-            if ($updatedPixClaim->status != "canceled") {
+            $updatedPixClaim = PixClaim::update($claim->id, ["reason" => "userRequested"]);
+            if ($updatedPixClaim->reason != "userRequested") {
                 throw new Exception("failed");
             }    
         }
@@ -115,7 +115,7 @@ class TestPixClaim
             "accountNumber" => "76549", 
             "accountType" => "salary", 
             "branchCode" => "1234",
-            "name"=> "Random Name",
+            "name"=> "Tony Stark",
             "taxId" => "012.345.678-90",
             "keyId" => "+551165857989",
         ];

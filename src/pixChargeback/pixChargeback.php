@@ -79,7 +79,7 @@ class PixChargeback extends Resource
      */
     public static function create($chargeback, $user = null)
     {
-        return Rest::postSingle($user, PixChargeback::resource(), $chargeback);
+        return Rest::post($user, PixChargeback::resource(), $chargeback);
     }
 
     /**

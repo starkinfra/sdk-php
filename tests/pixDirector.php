@@ -3,7 +3,6 @@
 namespace Test\PixDirector;
 use \Exception;
 use StarkInfra\PixDirector;
-use StarkInfra\Error\InvalidSignatureError;
 
 class TestPixDirector
 {
@@ -19,18 +18,16 @@ class TestPixDirector
     public static function example()
     {
         $params = [
-            "name" => "Nome Aleatorio",
+            "name" => "Eddard Stark",
             "taxId" => "012.345.678-90",
-            "phone" => "+55-1141164616", 
-            "email" => "bacen@starkbank.com", 
+            "phone" => "+55-11998989898", 
+            "email" => "eddard@starkbank.com", 
             "password" => "12345678",
-            "teamEmail" => "bacen@starkbank.com",
-            "teamPhones" => ["+55-1141164616"]
+            "teamEmail" => "starkfamily@starkbank.com",
+            "teamPhones" => ["+55-11997979797", "+55-11996969696"]
         ];
         $testDirector = new PixDirector($params);
-        print_r($testDirector);
         return $testDirector;
-        
     }
 }
 

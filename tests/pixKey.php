@@ -8,12 +8,12 @@ class TestPixKey
 {
     public function createAndCancel()
     {
-        $keys = PixKey::create(TestPixKey::example());
-        if (is_null($keys->id)){
+        $key = PixKey::create(TestPixKey::example());
+        if (is_null($key->id)){
             throw new Exception("failed");
         }
 
-        $keyId = $keys[0]->id;
+        $keyId = $key[0]->id;
 
         $key = PixKey::cancel($keyId);
         if ($key->status != "canceled") {
@@ -67,8 +67,8 @@ class TestPixKey
             if ($key->status != "registered") {
                 throw new Exception("failed");
             }    
-            $updateKey = PixKey::update($key->id, ["name" => "Novo Nome Aleatorio"]);
-            if ($updateKey->name != "Novo Nome Aleatorio") {
+            $updateKey = PixKey::update($key->id, ["name" => "Tony Stark"]);
+            if ($updateKey->name != "Tony Stark") {
                 throw new Exception("failed");
             }    
         }

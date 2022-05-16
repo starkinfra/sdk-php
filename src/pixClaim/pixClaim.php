@@ -64,7 +64,7 @@ class PixClaim extends Resource
     }
 
     /**
-    # Create a PixClaim object
+    # Create PixClaim objects
     
     Create a PixClaim to request the transfer of a PixKey to an account
     hosted at other Pix participants in the Stark Infra API.

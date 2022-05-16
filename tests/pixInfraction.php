@@ -9,27 +9,18 @@ use StarkInfra\Utils\EndToEndId;
 
 class TestPixInfraction
 {
-    public function create()
-    {               
-        $infraction = PixInfraction::create(TestPixInfraction::example());
-        print_r($infraction);
-        
-        if (is_null($infraction->id)){
-            throw new Exception("failed");
-        }
-    }
-
     public function createAndCancel()
     {
-        $infractions = PixInfraction::create(TestPixInfraction::example());
-        if ($infractions[0]->securityCode == "***") {
-            throw new Exception("failed");
-        }
-        $infractionId = $infractions[0]->id;
-       
-        $infraction = PixInfraction::cancel($infractionId);
-        if ($infraction->status != "canceled") {
-            throw new Exception("failed");
+        $infractions = PixInfraction::create([TestPixInfraction::example()])[0];
+    
+        foreach ($infractions as $infraction){
+            if (is_null($infraction->id)){
+                throw new Exception("failed");
+            }
+            $infraction = PixInfraction::cancel($infraction->id);
+            if ($infraction->status != "canceled") {
+                throw new Exception("failed");
+            }
         }
     }
 
@@ -136,10 +127,6 @@ class TestPixInfraction
 echo "\nPixInfraction:";
 
 $test = new TestPixInfraction();
-
-echo "\n\t- create";
-$test->create();
-echo " - OK";
 
 echo "\n\t- create and cancel";
 $test->createAndCancel();

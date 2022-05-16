@@ -50,7 +50,7 @@ class TestPixChargebackLog
     }
 }
 
-echo "\n\nPixchargeback:";
+echo "\n\nPixChargebackLog:";
 
 $test = new TestPixChargebackLog();
 

@@ -10,15 +10,13 @@ class TestPixChargeback
 {
     public function createAndCancel()
     {
-        $chargebacks = PixChargeback::create(TestPixChargeback::example());
-        if ($chargebacks->securityCode == "***") {
-            throw new Exception("failed");
-        }
-        $chargebackId = $chargebacks->id;
-       
-        $chargeback = PixChargeback::cancel($chargebackId);
-        if ($chargeback->status != "canceled") {
-            throw new Exception("failed");
+        $chargebacks = PixChargeback::create([TestPixChargeback::example()])[0];
+    
+        foreach ($chargebacks as $chargeback){
+            $chargeback = PixChargeback::cancel($chargeback->id);
+            if ($chargeback->status != "canceled") {
+                throw new Exception("failed");
+            }
         }
     }
 
@@ -31,7 +29,9 @@ class TestPixChargeback
         }
 
         $chargeback = PixChargeback::cancel($chargebacks[0]->id);
-
+        if ($chargebacks[0]->status == "canceled") {
+            throw new Exception("failed");
+        } 
         if ($chargebacks[0]->id != $chargeback->id) {
             throw new Exception("failed");
         } 
@@ -102,7 +102,7 @@ class TestPixChargeback
             if (is_null($chargeback->id)) {
                 throw new Exception("failed");
             }
-            if ($chargeback->status != "active") {
+            if ($chargeback->status != "delivered") {
                 throw new Exception("failed");
             }    
             $updatedChargeback = PixChargeback::update($chargeback->id, ["result" => "accepted"]);

@@ -121,7 +121,7 @@ class TestPixReversal
     public static function example($schedule=false)
     {
         $params = [
-            "amount" => 10,
+            "amount" => 1,
             "externalId" => "php-" . $uuid = mt_rand(0, 0xffffffff),
             "endToEndId" => self::getEndToEndId(),
             "reason" => "fraud",

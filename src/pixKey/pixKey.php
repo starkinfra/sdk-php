@@ -140,7 +140,7 @@ class PixKey extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled" and "failed"
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
@@ -167,7 +167,7 @@ class PixKey extends Resource
         - reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
     
     ## Parameters (optional):
-        - accountCreated [DateTime, default null]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
+        - accountCreated [Date, DateTime or String]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
         - accountNumber [string, default null]: number of the account to be linked. ex: "76543".
         - accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
         - branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
