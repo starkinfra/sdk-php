@@ -31,13 +31,13 @@ class PixKey extends Resource
         - tags [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
 
     ## Attributes (return-only):
-        - owned [DateTime, default null]: datetime when the key was owned by the holder. ex: "2020-03-10 10:30:00.000"
+        - owned [DateTime]: datetime when the key was owned by the holder. 
         - ownerType [string]: type of the owner of the PixKey. Options: "business" or "individual".
         - status [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
         - bankCode [string]: bankCode of the account linked to the Pix Key. ex: "20018183".
         - bankName [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
         - type [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
-        - created [DateTime, default null]: created datetime for the PixKey. ex: "2020-03-10 10:30:00.000"
+        - created [DateTime]: created datetime for the PixKey. 
 
 
     */

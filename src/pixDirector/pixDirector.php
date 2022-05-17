@@ -22,8 +22,8 @@ class PixDirector extends Resource
         - teamPhones [list of strings]: list of phones of the team. ex: ["+55-11988889999", "+55-11988889998"]
     
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when the PixDirector is created. ex: "5656565656565656"
-        - status [string, default null]: current PixDirector status. ex: "success"
+        - id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
+        - status [string]: current PixDirector status. ex: "success"
     */
 
     function __construct(array $params)

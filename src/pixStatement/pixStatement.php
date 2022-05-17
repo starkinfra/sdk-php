@@ -9,7 +9,7 @@ use StarkInfra\Utils\Rest;
 class PixStatement extends Resource
 {
     /**
-    # PixStatement  object
+    # PixStatement object
 
     When you initialize a PixStatement , the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
@@ -21,11 +21,11 @@ class PixStatement extends Resource
         - type [string]: types of entities to include in statement. Options: ["interchange", "interchangeTotal", "transaction"]
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when the PixStatement is created. ex: "5656565656565656"
-        - status [string, default null]: current PixStatement status. ex: "success" or "failed"
-        - transactionCount [integer, default null]: number of transactions that happened during the day that the PixStatement was requested. ex 11
-        - created [DateTime or string, default null]: creation datetime for the PixStatement. ex: "2020-03-10 10:30:00.000"
-        - updated [DateTime or string, default null]: latest update datetime for the PixStatement. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
+        - status [string]: current PixStatement status. ex: "success" or "failed"
+        - transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex 11
+        - created [DateTime or string]: creation datetime for the PixStatement. 
+        - updated [DateTime or string]: latest update datetime for the PixStatement. 
      */
     function __construct(array $params)
     {

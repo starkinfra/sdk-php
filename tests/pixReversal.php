@@ -170,9 +170,9 @@ echo "\n\t- get page";
 $test->getPage();
 echo " - OK";
 
-//echo "\n\t- parse right";
-//$test->parseRight();
-//echo " - OK";
+echo "\n\t- parse right";
+$test->parseRight();
+echo " - OK";
 
 echo "\n\t- parse wrong";
 $test->parseWrong();

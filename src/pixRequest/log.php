@@ -23,7 +23,7 @@ class Log extends Resource
         - request [PixRequest]: PixRequest entity to which the log refers to.
         - errors [array of strings]: array of errors linked to this BoletoPayment event.
         - type [string]: type of the PixRequest event which triggered the log creation. ex: "processing" or "success"
-        - created [DateTime]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
+        - created [DateTime]: creation datetime for the log.
      */
     function __construct(array $params)
     {

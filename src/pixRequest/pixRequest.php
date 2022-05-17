@@ -45,13 +45,13 @@ class PixRequest extends Resource
         -method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
 
     ## Attributes (return-only):
-        -id [string, default null]: unique id returned when the PixRequest is created. ex: "5656565656565656"
-        -fee [integer, default null]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
-        -status [string, default null]: current PixRequest status. ex: "registered" or "paid"
-        -flow [string, default null]: direction of money flow. ex: "in" or "out"
-        -senderBankCode [string, default null]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
-        -created [DateTime, default null]: created datetime for the PixRequest. ex: "2020-03-10 10:30:00.000"
-        -updated [DateTime, default null]: update datetime for the PixRequest. ex: "2020-03-10 10:30:00.000"
+        -id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
+        -fee [integer]: fee charged when PixRequest is paid. ex: 200 (= R$ 2.00)
+        -status [string]: current PixRequest status. ex: "registered" or "paid"
+        -flow [string]: direction of money flow. ex: "in" or "out"
+        -senderBankCode [string]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
+        -created [DateTime]: created datetime for the PixRequest. 
+        -updated [DateTime]: update datetime for the PixRequest. 
      */
     function __construct(array $params)
     {

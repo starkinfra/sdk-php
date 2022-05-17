@@ -19,7 +19,7 @@ class Log extends Resource
 
     ## Attributes:
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
-        - created [string]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
+        - created [string]: creation datetime for the log. 
         - type [string]: type of the PixChargeback event which triggered the log creation. 
         - errors [list of strings]: list of errors linked to this PixChargeback event
         - chargeback [PixChargeback]: PixChargeback entity to which the log refers to.

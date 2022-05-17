@@ -27,14 +27,14 @@ class PixReversal extends Resource
         - tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when the PixReversal is created. ex: "5656565656565656".
-        - returnId [string, default null]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-        - bankCode [string, default null]: code of the bank institution in Brazil. ex: "20018183" or "341"
-        - fee [string, default null]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-        - status [string, default null]: current PixReversal status. ex: "registered" or "paid"
-        - flow [string, default null]: direction of money flow. ex: "in" or "out"
-        - created [DateTime, default null]: creation datetime for the PixReversal. ex: "2020-03-10 10:30:00.000"
-        - updated [DateTime, default null]: latest update datetime for the PixReversal. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
+        - returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
+        - bankCode [string]: code of the bank institution in Brazil. ex: "20018183" or "341"
+        - fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
+        - status [string]: current PixReversal status. ex: "registered" or "paid"
+        - flow [string]: direction of money flow. ex: "in" or "out"
+        - created [DateTime]: creation datetime for the PixReversal. 
+        - updated [DateTime]: latest update datetime for the PixReversal. 
      */
     function __construct(array $params)
     {

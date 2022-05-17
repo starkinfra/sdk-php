@@ -19,7 +19,7 @@ class Log extends Resource
     
     ## Attributes:
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
-        - created [DateTime]: creation datetime for the log. ex: "2020-03-10 10:30:00.000"
+        - created [DateTime]: creation datetime for the log.
         - type [string]: type of the PixClaim event which triggered the log creation. ex: "created" or "failed"
         - errors [list of strings]: list of errors linked to this PixClaim event
         - agent [string]: agent that modified the PixClaim resulting in the Log. Options: "claimer", "claimed".

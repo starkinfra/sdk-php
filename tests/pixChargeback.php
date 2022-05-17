@@ -27,7 +27,6 @@ class TestPixChargeback
         if (count($chargebacks) != 10){
             throw new Exception("failed");
         }
-
         $chargeback = PixChargeback::cancel($chargebacks[0]->id);
         if ($chargebacks[0]->status == "canceled") {
             throw new Exception("failed");
@@ -44,9 +43,8 @@ class TestPixChargeback
         if (count($chargebacks) != 10) {
             throw new Exception("failed");
         }
-
         $chargeback = PixChargeback::get($chargebacks[0]->id);
-
+        
         if ($chargebacks[0]->id != $chargeback->id) {
             throw new Exception("failed");
         }

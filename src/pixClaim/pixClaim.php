@@ -28,15 +28,15 @@ class PixClaim extends Resource
         - keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
     
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when the PixClaim is created. ex: "5656565656565656".
-        - status [string, default null]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
+        - id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656".
+        - status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
         - type [string]: type of Pix Claim. Options: "ownership", "portability".
-        - keyType [string, default null]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email".
-        - agent [string, default null]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-        - bankCode [string, default null]: bankCode of the account linked to the PixKey being claimed. ex: "20018183".
-        - claimedBankCode [string, default null]: bankCode of the account donating the PixKey. ex: "20018183".
-        - created [DateTime, default null]: created datetime for the PixClaim. ex: "2020-03-10 10:30:00.000"
-        - updated [DateTime, default null]: update datetime for the PixClaim. ex: "2020-03-10 10:30:00.000"
+        - keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email".
+        - agent [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
+        - bankCode [string]: bankCode of the account linked to the PixKey being claimed. ex: "20018183".
+        - claimedBankCode [string]: bankCode of the account donating the PixKey. ex: "20018183".
+        - created [DateTime]: created datetime for the PixClaim.
+        - updated [DateTime]: update datetime for the PixClaim.
     */
 
     function __construct(array $params)

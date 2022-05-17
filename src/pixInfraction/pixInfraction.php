@@ -22,18 +22,18 @@ class PixInfraction extends Resource
         - type [string]: type of Pix infraction. Options: "fraud", "reversal", "reversalChargeback"
     
     ## Attributes (return-only):
-        - description [string, Default null]: description for any details that can help with the infraction investigation.
-        - creditedBankCode [string, Default null]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
-        - agent [string, Default null]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
-        - analysis [string, Default null]: analysis that led to the result.
-        - bacenId [string, Default null]: central bank's unique UUID that identifies the Pix Infraction.
-        - debitedBankCode [string, Default null]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-        - id [string, default null]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
-        - reportedBy [string, Default null]: agent that reported the PixInfraction. Options: "debited", "credited".
-        - result [string, Default null]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
-        - status [string, default null]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
-        - created [DateTime, default null]: created datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000"
-        - updated [DateTime, default null]: update datetime for the PixInfraction. ex: "2020-03-10 10:30:00.000"
+        - description [string]: description for any details that can help with the infraction investigation.
+        - creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
+        - agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
+        - analysis [string]: analysis that led to the result.
+        - bacenId [string]: central bank's unique UUID that identifies the Pix Infraction.
+        - debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
+        - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+        - reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
+        - result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
+        - status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
+        - created [DateTime]: created datetime for the PixInfraction. 
+        - updated [DateTime]: update datetime for the PixInfraction. 
     */
     function __construct(array $params)
     {

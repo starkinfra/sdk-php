@@ -37,8 +37,8 @@ class PixChargeback extends Resource
         - id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
         - result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
-        - created [DateTime, default null]: created datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000"
-        - updated [DateTime, default null]: update datetime for the PixChargeback. ex: "2020-03-10 10:30:00.000"
+        - created [DateTime]: created datetime for the PixChargeback. 
+        - updated [DateTime]: update datetime for the PixChargeback. 
          */
     function __construct(array $params)
     {

@@ -17,10 +17,10 @@ class PixBalance extends Resource
     can be retrieved to see the information available.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when Balance is created. ex: "5656565656565656"
-        - amount [integer, default null]: current pixBalance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-        - currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
-        - updated [DateTime, default null]: update datetime for the pixBalance. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when Balance is created. ex: "5656565656565656"
+        - amount [integer]: current pixBalance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+        - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
+        - updated [DateTime]: update datetime for the pixBalance. 
      */
     function __construct(array $params)
     {
