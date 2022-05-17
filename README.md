@@ -358,11 +358,11 @@ $requests = PixRequest::create([
         "receiverName" => "Daenerys Targaryen Stormborn",
         "receiverTaxId" => "012.345.678-90",
         "endToEndId" => EndToEndId.create("20018183"),
-    ])
+    ]);
 ]);
 
-foreach($transfers as $transfer){
-    print_r($transfer);
+foreach($requests as $request){
+    print_r($request);
 }
 ```
 
@@ -467,7 +467,7 @@ $reversals = PixReversal::create([
         "externalId" => "my-external-id:4",
         "endToEndId" => "E00000000202201060100rzsJzG9P1GH",
         "reason" => "fraud",
-    ])
+    ]);
 ]);
 
 foreach($reversals as $reversal){
@@ -579,8 +579,8 @@ $statement = PixStatement::create(
         "after" => "2022-01-01",
         "before" => "2022-01-01",
         "type" => "transaction",
-    ])
-)
+    ]);
+);
 
 print_r($statement)
 ```
@@ -885,14 +885,16 @@ reverse a refund. Pix Infractions can be created by either participant of a tran
 ```php
 use StarkInfra\PixInfraction;
 
-$infraction = PixInfraction::create(
+$infractions = PixInfraction::create([
     new PixInfraction([
         "referenceId" => "E20018183202201201450u34sDGd19lz",
         "type" => "fraud",
     ]);
-);
+]);
 
-print_r($infraction);
+foreach $infraction in $infractions{
+    print_r($infraction);
+}
 ```
 
 ### Query Pix infractions
@@ -996,15 +998,17 @@ results in an erroneous transaction.
 ```php
 use StarkInfra\PixChargeback;
 
-$chargeback = PixChargeback::create(
+$chargebacks = PixChargeback::create([
     new PixChargeback([
         "amount" => 100,
         "referenceId" => "E20018183202201201450u34sDGd19lz",
         "reason" => "fraud"
     ]);
-);
+]);
 
-print_r($chargeback)
+for $chargeback in $chargebacks{
+    print($chargeback);
+}    
 ```
 
 ### Query Pix chargeback

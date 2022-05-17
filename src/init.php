@@ -40,6 +40,7 @@ require_once(__DIR__."/pixClaim/pixClaim.php");
 require_once(__DIR__."/pixClaim/log.php");
 require_once(__DIR__."/pixDirector/pixDirector.php");
 require_once(__DIR__."/pixDomain/pixDomain.php");
+require_once(__DIR__."/pixDomain/certificate.php");
 require_once(__DIR__."/pixInfraction/pixInfraction.php");
 require_once(__DIR__."/pixInfraction/log.php");
 require_once(__DIR__."/pixKey/pixKey.php");
