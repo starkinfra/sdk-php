@@ -50,7 +50,6 @@ class PixClaim extends Resource
         $this-> name = Checks::checkParam($params, "name");
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> keyId = Checks::checkParam($params, "keyId");
-        $this-> id = Checks::checkParam($params, "id");
         $this-> status = Checks::checkParam($params, "status");
         $this-> type = Checks::checkParam($params, "type");
         $this-> keyType = Checks::checkParam($params, "keyType");

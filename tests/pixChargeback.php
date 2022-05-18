@@ -4,25 +4,22 @@ namespace Test\PixChargeback;
 
 use Exception;
 use StarkInfra\PixChargeback;
-
+use StarkInfra\Utils\ReturnId;
 
 class TestPixChargeback
 {
-    public function createAndCancel()
+    public function create()
     {
         $chargebacks = PixChargeback::create([TestPixChargeback::example()])[0];
-    
-        foreach ($chargebacks as $chargeback){
-            $chargeback = PixChargeback::cancel($chargeback->id);
-            if ($chargeback->status != "canceled") {
-                throw new Exception("failed");
-            }
+
+        if (is_null($chargebacks->id)) {
+            throw new Exception("failed");
         }
     }
 
     public function queryAndCancel()
     {
-        $chargebacks = iterator_to_array(PixChargeback::query(["limit"=>10]));
+        $chargebacks = iterator_to_array(PixChargeback::query(["limit"=>10, "status"=>"delivered"]));
 
         if (count($chargebacks) != 10){
             throw new Exception("failed");
@@ -103,7 +100,7 @@ class TestPixChargeback
             if ($chargeback->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedChargeback = PixChargeback::update($chargeback->id, ["result" => "accepted"]);
+            $updatedChargeback = PixChargeback::update($chargeback->id, ["result" => "accepted", "reversalReferenceId" => ReturnId::create($chargeback->senderBankCode)]);
             if ($updatedChargeback->result != "accepted") {
                 throw new Exception("failed");
             }    
@@ -113,9 +110,9 @@ class TestPixChargeback
     public static function example()
     {
         $params = [
-            "amount"=> 344343,
-            "referenceId"=> "E20018183202201201450u34sDGd19lz",
-            "reason" => "flaw",
+            "amount" => 100,
+            "referenceId" => "E35547753202205101724tM25SPNVfSp",
+            "reason" => "fraud",
         ];
         return new PixChargeback($params);
     }
@@ -125,8 +122,8 @@ echo "\nPixChargeback:";
 
 $test = new TestPixChargeback();
 
-echo "\n\t- create and cancel";
-$test->createAndCancel();
+echo "\n\t- create";
+$test->create();
 echo " - OK";
 
 echo "\n\t- query and cancel";

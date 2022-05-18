@@ -120,9 +120,9 @@ class PixStatement extends Resource
     }
 
     /**
-    # Retrieve a specific PixStatement
+    # Retrieve a .csv PixStatement
 
-    Receive a single PixStatement  object previously created in the Stark Infra API by passing its id
+    Retrieve a specific PixStatement by its ID in a .csv file.
 
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
@@ -131,7 +131,7 @@ class PixStatement extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - PixStatement .zip file containing the csv.
+        - .zip file containing a PixStatement in .csv format
      */
     public static function csv($id, $user = null)
     {

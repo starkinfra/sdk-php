@@ -779,7 +779,7 @@ $requests = PixRequest::create([
         "senderAccountNumber" => "76543-8",
         "senderBranchCode" => "2201",
         "senderAccountType" => "checking",
-        "senderName" => "checking",
+        "senderName" => "Tony Stark",
         "senderTaxId" => "594.739.480-42",
         "receiverBankCode" => "341",
         "receiverAccountNumber" => "00000-0",
@@ -795,7 +795,7 @@ $requests = PixRequest::create([
         "senderAccountNumber" => "76543-8",
         "senderBranchCode" => "2201",
         "senderAccountType" => "checking",
-        "senderName" => "checking",
+        "senderName" => "Tony Stark",
         "senderTaxId" => "594.739.480-42",
         "receiverBankCode" => "341",
         "receiverAccountNumber" => "00000-0",
@@ -873,8 +873,8 @@ use StarkInfra\PixRequest;
 
 $logs = PixRequest\Log::query([
     "limit" => 10,
-    "after" => "2020-04-01",
-    "before" => "2020-04-30",
+    "types" => "created",
+    "after" => "2020-04-30",
 ]);
 
 foreach($logs as $log){
@@ -1008,7 +1008,7 @@ To know how much money you have in your workspace, run:
 ```php
 use StarkInfra\PixBalance;
 
-$balance = PixBalance::get("5155165527080960");
+$balance = PixBalance::get();
 
 print_r($balance);
 ```
@@ -1039,7 +1039,7 @@ use StarkInfra\PixStatement;
 
 $statements = PixStatement::query([
     "limit" => 10,
-    "ids" => ['5155165527080960'],
+    "ids" => ["5155165527080960"],
 ]);
 
 foreach($statements as $statement){
@@ -1122,7 +1122,12 @@ avoiding sweep blocks by the Central Bank.
 ```php
 use StarkInfra\PixKey;
 
-$key = PixKey::get("5915632394567680");
+$key = PixKey::get(
+    "5915632394567680",
+    [
+        "payerId" => "20.018.183/0001-80"
+    ]
+);
 
 print_r($key);
 
@@ -1137,7 +1142,10 @@ use StarkInfra\PixKey;
 
 $key PixKey::update(
     "6203417408045056",
-    ["name" => "Tony Stark"]
+    [
+        "name" => "Tony Stark",
+        "reason"=> "reconciliation");
+    ]
 );
 
 print_r($key);
@@ -1259,8 +1267,10 @@ A sent Pix Claim can also be canceled.
 use StarkInfra\PixClaim;
 
 $claim = PixClaim::update(
-    "id" => "5155165527080960",
-    ["status" => "canceled"]
+    "5155165527080960",
+    [
+        "status" => "canceled"
+    ]
 );
 
 print_r($claim);
@@ -1323,7 +1333,7 @@ $director = PixDirector::create(
 print_r($director);
 ```
 
-### Create an Pix infraction
+### Create Pix infractions
 
 Pix Infractions are used to report transactions that raise fraud suspicion, to request a refund or to 
 reverse a refund. Pix Infractions can be created by either participant of a transaction.
@@ -1384,8 +1394,10 @@ After an Pix Infraction is patched, its status changes to closed.
 use StarkInfra\PixInfraction;
 
 $infraction = PixInfraction::update(
-    "id" => "5155165527080960",
-    ["result" => "agreed"]
+    "5155165527080960",
+    [
+        "result" => "agreed"
+    ]
 )
 
 print_r($infraction)
@@ -1498,8 +1510,10 @@ After a Pix Chargeback is patched, its status changes to closed.
 use StarkInfra\PixChargeback;
 
 $chargeback = PixChargeback::update(
-    "id" => "5155165527080960",
-    ["result" => "accepted"]
+    "5155165527080960",
+    [
+        "result" => "accepted"
+    ]
 );
 
 print_r($chargeback);

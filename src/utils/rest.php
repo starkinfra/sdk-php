@@ -43,10 +43,10 @@ class Rest
         }
     }
 
-    public static function getId($user, $resource, $id)
+    public static function getId($user, $resource, $id, array $query=[])
     {
         $id = Checks::checkId($id);
-        $json = Request::fetch($user, "GET", API::endpoint($resource["name"]) . "/" . $id)->json();
+        $json = Request::fetch($user, "GET", API::endpoint($resource["name"]) . "/" . $id, null, $query)->json();
         $entity = $json[API::lastName($resource["name"])];
         return API::fromApiJson($resource["maker"], $entity);
     }
@@ -113,5 +113,3 @@ class Rest
         return API::fromApiJson($resource["maker"], $entity);
     }
 }
-
-?>

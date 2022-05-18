@@ -3,7 +3,6 @@
 namespace Test\PixKeyLog;
 
 use StarkInfra\PixKey\Log;
-use Test\PixKey\TestPixKey;
 use \Exception;
 
 class TestPixKeyLog

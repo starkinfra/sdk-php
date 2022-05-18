@@ -2,7 +2,6 @@
 
 namespace Test\PixStatement;
 
-
 use \Exception;
 use StarkInfra\PixStatement;
 

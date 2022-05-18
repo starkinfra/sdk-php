@@ -4,7 +4,6 @@ namespace Test\PixClaim;
 
 use \Exception;
 use StarkInfra\PixClaim;
-use StarkInfra\Error\InvalidSignatureError;
 
 class TestPixClaim
 {
@@ -41,7 +40,6 @@ class TestPixClaim
             "status" => ['success','failed'],
             "ids" => ['1', '2'],
         ]));
-        print_r($claims);
 
         if (count($claims) != 0){
             throw new Exception("failed");
@@ -101,10 +99,10 @@ class TestPixClaim
             if ($claim->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedPixClaim = PixClaim::update($claim->id, ["reason" => "userRequested"]);
-            if ($updatedPixClaim->reason != "userRequested") {
+            $updatedPixClaim = PixClaim::update($claim->id, ["reason" => "userRequested","status" => "canceled"]);
+            if (is_null($updatedPixClaim->id)) {
                 throw new Exception("failed");
-            }    
+            } 
         }
     }
 
@@ -117,7 +115,7 @@ class TestPixClaim
             "branchCode" => "1234",
             "name"=> "Tony Stark",
             "taxId" => "012.345.678-90",
-            "keyId" => "+551165857989",
+            "keyId" => "+551195353399",
         ];
         return new PixClaim($params);
     }

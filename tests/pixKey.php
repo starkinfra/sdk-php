@@ -6,31 +6,41 @@ use StarkInfra\PixKey;
 
 class TestPixKey
 {
-    public function createAndCancel()
+    public function create()
     {
         $key = PixKey::create(TestPixKey::example());
         if (is_null($key->id)){
             throw new Exception("failed");
         }
+    }
 
-        $keyId = $key[0]->id;
+    public function queryAndCancel()
+    {
+        $keys = iterator_to_array(PixKey::query(["limit"=>10, "status" => ["registered"]]));
 
-        $key = PixKey::cancel($keyId);
-        if ($key->status != "canceled") {
+        if (count($keys) != 10){
+            throw new Exception("failed");
+        }
+
+        $key = PixKey::cancel($keys[0]->id);
+
+        if($keys[0]->id != $key->id){
             throw new Exception("failed");
         }
     }
 
     public function queryAndGet()
     {
-        $keys = iterator_to_array(PixKey::query(["limit"=>10]));
+        $keys = iterator_to_array(PixKey::query(["limit"=>10, "status"=>"registered"]));
 
         if (count($keys) != 10){
             throw new Exception("failed");
         }
 
-        $key = PixKey::get($keys[0]->id);
-
+        $key = PixKey::get($keys[0]->id, [
+            "payerId"=>"01234567890"
+        ]);
+        
         if($keys[0]->id != $key->id){
             throw new Exception("failed");
         }
@@ -61,13 +71,15 @@ class TestPixKey
     {
         $keys = PixKey::query(["status" => "registered", "limit" => 1]);
         foreach ($keys as $key) {
+            
             if (is_null($key->id)) {
                 throw new Exception("failed");
             }
             if ($key->status != "registered") {
                 throw new Exception("failed");
             }    
-            $updateKey = PixKey::update($key->id, ["name" => "Tony Stark"]);
+            $updateKey = PixKey::update($key->id, ["name" => "Tony Stark", "reason"=>"reconciliation"]);
+
             if ($updateKey->name != "Tony Stark") {
                 throw new Exception("failed");
             }    
@@ -92,8 +104,12 @@ echo "\n\nPixKey:";
 
 $test = new TestPixKey();
 
-echo "\n\t- create and cancel";
-$test->createAndCancel();
+echo "\n\t- create";
+$test->create();
+echo " - OK";
+
+echo "\n\t- query and cancel";
+$test->queryAndCancel();
 echo " - OK";
 
 echo "\n\t- query and get";

@@ -50,11 +50,10 @@ class PixChargeback extends Resource
         $this-> description = Checks::checkParam($params, "description");
         $this-> analysis = Checks::checkParam($params, "analysis");
         $this-> bacenId = Checks::checkParam($params, "bacenId");
-        $this-> sendeBankCode = Checks::checkParam($params, "sendeBankCode");
+        $this-> senderBankCode = Checks::checkParam($params, "senderBankCode");
         $this-> receiverBankCode = Checks::checkParam($params, "receiverBankCode");
         $this-> rejectionReason = Checks::checkParam($params, "rejectionReason");
-        $this-> chargebackId = Checks::checkParam($params, "chargebackId");
-        $this-> id = Checks::checkParam($params, "id");
+        $this-> reversalReferenceId = Checks::checkParam($params, "reversalReferenceId");
         $this-> result = Checks::checkParam($params, "result");
         $this-> status = Checks::checkParam($params, "status");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
@@ -77,9 +76,9 @@ class PixChargeback extends Resource
     ## Return:
         - Array of PixChargeback objects with updated attributes.
      */
-    public static function create($chargeback, $user = null)
+    public static function create($chargebacks, $user = null)
     {
-        return Rest::post($user, PixChargeback::resource(), $chargeback);
+        return Rest::post($user, PixChargeback::resource(), $chargebacks);
     }
 
     /**
@@ -162,7 +161,7 @@ class PixChargeback extends Resource
     
     ## Parameters (conditionally required):
         - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
-        - chargebackId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
+        - reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
     
     ## Parameters (optional):
         - analysis [string, default null]: description of the analysis that led to the result.

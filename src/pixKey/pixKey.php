@@ -51,7 +51,6 @@ class PixKey extends Resource
         $this-> branchCode = Checks::checkParam($params, "branchCode");
         $this-> name = Checks::checkParam($params, "name");
         $this-> taxId = Checks::checkParam($params, "taxId");
-        $this-> id = Checks::checkParam($params, "id");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> owned = Checks::checkParam($params, "owned");
         $this-> ownerType = Checks::checkParam($params, "ownerType");
@@ -100,9 +99,9 @@ class PixKey extends Resource
     ## Return:
         - PixKey object that corresponds to the given id.
     */
-    public static function get($id, $user = null)
+    public static function get($id, $payerId = [], $user = null)
     {
-        return Rest::getId($user, PixKey::resource(), $id);
+        return Rest::getId($user, PixKey::resource(), $id, $payerId);
     }
 
     /**

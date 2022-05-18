@@ -9,33 +9,29 @@ use StarkInfra\Utils\EndToEndId;
 
 class TestPixInfraction
 {
-    public function createAndCancel()
+    public function create()
     {
-        $infractions = PixInfraction::create([TestPixInfraction::example()])[0];
-    
-        foreach ($infractions as $infraction){
-            if (is_null($infraction->id)){
-                throw new Exception("failed");
-            }
-            $infraction = PixInfraction::cancel($infraction->id);
-            if ($infraction->status != "canceled") {
-                throw new Exception("failed");
-            }
+        $infraction = PixInfraction::create([TestPixInfraction::example()])[0];
+        
+        if (is_null($infraction->id)){
+            throw new Exception("failed");
         }
     }
 
     public function queryAndCancel()
     {
-        $infractions = iterator_to_array(PixInfraction::query(["limit"=>10]));
+        $infractions = iterator_to_array(PixInfraction::query(
+            ["status"=>"delivered"]
+        ));
+        foreach($infractions as $infraction)
+        {
+            if ($infraction->agent == "reporter") {
+                $infractionCanceled = PixInfraction::cancel($infraction->id);
 
-        if (count($infractions) != 10){
-            throw new Exception("failed");
-        }
-
-        $infraction = PixInfraction::cancel($infractions[0]->id);
-
-        if ($infractions[0]->id != $infraction->id) {
-            throw new Exception("failed");
+                if ($infraction->id != $infractionCanceled->id) {
+                    throw new Exception("failed");
+                } 
+            }
         } 
     } 
     
@@ -107,8 +103,8 @@ class TestPixInfraction
             if ($infraction->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedInfraction = PixInfraction::update($infraction->id, ["result" => "agreed"]);
-            if ($updatedInfraction->result != "agreed") {
+            $updatedInfraction = PixInfraction::update($infraction->id, ["result" => "disagreed"]);
+            if ($updatedInfraction->result != "disagreed") {
                 throw new Exception("failed");
             }    
         }
@@ -117,7 +113,7 @@ class TestPixInfraction
     public static function example()
     {
         $params = [
-            "referenceId" => EndToEndId::create(0),
+            "referenceId" => EndToEndId::create(20018183),
             "type" => "fraud"
         ];
         return new PixInfraction($params);
@@ -128,8 +124,8 @@ echo "\nPixInfraction:";
 
 $test = new TestPixInfraction();
 
-echo "\n\t- create and cancel";
-$test->createAndCancel();
+echo "\n\t- create";
+$test->create();
 echo " - OK";
 
 echo "\n\t- query and cancel";
