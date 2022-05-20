@@ -1593,6 +1593,14 @@ $event = Event::parse($response->content, $response->headers["Digital-Signature"
 
 if ($event->subscription == "pix-request.in"){
     print_r($event->log->request);
+} elseif ($event->subscription == "pix-claim"){
+    print_r($event->log->claim);
+} elseif ($event->subscription == "pix-key"){
+    print_r($event->log->key);
+} elseif ($event->subscription == "pix-infraction"){
+    print_r($event->log->infraction);
+} elseif ($event->subscription == "pix-chargeback"){
+    print_r($event->log->chargeback);
 } elseif ($event->subscription == "pix-request.out"){
     print_r($event->log->request);
 } elseif ($event->subscription == "pix-reversal.in"){
@@ -1662,4 +1670,4 @@ If you have any questions about our SDK, just send us an email.
 We will respond you quickly, pinky promise. We are here to help you integrate with us ASAP.
 We also love feedback, so don't be shy about sharing your thoughts with us.
 
-Email: developers@starkbank.com
+Email: help@starkbank.com

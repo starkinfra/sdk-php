@@ -50,7 +50,7 @@ class PixRequest extends Resource
         -status [string]: current PixRequest status. ex: "registered" or "paid"
         -flow [string]: direction of money flow. ex: "in" or "out"
         -senderBankCode [string]: sender's bank institution code in Brazil. If an ISPB (8 digits) is informed. ex: "20018183" or "341"
-        -created [DateTime]: created datetime for the PixRequest. 
+        -created [DateTime]: creation datetime for the PixRequest. 
         -updated [DateTime]: update datetime for the PixRequest. 
      */
     function __construct(array $params)

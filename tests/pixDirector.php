@@ -20,11 +20,11 @@ class TestPixDirector
         $params = [
             "name" => "Eddard Stark",
             "taxId" => "012.345.678-90",
-            "phone" => "+55-11998989898", 
+            "phone" => "+5511998989898", 
             "email" => "eddard@starkbank.com", 
             "password" => "12345678",
             "teamEmail" => "starkfamily@starkbank.com",
-            "teamPhones" => ["+55-11997979797", "+55-11996969696"]
+            "teamPhones" => ["+5511997979797", "+5511996969696"]
         ];
         $testDirector = new PixDirector($params);
         return $testDirector;

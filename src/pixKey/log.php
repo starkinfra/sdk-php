@@ -25,7 +25,6 @@ class Log extends Resource
         - errors [list of strings]: list of errors linked to this PixKey event
         - key [PixKey]: PixKey entity to which the log refers to.
     */    
-
     function __construct(array $params)
     {
         parent::__construct($params);

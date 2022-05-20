@@ -38,8 +38,6 @@ class PixKey extends Resource
         - bankName [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
         - type [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
         - created [DateTime]: created datetime for the PixKey. 
-
-
     */
     function __construct(array $params)
     {
@@ -99,9 +97,10 @@ class PixKey extends Resource
     ## Return:
         - PixKey object that corresponds to the given id.
     */
-    public static function get($id, $payerId = [], $user = null)
+    public static function get($id, $payerId, $endToEndId = null, $user = null)
     {
-        return Rest::getId($user, PixKey::resource(), $id, $payerId);
+        $query = is_null($endToEndId) ? ["payerId" => $payerId] : ["payerId" => $payerId, "endToEndId" => $endToEndId];
+        return Rest::getId($user, PixKey::resource(), $id, $query);
     }
 
     /**
