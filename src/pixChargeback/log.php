@@ -76,7 +76,6 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
-        $options["type"] = Checks::checkParam($options, "type");
     
         return Rest::getList($user, Log::resource(), $options);
     }
@@ -105,6 +104,7 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+        
         return Rest::getPage($user, Log::resource(), $options);
     }
 

@@ -16,7 +16,7 @@
     "require": {
         "php": ">=7.1",
         "starkbank/ecdsa": "^0.0.5",
-      "ext-json": "*"
+        "ext-json": "*"
     },
     "keywords": [
         "starkinfra",

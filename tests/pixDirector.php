@@ -9,7 +9,7 @@ class TestPixDirector
     public function create()
     {   
         $director = PixDirector::create(TestPixDirector::example());
-       
+
         if (is_null($director->id)){
             throw new Exception("failed");
         }

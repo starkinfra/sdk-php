@@ -103,7 +103,7 @@ class TestPixInfraction
             if ($infraction->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedInfraction = PixInfraction::update($infraction->id, ["result" => "disagreed"]);
+            $updatedInfraction = PixInfraction::update($infraction->id, "disagreed");
             if ($updatedInfraction->result != "disagreed") {
                 throw new Exception("failed");
             }    

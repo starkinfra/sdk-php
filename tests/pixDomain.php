@@ -11,7 +11,7 @@ class TestPixDomain
     {
         $domains = iterator_to_array(PixDomain::query(["limit"=>10]));
 
-        foreach ($domains as $domain){
+        foreach ($domains as $domain) {
             if (is_null($domain->name)){
                 throw new Exception("failed");
             }

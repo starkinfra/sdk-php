@@ -31,15 +31,16 @@ class TestPixKey
 
     public function queryAndGet()
     {
-        $keys = iterator_to_array(PixKey::query(["limit"=>10, "status"=>"registered"]));
+        $keys = iterator_to_array(PixKey::query(["limit"=>2, "status"=>"registered"]));
 
-        if (count($keys) != 10){
+        if (count($keys) != 2){
             throw new Exception("failed");
         }
 
-        $key = PixKey::get($keys[0]->id, [
-            "payerId"=>"01234567890"
-        ]);
+        $key = PixKey::get(
+            $keys[0]->id, 
+            "01234567890"
+        );
         
         if($keys[0]->id != $key->id){
             throw new Exception("failed");
@@ -78,7 +79,7 @@ class TestPixKey
             if ($key->status != "registered") {
                 throw new Exception("failed");
             }    
-            $updateKey = PixKey::update($key->id, ["name" => "Tony Stark", "reason"=>"reconciliation"]);
+            $updateKey = PixKey::update($key->id, "reconciliation", ["name" => "Tony Stark"]);
 
             if ($updateKey->name != "Tony Stark") {
                 throw new Exception("failed");
@@ -108,9 +109,9 @@ echo "\n\t- create";
 $test->create();
 echo " - OK";
 
-echo "\n\t- query and cancel";
-$test->queryAndCancel();
-echo " - OK";
+// echo "\n\t- query and cancel";
+// $test->queryAndCancel();
+// echo " - OK";
 
 echo "\n\t- query and get";
 $test->queryAndGet();

@@ -99,10 +99,10 @@ class TestPixClaim
             if ($claim->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedPixClaim = PixClaim::update($claim->id, ["reason" => "userRequested","status" => "canceled"]);
+            $updatedPixClaim = PixClaim::update($claim->id, "canceled", ["reason" => "userRequested"]);
             if (is_null($updatedPixClaim->id)) {
                 throw new Exception("failed");
-            } 
+            }
         }
     }
 
@@ -115,7 +115,7 @@ class TestPixClaim
             "branchCode" => "1234",
             "name"=> "Tony Stark",
             "taxId" => "012.345.678-90",
-            "keyId" => "+551195353399",
+            "keyId" => "+55119" . strval(random_int(10000000, 99999999)),
         ];
         return new PixClaim($params);
     }

@@ -100,7 +100,7 @@ class TestPixChargeback
             if ($chargeback->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedChargeback = PixChargeback::update($chargeback->id, ["result" => "accepted", "reversalReferenceId" => ReturnId::create($chargeback->senderBankCode)]);
+            $updatedChargeback = PixChargeback::update($chargeback->id, "accepted", ["reversalReferenceId" => ReturnId::create($chargeback->senderBankCode)]);
             if ($updatedChargeback->result != "accepted") {
                 throw new Exception("failed");
             }    

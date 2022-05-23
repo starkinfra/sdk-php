@@ -25,9 +25,7 @@ class Log extends Resource
         - agent [string]: agent that modified the PixClaim resulting in the Log. Options: "claimer", "claimed".
         - reason [string]: reason why the PixClaim was modified, resulting in the Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
         - claim [PixClaim]: PixClaim entity to which the log refers to.
-
      */
-
     function __construct(array $params)
     {
         parent::__construct($params);
@@ -55,7 +53,6 @@ class Log extends Resource
     
     ## Return:
         - PixClaim\Log object with updated attributes
-
      */
     public static function get($id, $user = null)
     {
@@ -83,6 +80,7 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getList($user, Log::resource(), $options);
     }
 
@@ -110,6 +108,7 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+        
         return Rest::getPage($user, Log::resource(), $options);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
 namespace StarkInfra;
-
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\StarkDate;
+
 
 class PixKey extends Resource
 {
@@ -91,16 +91,17 @@ class PixKey extends Resource
         - payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
     
     ## Parameters (optional):
-        - endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+        - params [dictionary of optional parameters]:
+            - endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - PixKey object that corresponds to the given id.
     */
-    public static function get($id, $payerId, $endToEndId = null, $user = null)
+    public static function get($id, $payerId, $params = null, $user = null)
     {
-        $query = is_null($endToEndId) ? ["payerId" => $payerId] : ["payerId" => $payerId, "endToEndId" => $endToEndId];
-        return Rest::getId($user, PixKey::resource(), $id, $query);
+        $params["payerId"] = $payerId;
+        return Rest::getId($user, PixKey::resource(), $id, $params);
     }
 
     /**
@@ -125,6 +126,7 @@ class PixKey extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getList($user, PixKey::resource(), $options);
     }
 
@@ -152,6 +154,7 @@ class PixKey extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getPage($user, PixKey::resource(), $options);
     }
 
@@ -165,18 +168,20 @@ class PixKey extends Resource
         - reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
     
     ## Parameters (optional):
-        - accountCreated [Date, DateTime or String]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
-        - accountNumber [string, default null]: number of the account to be linked. ex: "76543".
-        - accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
-        - branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
-        - name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
+        - params [dictionary of optional parameters]:
+            - accountCreated [Date, DateTime or String]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
+            - accountNumber [string, default null]: number of the account to be linked. ex: "76543".
+            - accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
+            - branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
+            - name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
     
     ## Return:
         - PixKey with updated attributes
     */
-    public static function update($id, $options = [], $user = null)
+    public static function update($id, $reason, $params, $user = null)
     {
-        return Rest::patchId($user, PixKey::resource(), $id, $options);
+        $params["reason"] = $reason;
+        return Rest::patchId($user, PixKey::resource(), $id, $params);
     }
 
     /**

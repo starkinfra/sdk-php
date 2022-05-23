@@ -6,6 +6,7 @@ use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\StarkDate;
 
+
 class PixInfraction extends Resource
 {
     /**
@@ -20,9 +21,11 @@ class PixInfraction extends Resource
     ## Parameters (required):
         - referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
         - type [string]: type of Pix infraction. Options: "fraud", "reversal", "reversalChargeback"
+
+    ## Parameters (optional):
+        - description [string]: description for any details that can help with the infraction investigation.
     
     ## Attributes (return-only):
-        - description [string]: description for any details that can help with the infraction investigation.
         - creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
         - agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
         - analysis [string]: analysis that led to the result.
@@ -115,9 +118,6 @@ class PixInfraction extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
-        $options["status"] = Checks::checkParam($options, "status");
-        $options["ids"] = Checks::checkParam($options, "ids");
-        $options["type"] = Checks::checkParam($options, "type");
 
         return Rest::getList($user, PixInfraction::resource(), $options);
     }
@@ -145,6 +145,7 @@ class PixInfraction extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getPage($user, PixInfraction::resource(), $options);
     }
 
@@ -158,14 +159,16 @@ class PixInfraction extends Resource
         - result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
     
     ## Parameters (optional):
-        - analysis [string, default null]: analysis that led to the result.
+        - params [dictionary of optional parameters]:
+            - analysis [string, default null]: analysis that led to the result.
     
     ## Return:
         - PixInfraction with updated attributes
     */
-    public static function update($id, $options = [], $user=null)
+    public static function update($id, $result, $params = [], $user=null)
     {
-        return Rest::patchId($user, PixInfraction::resource(), $id, $options);
+        $params["result"] = $result;
+        return Rest::patchId($user, PixInfraction::resource(), $id, $params);
     }
 
     /**

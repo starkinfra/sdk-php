@@ -1,11 +1,11 @@
 <?php
 
 namespace StarkInfra;
-
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\StarkDate;
+
 
 class PixChargeback extends Resource
 {
@@ -39,7 +39,7 @@ class PixChargeback extends Resource
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixChargeback. 
         - updated [DateTime]: update datetime for the PixChargeback. 
-         */
+     */
     function __construct(array $params)
     {
         parent::__construct($params);
@@ -68,7 +68,7 @@ class PixChargeback extends Resource
     Create PixChargebacks in the Stark Infra API
 
     ## Parameters (optional):
-        - chargeback [array of PixChargeback objects]: PixChargeback objects to be created in the API.
+        - chargebacks [array of PixChargeback objects]: PixChargeback objects to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -120,6 +120,7 @@ class PixChargeback extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getList($user, PixChargeback::resource(), $options);
     }
 
@@ -136,17 +137,17 @@ class PixChargeback extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
         - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [list of strings, default null]: filter for the type of retrieved PixChargeback. Options: "fraud", "reversal", "reversalChargeback"
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - cursor to retrieve the next page of PixChargeback objects
-        - generator of PixChargeback objects with updated attributes
+        - list of PixChargeback objects with updated attributes
      */
     public static function page($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getPage($user, PixChargeback::resource(), $options);
     }
 
@@ -160,18 +161,21 @@ class PixChargeback extends Resource
         - result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".
     
     ## Parameters (conditionally required):
-        - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
-        - reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
+        - params [dictionary of parameters]:
+            - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
+            - reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
     
     ## Parameters (optional):
-        - analysis [string, default null]: description of the analysis that led to the result.
+        - params [dictionary of optional parameters]:
+            - analysis [string, default null]: description of the analysis that led to the result.
     
     ## Return:
         - PixChargeback with updated attributes
     */
-    public static function update($id, $options = [], $user=null)
+    public static function update($id, $result, $params, $user=null)
     {
-        return Rest::patchId($user, PixChargeback::resource(), $id, $options);
+        $params["result"] = $result;
+        return Rest::patchId($user, PixChargeback::resource(), $id, $params);
     }
     
     /**

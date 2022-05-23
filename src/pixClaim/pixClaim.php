@@ -125,12 +125,6 @@ class PixClaim extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
-        $options["status"] = Checks::checkParam($options, "status");
-        $options["ids"] = Checks::checkParam($options, "ids");
-        $options["type"] = Checks::checkParam($options, "type");
-        $options["agent"] = Checks::checkParam($options, "agent");
-        $options["keyType"] = Checks::checkParam($options, "keyType");
-        $options["keyId"] = Checks::checkParam($options, "keyId");
 
         return Rest::getList($user, PixClaim::resource(), $options);
     }
@@ -155,12 +149,14 @@ class PixClaim extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - list of PixClaim objects with updated attributes and cursor to retrieve the next page of PixClaim objects
+        - list of PixClaim objects with updated attributes
+        - cursor to retrieve the next page of PixClaim objects
      */
     public static function page($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+        
         return Rest::getPage($user, PixClaim::resource(), $options);
     }
 
@@ -174,16 +170,17 @@ class PixClaim extends Resource
         - status [string]: patched status for Pix Claim. Options: "confirmed" and "canceled"
     
     ## Parameters (optional):
-        - reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+        - params [dictionary of optional parameters]:
+            - reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - PixClaim with updated attributes
      */
-    public static function update($id, $options = [], $user = null)
+    public static function update($id, $status, $params = [], $user = null)
     {
-        $options["status"] = Checks::checkParam($options, "status");
-        return Rest::patchId($user, PixClaim::resource(), $id, $options);
+        $params["status"] = $status;
+        return Rest::patchId($user, PixClaim::resource(), $id, $params);
     }
 
     /**

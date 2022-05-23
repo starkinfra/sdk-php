@@ -1,7 +1,6 @@
 <?php
 
 namespace StarkInfra;
-
 use \Exception;
 use EllipticCurve\PublicKey;
 use EllipticCurve\Signature;

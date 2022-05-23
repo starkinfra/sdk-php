@@ -5,12 +5,14 @@ use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
 
+
 class PixDirector extends Resource
 {
     /**
     # PixDirector object
 
-    Pix Directors are used for registering Pix participants` emergency contact information at the Brazilian Central Bank. This process is mandatory for all direct Pix participants.
+    Pix Directors are used for registering Pix participants` emergency contact information at the Brazilian Central Bank.
+    This process is mandatory for all direct Pix participants.
     
     ## Parameters (required):
         - email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
@@ -25,7 +27,6 @@ class PixDirector extends Resource
         - id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
         - status [string]: current PixDirector status. ex: "success"
     */
-
     function __construct(array $params)
     {
         parent::__construct($params);

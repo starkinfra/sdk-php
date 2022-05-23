@@ -1,13 +1,13 @@
 <?php
 
 namespace StarkInfra\PixInfraction;
-
 use StarkInfra\PixInfraction;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
 use StarkInfra\Utils\StarkDate;
+
 
 class Log extends Resource
 {
@@ -24,7 +24,6 @@ class Log extends Resource
         - errors [list of strings]: list of errors linked to this PixInfraction event
         - infraction [PixInfraction]: PixInfraction entity to which the log refers to.
      */
-
     function __construct(array $params)
     {
         parent::__construct($params);
@@ -77,7 +76,6 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
-        $options["type"] = Checks::checkParam($options, "type");
     
         return Rest::getList($user, Log::resource(), $options);
     }
@@ -106,6 +104,7 @@ class Log extends Resource
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+        
         return Rest::getPage($user, Log::resource(), $options);
     }
 
