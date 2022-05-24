@@ -104,7 +104,7 @@ class PixClaim extends Resource
     /**
     # Retrieve PixClaim objects
 
-    Receive a generator of PixClaims objects previously created in the Stark Infra API
+    Receive an enumerator of PixClaims objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
@@ -119,7 +119,7 @@ class PixClaim extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - generator of PixClaim objects with updated attributes
+        - enumerator of PixClaim objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

@@ -96,7 +96,7 @@ class PixReversal extends Resource
     /**
     # Retrieve PixReversals
 
-    Receive a enumerator of PixReversal objects previously created in the Stark Infra API
+    Receive an enumerator of PixReversal objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]

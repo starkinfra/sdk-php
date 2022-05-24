@@ -130,7 +130,7 @@ class PixRequest extends Resource
     /**
     # Retrieve PixRequests
 
-    Receive a enumerator of PixRequest objects previously created in the Stark Infra API
+    Receive an enumerator of PixRequest objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]

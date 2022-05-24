@@ -59,7 +59,6 @@ class PixKey extends Resource
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
     
         Checks::checkParams($params);
-
     }
 
     /**
@@ -107,7 +106,7 @@ class PixKey extends Resource
     /**
     # Retrieve PixKeys
 
-    Receive a generator of PixKeys objects previously created in the Stark Infra API
+    Receive an enumerator of PixKeys objects previously created in the Stark Infra API
     
     ## Parameters (optional):
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
@@ -120,7 +119,7 @@ class PixKey extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - generator of PixKey objects with updated attributes
+        - enumerator of PixKey objects with updated attributes
     */
     public static function query($options = [], $user = null)
     {
@@ -133,7 +132,7 @@ class PixKey extends Resource
     /**
     # Retrieve PixKeys
 
-    Receive a generator of PixKeys objects previously created in the Stark Infra API
+    Receive an enumerator of PixKeys objects previously created in the Stark Infra API
     
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call.
@@ -148,7 +147,7 @@ class PixKey extends Resource
     
     ## Return:
         - cursor to retrieve the next page of PixKey objects
-        - generator of PixKey objects with updated attributes
+        - list of PixKey objects with updated attributes
     */
     public static function page($options = [], $user=null)
     {
@@ -185,9 +184,9 @@ class PixKey extends Resource
     }
 
     /**
-    # Cancel a pixKey entity
+    # Cancel a PixKey entity
 
-    Cancel a pixKey entity previously created in the Stark Infra API
+    Cancel a PixKey entity previously created in the Stark Infra API
     
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
@@ -196,7 +195,7 @@ class PixKey extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - canceled pixKey object
+        - canceled PixKey object
     */
     public static function cancel($id, $user = null)
     {

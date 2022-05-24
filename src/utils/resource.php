@@ -16,5 +16,3 @@ class Resource extends SubResource
         $this->id = $id;
     }
 }
-
-?>

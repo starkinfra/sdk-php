@@ -53,5 +53,3 @@ require_once(__DIR__."/pixReversal/log.php");
 require_once(__DIR__."/pixStatement/pixStatement.php");
 require_once(__DIR__."/event/event.php");
 require_once(__DIR__."/setting.php");
-
-?>

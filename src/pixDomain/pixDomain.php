@@ -31,13 +31,13 @@ class PixDomain extends Resource
     /**
     # Retrieve PixDomains
     
-    Receive a generator of PixDomain objects.
+    Receive an enumerator of PixDomain objects.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - generator of PixDomain objects with updated attributes
+        - enumerator of PixDomain objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

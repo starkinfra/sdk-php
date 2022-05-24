@@ -48,8 +48,4 @@ class Parse
     {
         return Request::fetch($user, "GET", "/public-key", null, ["limit" => 1])->json()["publicKeys"][0]["content"];
     }
-
-
 }
-
-?>

@@ -60,7 +60,7 @@ class Log extends Resource
     /**
     # Retrieve IssuingHolder\Logs
 
-    Receive a generator of IssuingHolder\Log objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingHolder\Log objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -71,7 +71,7 @@ class Log extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - generator of IssuingHolder\Log objects with updated attributes
+        - enumerator of IssuingHolder\Log objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

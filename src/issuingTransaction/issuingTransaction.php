@@ -61,7 +61,7 @@ class IssuingTransaction extends Resource
     /**
     # Retrieve IssuingTransaction
 
-    Receive a generator of IssuingTransaction objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingTransaction objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]

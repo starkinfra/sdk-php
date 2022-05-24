@@ -105,5 +105,3 @@ class API
         return API::lastName($resourceName) . "s";
     }
 }
-
-?>

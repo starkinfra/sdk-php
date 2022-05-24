@@ -58,7 +58,7 @@ class Log extends Resource
     /**
     # Retrieve PixChargeback\Logs
     
-    Receive a generator of PixChargeback\Log objects previously created in the Stark Infra API
+    Receive an enumerator of PixChargeback\Log objects previously created in the Stark Infra API
     
     ## Parameters (optional):
         - ids [list of strings, default null]: Log ids to filter PixChargeback Logs. ex: ["5656565656565656"]
@@ -70,7 +70,7 @@ class Log extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - generator of PixChargeback\Log objects with updated attributes
+        - enumerator of PixChargeback\Log objects with updated attributes
     */
     public static function query($options=[], $user=null)
     {

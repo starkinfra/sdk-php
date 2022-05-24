@@ -2,6 +2,7 @@
 
 namespace StarkInfra\Utils;
 
+
 class EndToEndId
 {
     public static function create($bankCode)

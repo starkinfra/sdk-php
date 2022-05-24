@@ -14,5 +14,3 @@ class StringCase
         return implode('-', $ret);
     }
 }
-
-?>

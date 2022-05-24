@@ -34,7 +34,7 @@ class PixBalance extends Resource
     }
 
     /**
-    # Retrieve the Pix Balance object
+    # Retrieve the PixBalance object
 
     Receive the PixBalance object linked to your workspace in the Stark Infra API
 

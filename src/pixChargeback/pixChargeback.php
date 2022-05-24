@@ -103,7 +103,7 @@ class PixChargeback extends Resource
     /**
     # Retrieve PixChargeback objects
 
-    Receive a generator of PixChargebacks objects previously created in the Stark Infra API
+    Receive an enumerator of PixChargebacks objects previously created in the Stark Infra API
     
         ## Parameters (optional):
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
@@ -114,7 +114,7 @@ class PixChargeback extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
-        - generator of PixChargeback objects with updated attributes
+        - enumerator of PixChargeback objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
