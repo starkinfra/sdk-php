@@ -102,15 +102,15 @@ class IssuingPurchase extends Resource
     Receive an enumerator of IssuingPurchase objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
-        - holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-        - cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
+        - endToEndIds [array of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+        - holderIds [array of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
+        - cardIds [array of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - ids [list of strings, default [], default null]: purchase IDs
+        - ids [array of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -130,15 +130,15 @@ class IssuingPurchase extends Resource
     Use this function instead of query if you want to manually page your requests.
 
     ## Parameters (optional):
-        - endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
-        - holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-        - cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
+        - endToEndIds [array of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+        - holderIds [array of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
+        - cardIds [array of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - ids [list of strings, default [], default null]: purchase IDs
+        - ids [array of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

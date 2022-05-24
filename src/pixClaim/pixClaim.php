@@ -110,8 +110,8 @@ class PixClaim extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
         - agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
         - keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
@@ -140,8 +140,8 @@ class PixClaim extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
         - agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
         - keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",

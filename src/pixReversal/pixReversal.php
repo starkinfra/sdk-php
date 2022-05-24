@@ -24,7 +24,7 @@ class PixReversal extends Resource
         - reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"
 
     ## Parameters (optional):
-        - tags [list of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
+        - tags [array of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
@@ -99,15 +99,15 @@ class PixReversal extends Resource
     Receive an enumerator of PixReversal objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
+        - fields [array of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
-        - externalIds [list of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - returnIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
+        - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -128,15 +128,15 @@ class PixReversal extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - fields [list of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
+        - fields [array of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - returnIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
-        - externalIds [list of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - returnIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
+        - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:

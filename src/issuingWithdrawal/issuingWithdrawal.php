@@ -51,7 +51,7 @@ class IssuingWithdrawal extends Resource
     Send a list of IssuingWithdrawal objects for creation in the Stark Infra API
 
     ## Parameters (required):
-        - withdrawals [list of IssuingWithdrawal objects]: list of IssuingWithdrawal objects to be created in the API
+        - withdrawals [array of IssuingWithdrawal objects]: list of IssuingWithdrawal objects to be created in the API
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -90,7 +90,7 @@ class IssuingWithdrawal extends Resource
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
+        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -114,7 +114,7 @@ class IssuingWithdrawal extends Resource
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
+        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]

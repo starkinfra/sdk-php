@@ -23,7 +23,7 @@ class Log extends Resource
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
         - purchase [IssuingPurchase]: IssuingPurchase entity to which the log refers to.
         - issuingTransactionId [string]: transaction ID related to the IssuingPurchase.
-        - errors [list of strings]: list of errors linked to this IssuingPurchase event
+        - errors [array of strings]: list of errors linked to this IssuingPurchase event
         - type [string]: type of the IssuingPurchase event which triggered the log creation. ex: "approved" or "denied"
         - created [DateTime]: creation datetime for the IssuingPurchase. 
      */

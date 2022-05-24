@@ -21,7 +21,7 @@ class PixDirector extends Resource
         - phone [string]: phone of the PixDirector. ex: "+551198989898"
         - taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
         - teamEmail [string]: team email. ex: "pix.team@company.com"
-        - teamPhones [list of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
+        - teamPhones [array of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"

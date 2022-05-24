@@ -3,6 +3,7 @@
 namespace StarkInfra;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\API;
 
 
 class IssuingRule extends Resource
@@ -25,9 +26,9 @@ class IssuingRule extends Resource
         - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)
         - currencyName [string]: currency name. ex: "Brazilian Real"
         - currencySymbol [string]: currency symbol. ex: "R$"
-        - categories [list of strings]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
-        - countries [list of strings]: countries accepted by the rule. ex: ["BRA", "USA"]
-        - methods [list of strings]: methods accepted by the rule. ex: ["contactless", "token"]
+        - categories [array of strings]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
+        - countries [array of strings]: countries accepted by the rule. ex: ["BRA", "USA"]
+        - methods [array of strings]: methods accepted by the rule. ex: ["contactless", "token"]
      */
     function __construct(array $params)
     {
@@ -45,5 +46,26 @@ class IssuingRule extends Resource
         $this->methods = Checks::checkParam($params, "methods");
 
         Checks::checkParams($params);
+    }
+
+    public static function parseRules($rules) {
+        $parsedRules = [];
+        if ($rules == null) {
+            return null;
+        }
+        foreach($rules as $rule) {
+            if($rule instanceof IssuingRule) {
+                array_push($parsedRules, $rule);
+                continue;
+            }
+            $parsedRule = function ($array) {
+                $ruleMaker = function ($array) {
+                    return new IssuingRule($array);
+                };
+                return API::fromApiJson($ruleMaker, $array);
+            };
+            array_push($parsedRules, $parsedRule($rule));
+        }    
+        return $parsedRules;
     }
 }

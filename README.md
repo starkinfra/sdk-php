@@ -46,6 +46,10 @@ is as easy as sending a text message to your client!
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomain): View registered SPI participants certificates
+    - [Credit Note](#credit-note)
+        - [CreditNote](#create-credit-notes): Create credit notes
+    - [Webhook](#webhook)
+        - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [Webhook Events](#webhook-events)
         - [WebhookEvents](#process-webhook-events): Manage webhook events
 - [Handling errors](#handling-errors)
@@ -1569,9 +1573,192 @@ $domains = PixDomain::query();
 for $domain in $domains{
     print($domain);
 }
-```  
+```
 
-## Process webhook events
+## Credit Note
+
+## Create credit notes 
+You can create a Credit Note to generate a CCB contract:
+
+```php
+use StarkInfra\CreditNote;
+
+$notes = CreditNote::create([
+    new CreditNote([
+        "templateId" => "0123456789101112",
+        "name" => "Jamie Lannister",
+        "taxId" => "012.345.678-90",
+        "nominalAmount" => 100000,
+        "scheduled" => "2022-05-11",
+        "payment" => new Transfer([
+            "bankCode" => "00000000",
+            "branchCode" => "1234",
+            "accountNumber" => "129340-1",
+            "taxId" => "012.345.678-90", 
+            "name" => "Jamie Lannister"
+        ]),
+        "paymentType" => "transfer",
+        "invoices" =>[
+            new Invoice([
+                "amount" => 120000,
+                "due" => "2022-07-11",
+                "fine" => 3.0,
+                "interest" => 1.0
+            ])
+        ], 
+        "signers" =>[
+            new Signer([
+                "contact" =>  "jamie.lannister@gmail.com",
+                "method" => "link",
+                "name" => "Jamie Lannister",
+            ])
+        ],
+        "rebateAmount" => 0,
+        "tags" => [
+            'War supply',
+            'Invoice #1234'
+        ],
+        "externalId" => "my_unique_id"
+    ]);
+]);
+
+foreach($notes as $note){
+    print_r($note);
+}
+```
+
+**Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
+
+## Query credit notes
+
+You can query multiple Credit Notes according to filters.
+
+```php
+use StarkInfra\CreditNote;
+
+$notes = CreditNote::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "signed",
+]);
+
+foreach($notes as $note){
+    print_r($note);
+}
+```
+
+## Get a credit note
+
+After its creation, information on a Credit Note may be retrieved by its id.
+
+```php
+use StarkInfra\CreditNote;
+
+$note = CreditNote::get("5155966664310784");
+
+print_r($note);
+```
+
+## Cancel a credit note
+
+You can cancel a Credit Note if it has not been signed yet.
+
+```php
+use StarkInfra\CreditNote;
+
+$note = CreditNote::cancel("5155966664310784");
+
+print_r($note);
+```
+
+## Query credit note logs
+
+You can query Credit Note logs to better understand credit note life cycles.
+
+```php
+use StarkInfra\CreditNote\Log;
+
+$logs = Log::query(["limit" => 10]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+## Get credit note log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\CreditNote\Log;
+
+$log = Log::get("5155966664310784");
+
+print_r($log);
+```
+
+## Webhook
+
+## Create a webhook subscription
+To create a Webhook subscription and be notified whenever an event occurs, run:
+
+```php
+use StarkInfra\Webhook;
+
+$webhooks = Webhook::create([
+    new Webhook([
+        "url" => "https://webhook.site/",
+        "subscriptions" =>[
+            "contract", "credit-note", "signer",
+            "issuing-card", "issuing-invoice", "issuing-purchase",
+            "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"
+        ]
+    ]);
+]);
+
+foreach($webhooks as $webhook){
+    print_r($webhook);
+}
+```
+
+## Query webhooks
+To search for registered Webhooks, run:
+
+```php
+use StarkInfra\Webhook;
+
+$webhooks = Webhook::query();
+
+foreach($webhooks as $webhook){
+    print_r($webhook);
+}
+```
+
+## Get a webhook
+You can get a specific Webhook by its id.
+
+```php
+use StarkInfra\Webhook;
+
+$webhooks = Webhook::get("1082736198236817");
+
+print_r($webhook);
+```
+
+## Delete a webhook
+You can also delete a specific Webhook by its id.
+
+```php
+use StarkInfra\Webhook;
+
+$webhooks = Webhook::delete("1082736198236817");
+
+print_r($webhook);
+```
+## Webhook Events
+
+## Process Webhook events
 
 It's easy to process events delivered to your Webhook endpoint. Remember to pass the
 signature header so the SDK can make sure it was really StarkInfra that sent you

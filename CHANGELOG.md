@@ -20,6 +20,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixDomain resource for Indirect and Direct Participants
 - PixInfraction resource for Indirect and Direct Participants
 - PixKey resource for Indirect and Direct Participants
+- CreditNote resource for money lending with Stark Infra's endorsement
+- Webhook resource to receive Events 
 ### Changed
 - delete methods name to cancel
 

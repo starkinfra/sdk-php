@@ -28,7 +28,7 @@ class PixKey extends Resource
 
     ## Parameters (optional):
         - id [string, default null]: id of the registered PixKey. Allowed types are: CPF, CNPJ, phone number or email. If this parameter is not passed, an EVP will be created. ex: "+5511989898989";
-        - tags [list of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
+        - tags [array of strings, default null]: list of strings for reference when searching for PixKeys. ex: ["employees", "monthly"]
 
     ## Attributes (return-only):
         - owned [DateTime]: datetime when the key was owned by the holder. 
@@ -112,10 +112,10 @@ class PixKey extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
-        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled", "failed".
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - type [array of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
@@ -139,10 +139,10 @@ class PixKey extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled" and "failed"
-        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [list of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "registered", "canceled" and "failed"
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - type [array of strings, default null]: filter for the type of retrieved PixKeys. Options: "cpf", "cnpj", "phone", "email", "evp".
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
@@ -161,19 +161,20 @@ class PixKey extends Resource
     # Update PixKey entity
 
     Update a PixKey parameters by passing id.
-    
+
     ## Parameters (required):
         - id [string]: PixKey id. ex: '5656565656565656'
         - reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
-    
-    ## Parameters (optional):
         - params [dictionary of optional parameters]:
             - accountCreated [Date, DateTime or String]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
             - accountNumber [string, default null]: number of the account to be linked. ex: "76543".
             - accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
             - branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
             - name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
-    
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+
     ## Return:
         - PixKey with updated attributes
     */
