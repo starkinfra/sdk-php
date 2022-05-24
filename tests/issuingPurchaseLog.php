@@ -9,7 +9,7 @@ use StarkInfra\IssuingPurchase\Log;
 class TestIssuingPurchaseLog
 {
 
-    public function query()
+    public function queryAnGet()
     {
         $purchases = Log::query(["limit" => 10]);
 
@@ -17,16 +17,13 @@ class TestIssuingPurchaseLog
             if (is_null($purchase->id)) {
                 throw new Exception("failed");
             }
-        }
-    }
 
-    public function get()
-    {
-        $log = iterator_to_array(Log::query(["limit" => 1]))[0];
-        $log = Log::get($log->id);
+            $log = iterator_to_array(Log::query(["limit" => 1]))[0];
+            $log = Log::get($log->id);
 
-        if (!is_string($log->id)) {
-            throw new Exception("failed");
+            if (!is_string($log->id)) {
+                throw new Exception("failed");
+            }
         }
     }
 }
@@ -35,10 +32,7 @@ echo "\n\nIssuingPurchaseLog:";
 
 $test = new TestIssuingPurchaseLog();
 
-echo "\n\t- query";
-$test->query();
+echo "\n\t- query and get";
+$test->queryAnGet();
 echo " - OK";
 
-echo "\n\t- get";
-$test->get();
-echo " - OK";

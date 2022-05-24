@@ -26,14 +26,14 @@ is as easy as sending a text message to your client!
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
     - [Issuing](#issuing)
-        - [Transactions](#query-issuing-transactions): Account statement entries
-        - [Balance](#get-issuing-balance): Account balance
-        - [Holders](#create-issuing-holders): Wallet Card holders
         - [BINs](#query-issuing-bins): Account sub-issue BINs
-        - [Issuing Invoices](#create-issuing-invoices): Charge your Issuing account
-        - [Withdrawals](#create-issuing-withdrawals): Send money back to your Stark Bank account
+        - [Holders](#create-issuing-holders): Wallet Card holders
         - [Cards](#create-issuing-cards): Create virtual Cards
         - [Purchases](#query-issuing-purchases): View your past purchases
+        - [Invoices](#create-issuing-invoices): Charge your Issuing account
+        - [Withdrawals](#create-issuing-withdrawals): Send money back to your Stark Bank account
+        - [Transactions](#query-issuing-transactions): Account statement entries
+        - [Balance](#get-issuing-balance): Account balance
         - [Authorization Requests](#process-authorization-requests): Receive incoming Authorization requests
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
@@ -46,6 +46,8 @@ is as easy as sending a text message to your client!
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomain): View registered SPI participants certificates
+    - [Webhook Events](#webhook-events)
+        - [WebhookEvents](#process-webhook-events): Manage webhook events
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
 
@@ -283,7 +285,7 @@ foreach ($transactions as $transaction) {
 
 - The `page` function gives you full control over the API pagination. With each function call, you receive up to
 100 results and the cursor to retrieve the next batch of elements. This allows you to stop your queries and
-pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `None`.
+pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `null`.
 
 ```php
 use StarkInfra;
@@ -319,47 +321,18 @@ for the value to be credited to your account.
 
 ## Issuing
 
-### Query Issuing Transactions
+### Query Issuing BINs
 
-To understand your balance changes (issuing statement), you can query
-transactions. Note that our system creates transactions for you when
-you make purchases, withdrawals, receive issuing invoice payments, for example.
+To take a look at the sub-issuer BINs linked to your workspace, just run the following:
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingBin;
 
-$transactions = StarkInfra\IssuingTransaction::query([
-    "after" => "2020-01-01",
-    "before" => "2020-03-01"
-]);
+$bins = IssuingBin::query();
 
-foreach ($transactions as $transaction) {
-    print_r($transaction);
+foreach ($bins as $bin) {
+    print_r($bin);
 }
-```
-
-### Get an Issuing Transaction
-
-You can get a specific transaction by its id:
-
-```php
-use StarkInfra;
-
-$transaction = StarkInfra\IssuingTransaction::get("5155165527080960");
-
-print_r($transaction);
-```
-
-### Get Issuing Balance
-
-To know how much money you have in your workspace, run:
-
-```php
-use StarkInfra;
-
-$balance = StarkInfra\IssuingBalance::get();
-
-print_r($balance);
 ```
 
 ### Create Issuing Holders
@@ -367,10 +340,10 @@ print_r($balance);
 You can create card holders to your Workspace.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingHolder;
 
-$holders = StarkInfra\IssuingHolder::create([
-    new StarkInfra\IssuingHolder([
+$holders = IssuingHolder::create([
+    new IssuingHolder([
         "name" => "Iron Bank S.A.",
         "taxId" => "012.345.678-90",
         "externalId" => "1234",
@@ -399,9 +372,9 @@ foreach ($holders as $holder) {
 You can query multiple holders according to filters.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingHolder;
 
-$holders = StarkInfra\IssuingHolder::query();
+$holders = IssuingHolder::query();
 
 foreach ($holders as $holder) {
     print_r($holder);
@@ -412,9 +385,9 @@ foreach ($holders as $holder) {
 To cancel a single Issuing Holder by its id, run:
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingHolder;
 
-$holder = StarkInfra\IssuingHolder::delete("5155165527080960");
+$holder = IssuingHolder::cancel("5155165527080960");
 
 print_r($holder);
 ```
@@ -424,9 +397,9 @@ print_r($holder);
 To get a single Issuing Holder by its id, run:
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingHolder;
 
-$holder = StarkInfra\IssuingHolder::get("5155165527080960");
+$holder = IssuingHolder::get("5155165527080960");
 
 print_r($holder);
 ```
@@ -436,9 +409,9 @@ print_r($holder);
 You can query holder logs to better understand holder life cycles.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingHolder;
 
-$logs = StarkInfra\IssuingHolder\Log::query(["limit" => 50]);
+$logs = IssuingHolder\Log::query(["limit" => 50]);
 
 foreach ($logs as $log) {
     print_r($log);
@@ -450,138 +423,11 @@ foreach ($logs as $log) {
 You can also get a specific log by its id.
 
 ```php
-use StarkInfra;
+use StarkInfra\\IssuingHolder;
 
-$log = StarkInfra\IssuingHolder\Log::get("5155165527080960");
+$log = IssuingHolder\Log::get("5155165527080960");
 
 print_r($log);
-```
-
-### Query Issuing BINs
-
-To take a look at the sub-issuer BINs linked to your workspace, just run the following:
-
-```php
-use StarkInfra;
-
-$bins = StarkInfra\IssuingBin::query();
-
-foreach ($bins as $bin) {
-    print_r($bin);
-}
-```
-
-### Create Issuing Invoices
-
-You can create dynamic QR Code invoices to receive money from accounts you have in other banks to your Issuing account.
-
-Since the banking system only understands value modifiers (discounts, fines and interest) when dealing with **dates** (instead of **datetimes**), these values will only show up in the end user banking interface if you use **dates** in the "due" and "discounts" fields. 
-
-If you use **datetimes** instead, our system will apply the value modifiers in the same manner, but the end user will only see the final value to be paid on his interface.
-
-Also, other banks will most likely only allow payment scheduling on invoices defined with **dates** instead of **datetimes**.
-
-```php
-use StarkInfra;
-
-$invoices = StarkInfra\IssuingInvoice::create(
-    new StarkInfra\IssuingInvoice([
-        "amount" => 1000
-    ])
-);
-
-foreach ($invoices as $invoice) {
-    print_r($invoice);
-}
-```
-
-**Note**: Instead of using Invoice objects, you can also pass each invoice element in dictionary format
-
-### Get an Issuing Invoice
-
-After its creation, information on an invoice may be retrieved by its id. 
-Its status indicates whether it's been paid.
-
-```php
-use StarkInfra;
-
-$invoice = StarkInfra\IssuingInvoice::get("5155165527080960");
-
-print_r($invoice);
-```
-
-### Query Issuing Invoices
-
-You can get a list of created invoices given some filters.
-
-```php
-use StarkInfra;
-
-$invoices = StarkInfra\IssuingInvoice::query();
-
-foreach ($invoices as $invoice) {
-    print_r($invoice);
-```
-
-### Query Issuing Invoice logs
-
-Logs are pretty important to understand the life cycle of an invoice.
-
-```php
-use StarkInfra;
-
-$logs = StarkInfra\IssuingInvoice\Log::query(["limit" => 150]);
-
-foreach ($logs as $log) {
-    print_r($log);
-```
-
-### Create Issuing Withdrawals
-
-You can create withdrawals to send back cash to your Banking account by using the Withdrawal resource
-
-```php
-use StarkInfra;
-
-$withdrawals = StarkInfra\IssuingWithdrawal::create(
-    new StarkInfra\IssuingWithdrawal([
-        "amount" => 10000.
-        "externalId" => "123",
-        "description" => "Sending back"
-    ])
-);
-
-foreach ($withdrawals as $withdrawal) {
-    print_r($withdrawal);
-}
-```
-
-**Note**: Instead of using Withdrawal objects, you can also pass each withdrawal element in dictionary format
-
-### Get an Issuing Withdrawal
-
-After its creation, information on a withdrawal may be retrieved by its id.
-
-```php
-use StarkInfra;
-
-$withdrawal = StarkInfra\IssuingWithdrawal::get("5155165527080960");
-
-print_r($withdrawal);
-```
-
-### Query Issuing Withdrawals
-
-You can get a list of created invoices given some filters.
-
-```php
-use StarkInfra;
-
-$withdrawals = StarkInfra\IssuingWithdrawal::query();
-
-foreach ($withdrawals as $withdrawal) {
-    print_r($withdrawal);
-}
 ```
 
 ### Create Issuing Cards
@@ -589,10 +435,10 @@ foreach ($withdrawals as $withdrawal) {
 You can issue cards with specific spending rules to make purchases.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$cards = StarkInfra\IssuingCard::create([
-    new StarkInfra\IssuingCard([
+$cards = IssuingCard::create([
+    new IssuingCard([
         "holdeNname" => "Developers",
         "holderTaxId" => "012.345.678-90",
         "holderExternalId" => "1234",
@@ -616,9 +462,9 @@ foreach ($cards as $card) {
 You can get a list of created cards given some filters.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$cards = StarkInfra\IssuingCard::query([
+$cards = IssuingCard::query([
     "after" => "2020-01-01",
     "before" => "2020-03-01"
 ]);
@@ -633,9 +479,9 @@ foreach ($cards as $card) {
 After its creation, information on a card may be retrieved by its id.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$card = StarkInfra\IssuingCard::get("5155165527080960");
+$card = IssuingCard::get("5155165527080960");
 
 print_r($card);
 ```
@@ -645,22 +491,22 @@ print_r($card);
 You can update a specific Issuing Card by its id.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$card = StarkInfra\IssuingCard::update("5155165527080960", ["status" => "blocked"]);
+$card = IssuingCard::update("5155165527080960", ["status" => "blocked"]);
 
 print_r($card);
 ```
 
-### Delete an Issuing Card
+### Cancel an Issuing Card
 
 You can also cancel a card by its id.
 Note that this is not possible if it has been processed already.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$card = StarkInfra\IssuingCard::delete("5155165527080960");
+$card = IssuingCard::cancel("5155165527080960");
 
 print_r($card);
 ```
@@ -670,9 +516,9 @@ print_r($card);
 Logs are pretty important to understand the life cycle of a card.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$logs = StarkInfra\IssuingCard\Log::query(["limit" => 150]);
+$logs = IssuingCard\Log::query(["limit" => 150]);
 
 foreach ($logs as $log) {
     print_r($log);
@@ -683,9 +529,9 @@ foreach ($logs as $log) {
 You can get a single log by its id.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingCard;
 
-$log = StarkInfra\IssuingCard\Log::get("5155165527080960");
+$log = IssuingCard\Log::get("5155165527080960");
 
 print_r($log);
 ```
@@ -695,9 +541,9 @@ print_r($log);
 You can get a list of created purchases given some filters.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingPurchase;
 
-$purchases = StarkInfra\IssuingPurchase::query([
+$purchases = IssuingPurchase::query([
     "after" => "2020-01-01",
     "before" => "2020-03-01"
 ]);
@@ -712,9 +558,9 @@ foreach ($purchases as $purchase) {
 After its creation, information on a purchase may be retrieved by its id. 
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingPurchase;
 
-$log = StarkInfra\IssuingPurchase::get("5155165527080960");
+$log = IssuingPurchase::get("5155165527080960");
 
 print_r($log);
 ```
@@ -724,12 +570,13 @@ print_r($log);
 Logs are pretty important to understand the life cycle of a purchase.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingPurchase;
 
-$logs = StarkInfra\IssuingPurchase\Log::query(["limit" => 150]);
+$logs = IssuingPurchase\Log::query(["limit" => 150]);
 
-foreach ($logs as $log) {
+foreach($logs as $log) {
     print_r($log);
+}
 ```
 
 ### Get an Issuing Purchase log
@@ -737,14 +584,164 @@ foreach ($logs as $log) {
 You can get a single log by its id.
 
 ```php
-use StarkInfra;
+use StarkInfra\IssuingPurchases;
 
-$log = StarkInfra\IssuingPurchase\Log::get("5155165527080960");
+$log = IssuingPurchase\Log::get("5155165527080960");
 
 print_r($log);
 ```
 
+### Create Issuing Invoices
+
+You can create Pix invoices to transfer money from accounts you have in any bank to your Issuing balance, allowing you to run your issuing operation.
+
+```php
+use StarkInfra\IssuingInvoice;
+
+$invoices = IssuingInvoice::create(
+    new IssuingInvoice([
+        "amount" => 1000
+    ])
+);
+
+foreach ($invoices as $invoice) {
+    print_r($invoice);
+}
+```
+
+**Note**: Instead of using Invoice objects, you can also pass each invoice element in dictionary format
+
+### Get an Issuing Invoice
+
+After its creation, information on an invoice may be retrieved by its id. 
+Its status indicates whether it's been paid.
+
+```php
+use StarkInfra\IssuingInvoice;
+
+$invoice = IssuingInvoice::get("5155165527080960");
+
+print_r($invoice);
+```
+
+### Query Issuing Invoices
+
+You can get a list of created invoices given some filters.
+
+```php
+use StarkInfra\IssuingInvoice;
+
+$invoices = IssuingInvoice::query();
+
+foreach ($invoices as $invoice) {
+    print_r($invoice);
+```
+
+### Query Issuing Invoice logs
+
+Logs are pretty important to understand the life cycle of an invoice.
+
+```php
+use StarkInfra\IssuingInvoice;
+
+$logs = IssuingInvoice\Log::query(["limit" => 150]);
+
+foreach ($logs as $log) {
+    print_r($log);
+```
+
+### Create Issuing Withdrawals
+
+You can create withdrawals to send back cash to your Banking account by using the Withdrawal resource
+
+```php
+use StarkInfra\IssuingWithdrawal;
+
+$withdrawals = IssuingWithdrawal::create(
+    new IssuingWithdrawal([
+        "amount" => 10000.
+        "externalId" => "123",
+        "description" => "Sending back"
+    ])
+);
+
+foreach ($withdrawals as $withdrawal) {
+    print_r($withdrawal);
+}
+```
+
+**Note**: Instead of using Withdrawal objects, you can also pass each withdrawal element in dictionary format
+
+### Get an Issuing Withdrawal
+
+After its creation, information on a withdrawal may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingWithdrawal;
+
+$withdrawal = IssuingWithdrawal::get("5155165527080960");
+
+print_r($withdrawal);
+```
+
+### Query Issuing Withdrawals
+
+You can get a list of created invoices given some filters.
+
+```php
+use StarkInfra\IssuingWithdrawal;
+
+$withdrawals = IssuingWithdrawal::query();
+
+foreach ($withdrawals as $withdrawal) {
+    print_r($withdrawal);
+}
+```
+
 **Note**: the Organization user can only update a workspace with the Workspace ID set.
+
+### Query Issuing Transactions
+
+To understand your balance changes (issuing statement), you can query
+transactions. Note that our system creates transactions for you when
+you make purchases, withdrawals, receive issuing invoice payments, for example.
+
+```php
+use StarkInfra\IssuingTransaction;
+
+$transactions = IssuingTransaction::query([
+    "after" => "2020-01-01",
+    "before" => "2020-03-01"
+]);
+
+foreach ($transactions as $transaction) {
+    print_r($transaction);
+}
+```
+
+### Get an Issuing Transaction
+
+You can get a specific transaction by its id:
+
+```php
+use StarkInfra\IssuingTransaction;
+
+$transaction = IssuingTransaction::get("5155165527080960");
+
+print_r($transaction);
+```
+
+### Get Issuing Balance
+
+To know how much money you have in your workspace, run:
+
+```php
+use StarkInfra\IssuingBalance;
+
+$balance = IssuingBalance::get();
+
+print_r($balance);
+```
 
 ### Process Authorization requests
 
@@ -761,7 +758,6 @@ $authorization = IssuingAuthorization::parse($response->content, $response->head
 
 print_r($authorization);
 ```
-
 
 ## Pix
 

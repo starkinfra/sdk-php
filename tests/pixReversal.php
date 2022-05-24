@@ -121,7 +121,7 @@ class TestPixReversal
     public static function example($schedule=false)
     {
         $params = [
-            "amount" => 10000,
+            "amount" => 1,
             "externalId" => "php-" . $uuid = mt_rand(0, 0xffffffff),
             "endToEndId" =>  self::getEndToEndId(),
             "reason" => "fraud",
@@ -138,9 +138,9 @@ class TestPixReversal
         $cursor = null;
         $endToEndId = null;
         while ($endToEndId == null){
-            list($page, $cursor) = PixRequest::page($options = ["limit" => 5, "status" => "success", "cursor" => $cursor]);
-            for ($i = 1; $i <= 5; $i++){
-                if ($page[$i]->amount >= 1 && $page[$i]->flow == "in") {
+            list($page, $cursor) = PixRequest::page($options = ["limit" => 2, "status" => "success", "cursor" => $cursor]);
+            for ($i = 1; $i <= 2; $i++){
+                if ($page[$i]->amount > 1 && $page[$i]->flow == "in") {
                     $endToEndId = $page[$i]->endToEndId;
                     break;
                 }

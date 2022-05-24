@@ -23,11 +23,11 @@ class IssuingInvoice extends Resource
         - tags [array of strings, default null]: array of strings for tagging
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
-        - status [string, default null]: current IssuingInvoice status. ex: "created", "paid", "canceled" or "overdue"
-        - issuingTransactionId [string, default null]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
-        - created [string, default null]: creation datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000"
-        - updated [string, default null]: latest update datetime for the IssuingInvoice. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
+        - status [string]: current IssuingInvoice status. ex: "created", "paid", "canceled" or "overdue"
+        - issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
+        - created [DateTime]: creation datetime for the IssuingInvoice. 
+        - updated [DateTime]: latest update datetime for the IssuingInvoice. 
      */
     function __construct(array $params)
     {
@@ -90,8 +90,8 @@ class IssuingInvoice extends Resource
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - fields [list of string, default []]: fields to be returned. ex: ["id", "amount", "name"]
@@ -115,13 +115,13 @@ class IssuingInvoice extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default None]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-        - after [datetime.date or string, default None] date filter for objects created only after specified date. ex: datetime.date(2020, 3, 10)
-        - before [datetime.date or string, default None] date filter for objects created only before specified date. ex: datetime.date(2020, 3, 10)
-        - status [string, default None]: filter for status of retrieved objects. ex: "paid" or "registered"
-        - tags [list of strings, default None]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - fields [list of string, default None]: fields to be returned. ex: ["id", "amount", "name"]
-        - user [Organization/Project object, default None]: Organization or Project object. Not necessary if starkinfra.user was set before function call
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
+        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - fields [list of string, default null]: fields to be returned. ex: ["id", "amount", "name"]
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - list of IssuingInvoices objects with updated attributes
@@ -129,6 +129,8 @@ class IssuingInvoice extends Resource
      */
     public static function page($options = [], $user = null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingInvoice::resource(), $options);
     }
 

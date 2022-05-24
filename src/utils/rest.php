@@ -43,7 +43,7 @@ class Rest
         }
     }
 
-    public static function getId($user, $resource, $id, array $query=[])
+    public static function getId($user, $resource, $id, $query=[])
     {
         $id = Checks::checkId($id);
         $json = Request::fetch($user, "GET", API::endpoint($resource["name"]) . "/" . $id, null, $query)->json();

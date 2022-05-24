@@ -13,8 +13,8 @@ class Rule
     {
         $rules = [];
 
-        $intervals = array("day", "week", "month", "instant");
-        $currencies = array("BRL", "USD");
+        $intervals = ["day", "week", "month", "instant"];
+        $currencies = ["BRL", "USD"];
     
         foreach (range(1, $n) as $index) {
             $rule = new IssuingRule([

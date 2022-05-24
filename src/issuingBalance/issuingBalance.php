@@ -17,10 +17,10 @@ class IssuingBalance extends Resource
     can be retrieved to see the available information.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
-        - amount [integer, default null]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-        - currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
-        - updated [string, default null]: latest update datetime for the IssuingBalance. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
+        - amount [integer]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+        - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
+        - updated [DateTime]: update datetime for the IssuingBalance. 
      */
     function __construct(array $params)
     {
