@@ -1,48 +1,39 @@
 <?php
 
 namespace StarkInfra;
-use \Exception;
-use EllipticCurve\PublicKey;
-use EllipticCurve\Signature;
-use EllipticCurve\Ecdsa;
-use StarkInfra\Error\InvalidSignatureError;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\API;
-use StarkInfra\Utils\Request;
-use StarkInfra\Utils\Cache;
 use StarkInfra\Utils\Parse;
-
 
 class IssuingAuthorization extends Resource
 {
     /**
-    # Webhook IssuingAuthorization object
+    # IssuingAuthorization object
 
-    An IssuingAuthorization is the received purchase data to be analysed and answered with the approval or decline.
+    An IssuingAuthorization presents purchase data to be analysed and answered with an approval or a declination.
 
-    ## Attributes:
-        - endToEndId [string, default null]: unique purchase identifier in the Stark system. ex: "E79457883202101262140HHX553UPqeq"
-        - amount [integer, default null]: IssuingPurchase value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-        - tax [integer, default 0]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
-        - cardId [string, default null]: unique id returned when IssuingCard is created. ex: "5656565656565656"
-        - issuerAmount [integer, default null]: issuer amount. ex: 1234 (= R$ 12.34)
-        - issuerCurrencyCode [string, default null]: issuer currency code. ex: "USD"
-        - merchantAmount [integer, default null]: merchant amount. ex: 1234 (= R$ 12.34)
-        - merchantCurrencyCode [string, default null]: merchant currency code. ex: "USD"
-        - merchantCategoryCode [string, default null]: merchant category code. ex: "eatingPlacesRestaurants"
-        - merchantCountryCode [string, default null]: merchant country code. ex: "USA"
-        - acquirerId [string, default null]: acquirer ID. ex: "5656565656565656"
-        - merchantId [string, default null]: merchant ID. ex: "5656565656565656"
-        - merchantName [string, default null]: merchant name. ex: "Google Cloud Platform"
-        - merchantFee [integer, default null]: merchant fee charged. ex: 200 (= R$ 2.00)
-        - walletId [string, default null]: virtual wallet ID. ex: "5656565656565656"
-        - methodCode [string, default null]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-        - score [float, default 0.0]: internal score calculated for the authenticity of the purchase. ex: 7.6
-        - isPartialAllowed [bool, default False]: true if the the merchant allows partial purchases. ex: False
-        - purpose [string, default null]: purchase purpose. ex: "purchase"
-        - cardTags [list of strings, default null]: list of tags of the IssuingCard. ex: ["travel", "food"]
-        - holderTags [list of strings, default null]: list of tags of the IssuingHolder. ex: ["travel", "food"]
+    ## Attributes (return-only):
+        - endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
+        - amount [integer]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
+        - tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
+        - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
+        - issuerAmount [integer]: issuer amount. ex: 1234 (= R$ 12.34)
+        - issuerCurrencyCode [string]: issuer currency code. ex: "USD"
+        - merchantAmount [integer]: merchant amount. ex: 1234 (= R$ 12.34)
+        - merchantCurrencyCode [string]: merchant currency code. ex: "USD"
+        - merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
+        - merchantCountryCode [string]: merchant country code. ex: "USA"
+        - acquirerId [string]: acquirer ID. ex: "5656565656565656"
+        - merchantId [string]: merchant ID. ex: "5656565656565656"
+        - merchantName [string]: merchant name. ex: "Google Cloud Platform"
+        - merchantFee [integer]: merchant fee charged. ex: 200 (= R$ 2.00)
+        - walletId [string]: virtual wallet ID. ex: "googlePay"
+        - methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
+        - score [float]: internal score calculated for the authenticity of the purchase. Null in case of insufficient data. ex: 7.6
+        - isPartialAllowed [bool]: true if the the merchant allows partial purchases. ex: False
+        - purpose [string]: purchase purpose. ex: "purchase"
+        - cardTags [array of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+        - holderTags [array of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
     */
     function __construct(array $params)
     {
@@ -78,7 +69,7 @@ class IssuingAuthorization extends Resource
 
     Create a single IssuingAuthorization object received from IssuingAuthorization at the informed endpoint.
     If the provided digital signature does not check out with the Stark public key, a
-    starkinfra.exception.InvalidSignatureException will be raised.
+    StarkInfra\Exception\InvalidSignatureException will be raised.
 
     ## Parameters (required):
         - content [string]: response content from request received at user endpoint (not parsed)
@@ -88,11 +79,37 @@ class IssuingAuthorization extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - IssuingAuthorization object
+        - Parsed IssuingAuthorization object
      */
     public static function parse($content, $signature, $user = null)
     {
         return Parse::parseAndVerify($content, $signature, IssuingAuthorization::resource(), $user);
+    }
+
+    /** 
+    # Helps you respond IssuingAuthorization requests.
+
+    ## Parameters (required):
+        - status [string]: sub-issuer response to the authorization. ex: "accepted" or "denied"
+    
+    ## Parameters (optional):
+        - amount [integer, default 0]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+        - reason [string, default ""]: denial reason. ex: "other"
+        - tags [array of strings, default []]: tags to filter retrieved object. ex: ["tony", "stark"]
+
+    ## Return:
+        - Dumped JSON string that must be returned to us on the IssuingAuthorization request
+    */
+    public static function response($status = null, $amount=null, $reason=null, $tags=null)
+    {
+        return json_encode([
+            "authorization" => [
+                "status" => $status,
+                "amount" => $amount or 0,
+                "reason" => $reason or "",
+                "tags" => $tags or [],
+            ]
+        ]);
     }
 
     private static function resource()

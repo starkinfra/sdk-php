@@ -20,6 +20,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixDomain resource for Indirect and Direct Participants
 - PixInfraction resource for Indirect and Direct Participants
 - PixKey resource for Indirect and Direct Participants
+### Changed
+- delete methods name to cancel
 
 ## [0.0.3] - 2022-03-24
 ### Added

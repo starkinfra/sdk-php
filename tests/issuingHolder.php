@@ -11,7 +11,7 @@ class TestIssuingHolder
 
     public function query()
     {
-        $holders = IssuingHolder::query(["expand" => ["rules"], "limit" => 10]);
+        $holders = IssuingHolder::query(["limit" => 10, "expand" => ["rules"]]);
 
         foreach ($holders as $holder) {
             if (is_null($holder->id)) {
@@ -25,7 +25,7 @@ class TestIssuingHolder
         $ids = [];
         $cursor = null;
         for ($i=0; $i < 2; $i++) { 
-            list($page, $cursor) = IssuingHolder::page($options = ["limit" => 2, "cursor" => $cursor]);
+            list($page, $cursor) = IssuingHolder::page(["limit" => 2, "expand" => ["rules"], "cursor" => $cursor]);
             foreach ($page as $holder) {
                 if (is_null($holder->id) or in_array($holder->id, $ids)) {
                     throw new Exception("failed");
@@ -41,25 +41,22 @@ class TestIssuingHolder
     public function get()
     {
         $holder = iterator_to_array(IssuingHolder::query(["limit" => 1]))[0];
-        $holder = IssuingHolder::get($holder->id);
+        $holder = IssuingHolder::get($holder->id, ["expand" => "rules"]);
 
         if (!is_string($holder->id)) {
             throw new Exception("failed");
         }
     }
 
-    public function postPatchAndDelete()
+    public function postPatchAndCancel()
     {
-        $holders = IssuingHolder::create(TestIssuingHolder::generateExampleHoldersJson(2), ["securityCode"]);
-        if ($holders[0]->securityCode == "***") {
-            throw new Exception("failed");
-        }
+        $holders = IssuingHolder::create(TestIssuingHolder::generateExampleHoldersJson(2), ["expand" => "rules"]);
         $holderId = $holders[0]->id;
         $holder = IssuingHolder::update($holderId, ["name" => "Updated Name"]);
         if ($holder->name != "Updated Name") {
             throw new Exception("failed");
         }
-        $holder = IssuingHolder::delete($holderId);
+        $holder = IssuingHolder::cancel($holderId);
         if ($holder->status != "canceled") {
             throw new Exception("failed");
         }
@@ -99,5 +96,5 @@ $test->get();
 echo " - OK";
 
 echo "\n\t- post, patch and cancel";
-$test->postPatchAndDelete();
+$test->postPatchAndCancel();
 echo " - OK";

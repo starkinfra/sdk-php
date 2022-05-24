@@ -9,7 +9,7 @@ use StarkInfra\IssuingInvoice\Log;
 class TestIssuingInvoiceLog
 {
 
-    public function query()
+    public function queryAndGet()
     {
         $logs = Log::query(["limit" => 10]);
 
@@ -17,6 +17,13 @@ class TestIssuingInvoiceLog
             if (is_null($log->id)) {
                 throw new Exception("failed");
             }
+
+            $log = Log::get($log->id);
+
+            if (is_null($log->id)) {
+                throw new Exception("failed");
+            }
+
         }
     }
 
@@ -47,7 +54,7 @@ echo "\n\nIssuingInvoiceLog:";
 $test = new TestIssuingInvoiceLog();
 
 echo "\n\t- query";
-$test->query();
+$test->queryAndGet();
 echo " - OK";
 
 echo "\n\t- page";

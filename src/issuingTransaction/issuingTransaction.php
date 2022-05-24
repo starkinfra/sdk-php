@@ -15,26 +15,25 @@ class IssuingTransaction extends Resource
     Displays the IssuingTransaction objects created to your Workspace.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
-        - amount [integer, default null]: IssuingTransaction value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-        - subIssuerId [string, default null]:
-        - balance [integer, default null]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
-        - description [string, default null]: IssuingTransaction description. ex: "Buying food"
-        - source [string, default null]: source of the transaction. ex: "issuing-purchase/5656565656565656"
-        - tags [string, default null]: list of strings for tagging ex: ["tony", "stark"]
-        - created [string, default null]: creation datetime for the IssuingTransaction. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
+        - amount [integer]: IssuingTransaction value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+        - subIssuerId [string]:
+        - balance [integer]: balance amount of the workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
+        - description [string]: IssuingTransaction description. ex: "Buying food"
+        - source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"
+        - tags [string]: list of strings for tagging ex: ["tony", "stark"]
+        - created [string]: creation datetime for the IssuingTransaction. 
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
         $this->amount = Checks::checkParam($params, "amount");
-        $this->subIssuerId = Checks::checkParam($params, "subIssuerId");
         $this->balance = Checks::checkParam($params, "balance");
         $this->description = Checks::checkParam($params, "description");
         $this->source = Checks::checkParam($params, "source");
         $this->tags = Checks::checkParam($params, "tags");
-        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
+        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 
         Checks::checkParams($params);
     }
@@ -66,8 +65,8 @@ class IssuingTransaction extends Resource
     ## Parameters (optional):
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
         - ids [list of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -93,8 +92,8 @@ class IssuingTransaction extends Resource
         - cursor [string, default null]: cursor returned on the previous page function call
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
         - ids [list of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -106,6 +105,8 @@ class IssuingTransaction extends Resource
      */
     public static function page($options = [], $user = null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingTransaction::resource(), $options);
     }
 

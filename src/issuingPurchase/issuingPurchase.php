@@ -15,32 +15,33 @@ class IssuingPurchase extends Resource
     Displays the IssuingPurchase objects created to your Workspace.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
+        - id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
         - holderName [string]: card holder name. ex: "Tony Stark"
-        - cardId [string, default null]: unique id returned when IssuingCard is created. ex: "5656565656565656"
-        - cardEnding [string, default null]: last 4 digits of the card number. ex: "1234"
-        - amount [integer, default null]: IssuingPurchase value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-        - tax [integer, default 0]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
-        - issuerAmount [integer, default null]: issuer amount. ex: 1234 (= R$ 12.34)
-        - issuerCurrencyCode [string, default null]: issuer currency code. ex: "USD"
-        - issuerCurrencySymbol [string, default null]: issuer currency symbol. ex: "$"
-        - merchantAmount [integer, default null]: merchant amount. ex: 1234 (= R$ 12.34)
-        - merchantCurrencyCode [string, default null]: merchant currency code. ex: "USD"
-        - merchantCurrencySymbol [string, default null]: merchant currency symbol. ex: "$"
-        - merchantCategoryCode [string, default null]: merchant category code. ex: "eatingPlacesRestaurants"
-        - merchantCountryCode [string, default null]: merchant country code. ex: "USA"
-        - acquirerId [string, default null]: acquirer ID. ex: "5656565656565656"
-        - merchantId [string, default null]: merchant ID. ex: "5656565656565656"
-        - merchantName [string, default null]: merchant name. ex: "Google Cloud Platform"
-        - walletId [string, default null]: virtual wallet ID. ex: "5656565656565656"
-        - methodCode [string, default null]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
-        - score [float, default 0.0]: internal score calculated for the authenticity of the purchase. ex: 7.6
-        - issuingTransactionIds [string, default null]: ledger transaction ids linked to this Purchase
-        - endToEndId [string, default null]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
-        - status [string, default null]: current IssuingCard status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - tags [string, default null]: list of strings for tagging. ex: ["travel", "food"]
-        - created [string, default null]: creation datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000"
-        - updated [string, default null]: latest update datetime for the IssuingPurchase. ex: "2020-03-10 10:30:00.000"
+        - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
+        - cardEnding [string]: last 4 digits of the card number. ex: "1234"
+        - amount [integer]: IssuingPurchase value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
+        - tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
+        - issuerAmount [integer]: issuer amount. ex: 1234 (= R$ 12.34)
+        - issuerCurrencyCode [string]: issuer currency code. ex: "USD"
+        - issuerCurrencySymbol [string]: issuer currency symbol. ex: "$"
+        - merchantAmount [integer]: merchant amount. ex: 1234 (= R$ 12.34)
+        - merchantCurrencyCode [string]: merchant currency code. ex: "USD"
+        - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
+        - merchantCategoryCode [string]: merchant category code. ex: "eatingPlacesRestaurants"
+        - merchantCountryCode [string]: merchant country code. ex: "USA"
+        - merchantFee [string]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
+        - acquirerId [string]: acquirer ID. ex: "5656565656565656"
+        - merchantId [string]: merchant ID. ex: "5656565656565656"
+        - merchantName [string]: merchant name. ex: "Google Cloud Platform"
+        - walletId [string]: virtual wallet ID. ex: "5656565656565656"
+        - methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
+        - score [float]: internal score calculated for the authenticity of the purchase. ex: 7.6
+        - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
+        - endToEndId [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
+        - status [string]: current IssuingCard status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+        - tags [string]: list of strings for tagging. ex: ["travel", "food"]
+        - created [DateTime]: creation datetime for the IssuingPurchase.
+        - updated [DateTime]: latest update datetime for the IssuingPurchase.
      */
     function __construct(array $params)
     {
@@ -59,6 +60,7 @@ class IssuingPurchase extends Resource
         $this->merchantCurrencySymbol = Checks::checkParam($params, "merchantCurrencySymbol");
         $this->merchantCategoryCode = Checks::checkParam($params, "merchantCategoryCode");
         $this->merchantCountryCode = Checks::checkParam($params, "merchantCountryCode");
+        $this->merchantFee = Checks::checkParam($params, "merchantFee");
         $this->acquirerId = Checks::checkParam($params, "acquirerId");
         $this->merchantId = Checks::checkParam($params, "merchantId");
         $this->merchantName = Checks::checkParam($params, "merchantName");
@@ -104,8 +106,8 @@ class IssuingPurchase extends Resource
         - holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
         - cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - ids [list of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -132,8 +134,8 @@ class IssuingPurchase extends Resource
         - holderIds [list of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
         - cardIds [list of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - ids [list of strings, default [], default null]: purchase IDs
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
@@ -145,6 +147,8 @@ class IssuingPurchase extends Resource
      */
     public static function page($options = [], $user = null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingPurchase::resource(), $options);
     }
 

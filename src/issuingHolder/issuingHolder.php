@@ -24,10 +24,10 @@ class IssuingHolder extends Resource
         - tags [list of strings]: list of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
-        - status [string, default null]: current IssuingHolder status. ex: "canceled" or "active"
-        - created [string, default null]: creation datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000"
-        - updated [string, default null]: latest update datetime for the IssuingHolder. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
+        - status [string]: current IssuingHolder status. ex: "canceled" or "active"
+        - created [DateTime]: creation datetime for the IssuingHolder. 
+        - updated [DateTime]: latest update datetime for the IssuingHolder. 
      */
     function __construct(array $params)
     {
@@ -54,15 +54,16 @@ class IssuingHolder extends Resource
         - holders [list of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
 
     ## Parameters (optional):
+        - params [dictionary of optional parameters]:
+            - expand [list of strings, default null]: fields to to expand information. ex: ["rules"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
         - list of IssuingHolder objects with updated attributes
      */
-    public static function create($holders, $expand = null, $user = null)
+    public static function create($holders, $params = null, $user = null)
     {
-        $query = is_null($expand) ? [] : ["expand" => $expand];
-        return Rest::post($user, IssuingHolder::resource(), $holders, $query);
+        return Rest::post($user, IssuingHolder::resource(), $holders, $params);
     }
 
     /**
@@ -74,14 +75,16 @@ class IssuingHolder extends Resource
         - id [string]: object unique id. ex: "5656565656565656"
 
     ## Parameters (optional):
+        - params [dictionary of optional parameters]:
+            - expand [list of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
         - IssuingHolder object with updated attributes
      */
-    public static function get($id, $user = null)
+    public static function get($id, $param = null, $user = null)
     {
-        return Rest::getId($user, IssuingHolder::resource(), $id);
+        return Rest::getId($user, IssuingHolder::resource(), $id, $param);
     }
 
     /**
@@ -90,13 +93,13 @@ class IssuingHolder extends Resource
     Receive an enumerator of IssuingHolder objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. 
+        - before [Date or string, default null] date filter for objects created only before specified date. 
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - expand [string, default null]: fields to to expand information. ex: "rules"
+        - expand [list of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -116,13 +119,13 @@ class IssuingHolder extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - expand [string, default null]: fields to to expand information. ex: "rules"
+        - expand [list of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:
@@ -131,6 +134,8 @@ class IssuingHolder extends Resource
      */
     public static function page($options = [], $user = null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingHolder::resource(), $options);
     }
 
@@ -157,11 +162,10 @@ class IssuingHolder extends Resource
         return Rest::patchId($user, IssuingHolder::resource(), $id, $options);
     }
 
-
     /**
-    # Delete a IssuingHolder entity
+    # Cancel an IssuingHolder entity
 
-    Delete a IssuingHolder entity previously created in the Stark Infra API
+    Cancel an IssuingHolder entity previously created in the Stark Infra API
 
     ## Parameters (required):
         - id [string]: IssuingHolder unique id. ex: "5656565656565656"
@@ -170,9 +174,9 @@ class IssuingHolder extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:
-        - deleted IssuingHolder object
+        - canceled IssuingHolder object
      */
-    public static function delete($id, $user = null)
+    public static function cancel($id, $user = null)
     {
         return Rest::deleteId($user, IssuingHolder::resource(), $id);
     }

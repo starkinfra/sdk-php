@@ -18,16 +18,16 @@ class IssuingRule extends Resource
         - interval [string]: interval to reset the counters of the rule. ex: "instant", "day", "week", "month", "year" or "lifetime"
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when Rule is created. ex: "5656565656565656"
-        - currencyCode [string, default null]: code of the currency used by the rule. ex: "BRL" or "USD"
+        - id [string]: unique id returned when Rule is created. ex: "5656565656565656"
+        - currencyCode [string]: code of the currency used by the rule. ex: "BRL" or "USD"
 
     ## Attributes (expanded return-only):
-        - counterAmount [integer, default null]: amount spent per rule. ex: 200000 (= R$ 2000.00)
-        - currencyName [string, default null]: currency name. ex: "Brazilian Real"
-        - currencySymbol [string, default null]: currency symbol. ex: "R$"
-        - categories [list of strings, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
-        - countries [list of strings, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
-        - methods [list of strings, default []]: methods accepted by the rule. ex: ["contactless", "token"]
+        - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)
+        - currencyName [string]: currency name. ex: "Brazilian Real"
+        - currencySymbol [string]: currency symbol. ex: "R$"
+        - categories [list of strings]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
+        - countries [list of strings]: countries accepted by the rule. ex: ["BRA", "USA"]
+        - methods [list of strings]: methods accepted by the rule. ex: ["contactless", "token"]
      */
     function __construct(array $params)
     {

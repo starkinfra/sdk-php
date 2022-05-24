@@ -30,7 +30,7 @@ include_once("issuingHolder.php");
 include_once("issuingHolderLog.php");
 include_once("issuingInvoice.php");
 include_once("issuingInvoiceLog.php");
-include_once("issuingPurchase.php");
+include_once("issuingPurchase.php"); 
 include_once("issuingPurchaseLog.php");
 include_once("issuingTransaction.php");
 include_once("issuingWithdrawal.php");

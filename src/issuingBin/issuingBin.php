@@ -14,13 +14,13 @@ class IssuingBin extends Resource
     The IssuingBin object displays the informations of BINs registered to your Workspace.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique BIN number registered within the card network. ex: "53810200"
-        - network [string, default null]: card network flag. ex: "mastercard"
-        - settlement [string, default null]: settlement type. ex: "credit"
-        - category [string, default null]: purchase category. ex: "prepaid"
-        - client [string, default null]: client type. ex: "business"
-        - created [string, default null]: creation datetime for the IssuingBin. ex: "2020-03-10 10:30:00.000"
-        - updated [string, default null]: latest update datetime for the IssuingBin. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique BIN number registered within the card network. ex: "53810200"
+        - network [string]: card network flag. ex: "mastercard"
+        - settlement [string]: settlement type. ex: "credit"
+        - category [string]: purchase category. ex: "prepaid"
+        - client [string]: client type. ex: "business"
+        - created [DateTime]: creation datetime for the IssuingBin.
+        - updated [DateTime]: latest update datetime for the IssuingBin.
      */
     function __construct(array $params)
     {
@@ -56,16 +56,16 @@ class IssuingBin extends Resource
     /**
     # Retrieve paged IssuingBins
 
-    Receive a list of up to 100 IssuingBin objects previously registered in the Stark Infra API and the cursor to the next page.
+    Receive an array of up to 100 IssuingBin objects previously registered in the Stark Infra API and the cursor to the next page.
 
     ## Parameters (optional):
-    - cursor [string, default null]: cursor returned on the previous page function call
-    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - cursor [string, default null]: cursor returned on the previous page function call
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+        - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-    - list of IssuingBin objects with updated attributes
-    - cursor to retrieve the next page of IssuingBin objects
+        - array of IssuingBin objects with updated attributes
+        - cursor to retrieve the next page of IssuingBin objects
      */
     public static function page($options = [], $user = null)
     {

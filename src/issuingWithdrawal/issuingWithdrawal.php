@@ -23,11 +23,11 @@ class IssuingWithdrawal extends Resource
         - tags [array of strings, default null]: array of strings for tagging
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
-        - transactionId [string, default null]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal
-        - issuingTransactionId [string, default null]: ledger transaction ids linked to this IssuingWithdrawal. ex: "issuing-withdrawal/5656565656565656"
-        - created [string, default null]: creation datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000"
-        - updated [string, default null]: latest update datetime for the IssuingWithdrawal. ex: "2020-03-10 10:30:00.000"
+        - id [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
+        - transactionId [string]: Stark Bank ledger transaction ids linked to this IssuingWithdrawal
+        - issuingTransactionId [string]: ledger transaction ids linked to this IssuingWithdrawal. ex: "issuing-withdrawal/5656565656565656"
+        - created [DateTime]: creation datetime for the IssuingWithdrawal. 
+        - updated [DateTime]: latest update datetime for the IssuingWithdrawal. 
      */
     function __construct(array $params)
     {
@@ -91,8 +91,8 @@ class IssuingWithdrawal extends Resource
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -115,8 +115,8 @@ class IssuingWithdrawal extends Resource
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - externalIds [list of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
@@ -126,6 +126,8 @@ class IssuingWithdrawal extends Resource
      */
     public static function page($options = [], $user = null)
     {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingWithdrawal::resource(), $options);
     }
 

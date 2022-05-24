@@ -9,10 +9,9 @@ use StarkInfra\IssuingHolder;
 
 class TestIssuingCard
 {
-
     public function query()
     {
-        $cards = IssuingCard::query(["limit" => 10]);
+        $cards = IssuingCard::query(["limit" => 10, "expand" => ["rules"]]);
 
         foreach ($cards as $card) {
             if (is_null($card->id)) {
@@ -26,7 +25,7 @@ class TestIssuingCard
         $ids = [];
         $cursor = null;
         for ($i=0; $i < 2; $i++) { 
-            list($page, $cursor) = IssuingCard::page($options = ["limit" => 5, "cursor" => $cursor]);
+            list($page, $cursor) = IssuingCard::page(["limit" => 5, "cursor" => $cursor]);
             foreach ($page as $card) {
                 if (is_null($card->id) or in_array($card->id, $ids)) {
                     throw new Exception("failed");
@@ -41,7 +40,7 @@ class TestIssuingCard
 
     public function get()
     {
-        $card = iterator_to_array(IssuingCard::query(["limit" => 1]))[0];
+        $card = iterator_to_array(IssuingCard::query(["limit" => 1, "expand" => ["rules"]]))[0];
         $card = IssuingCard::get($card->id);
 
         if (!is_string($card->id)) {
@@ -49,10 +48,10 @@ class TestIssuingCard
         }
     }
 
-    public function postAndDelete()
+    public function postAndCancel()
     {
         $holder = iterator_to_array(IssuingHolder::query(["limit" => 1]))[0];
-        $cards = IssuingCard::create(TestIssuingCard::generateExampleCardsJson($holder, 2), ["securityCode"]);
+        $cards = IssuingCard::create(TestIssuingCard::generateExampleCardsJson($holder, 2), ["expand" => "securityCode"]);
         if ($cards[0]->securityCode == "***") {
             throw new Exception("failed");
         }
@@ -61,7 +60,7 @@ class TestIssuingCard
         if ($card->displayName != "Updated Name") {
             throw new Exception("failed");
         }
-        $card = IssuingCard::delete($cardId);
+        $card = IssuingCard::cancel($cardId);
         if ($card->status != "canceled") {
             throw new Exception("failed");
         }
@@ -115,8 +114,8 @@ echo "\n\t- get";
 $test->get();
 echo " - OK";
 
-echo "\n\t- post and delete";
-$test->postAndDelete();
+echo "\n\t- post and cancel";
+$test->postAndCancel();
 echo " - OK";
 
 echo "\n\t- update";
