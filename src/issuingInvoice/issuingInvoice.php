@@ -86,7 +86,7 @@ class IssuingInvoice extends Resource
     /**
     # Retrieve IssuingInvoices
 
-    Receive an generator of IssuingInvoice objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingInvoice objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -98,7 +98,7 @@ class IssuingInvoice extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - generator of IssuingInvoices objects with updated attributes
+        - enumerator of IssuingInvoices objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

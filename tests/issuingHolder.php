@@ -98,6 +98,6 @@ echo "\n\t- get";
 $test->get();
 echo " - OK";
 
-echo "\n\t- post, patch and delete";
+echo "\n\t- post, patch and cancel";
 $test->postPatchAndDelete();
 echo " - OK";

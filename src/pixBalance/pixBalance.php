@@ -9,7 +9,7 @@ use StarkInfra\Utils\Rest;
 class PixBalance extends Resource
 {
     /**
-    # Balance object
+    # PixBalance object
 
     The PixBalance object displays the current balance of the workspace,
     which is the result of the sum of all transactions within this
@@ -17,24 +17,24 @@ class PixBalance extends Resource
     can be retrieved to see the information available.
 
     ## Attributes (return-only):
-        - id [string, default null]: unique id returned when Balance is created. ex: "5656565656565656"
-        - amount [integer, default null]: current pixBalance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-        - currency [string, default null]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
-        - updated [DateTime, default null]: update datetime for the pixBalance.
+        - id [string]: unique id returned when Balance is created. ex: "5656565656565656"
+        - amount [integer]: current pixBalance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+        - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
+        - updated [DateTime]: update datetime for the pixBalance. 
      */
     function __construct(array $params)
     {
         parent::__construct($params);
         
-        $this->amount = Checks::checkParam($params, "amount");
-        $this->currency = Checks::checkParam($params, "currency");
-        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
+        $this-> amount = Checks::checkParam($params, "amount");
+        $this-> currency = Checks::checkParam($params, "currency");
+        $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
         Checks::checkParams($params);
     }
 
     /**
-    # Retrieve the Balance object
+    # Retrieve the PixBalance object
 
     Receive the PixBalance object linked to your workspace in the Stark Infra API
 

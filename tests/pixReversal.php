@@ -121,11 +121,14 @@ class TestPixReversal
     public static function example($schedule=false)
     {
         $params = [
-            "amount" => 1,
+            "amount" => 10000,
             "externalId" => "php-" . $uuid = mt_rand(0, 0xffffffff),
-            "endToEndId" => self::getEndToEndId(),
+            "endToEndId" =>  self::getEndToEndId(),
             "reason" => "fraud",
-            "tags" => ["0000"],
+            "tags" => [
+                "lannister",
+                "chargeback"
+            ],
         ];
         return new PixReversal($params);
     }
@@ -145,6 +148,9 @@ class TestPixReversal
             if ($cursor == null) {
                 break;
             }
+        }
+        if ($endToEndId == null) {
+            print_r("There are no inbound PixRequests to be reversed in your workspace.");
         }
         return $endToEndId;
     }
@@ -170,9 +176,9 @@ echo "\n\t- get page";
 $test->getPage();
 echo " - OK";
 
-//echo "\n\t- parse right";
-//$test->parseRight();
-//echo " - OK";
+echo "\n\t- parse right";
+$test->parseRight();
+echo " - OK";
 
 echo "\n\t- parse wrong";
 $test->parseWrong();

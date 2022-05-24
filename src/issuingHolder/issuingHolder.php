@@ -87,7 +87,7 @@ class IssuingHolder extends Resource
     /**
     # Retrieve IssuingHolders
 
-    Receive a generator of IssuingHolder objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingHolder objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if None. ex: 35
@@ -100,7 +100,7 @@ class IssuingHolder extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - generator of IssuingHolder objects with updated attributes
+        - enumerator of IssuingHolder objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

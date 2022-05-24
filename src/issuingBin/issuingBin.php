@@ -39,7 +39,7 @@ class IssuingBin extends Resource
     /**
     # Retrieve IssuingBins
 
-    Receive a generator of IssuingBin objects previously registered in the Stark Infra API
+    Receive an enumerator of IssuingBin objects previously registered in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35

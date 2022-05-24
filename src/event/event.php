@@ -40,6 +40,10 @@ class Event extends Resource
     private static function buildLog($subscription, $log)
     {
         $makerOptions = [
+            "pix-claim" => Event::pixClaimLogResource(),
+            "pix-key" => Event::pixKeyLogResource(),
+            "pix-infraction" => Event::pixInfractionLogResource(),
+            "pix-chargeback" => Event::pixChargebackLogResource(),
             "pix-request.in" => Event::pixRequestLogResource(),
             "pix-request.out" => Event::pixRequestLogResource(),
             "pix-reversal.in" => Event::pixReversalLogResource(),
@@ -121,6 +125,62 @@ class Event extends Resource
             $array["request"] = API::fromApiJson($request, $array["request"]);
             $log = function ($array) {
                 return new PixRequest\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixClaimLogResource()
+    {
+        return function ($array) {
+            $claim = function ($array) {
+                return new PixRequest($array);
+            };
+            $array["claim"] = API::fromApiJson($claim, $array["claim"]);
+            $log = function ($array) {
+                return new PixClaim\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixKeyLogResource()
+    {
+        return function ($array) {
+            $key = function ($array) {
+                return new PixRequest($array);
+            };
+            $array["key"] = API::fromApiJson($key, $array["key"]);
+            $log = function ($array) {
+                return new PixKey\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixInfractionLogResource()
+    {
+        return function ($array) {
+            $infraction = function ($array) {
+                return new PixRequest($array);
+            };
+            $array["infraction"] = API::fromApiJson($infraction, $array["infraction"]);
+            $log = function ($array) {
+                return new PixInfraction\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixChargebackLogResource()
+    {
+        return function ($array) {
+            $chargeback = function ($array) {
+                return new PixRequest($array);
+            };
+            $array["chargeback"] = API::fromApiJson($chargeback, $array["chargeback"]);
+            $log = function ($array) {
+                return new PixChargeback\Log($array);
             };
             return API::fromApiJson($log, $array);
         };
