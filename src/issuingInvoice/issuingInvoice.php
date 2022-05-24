@@ -94,7 +94,7 @@ class IssuingInvoice extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - fields [list of string, default []]: fields to be returned. ex: ["id", "amount", "name"]
+        - fields [array of string, default []]: fields to be returned. ex: ["id", "amount", "name"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -119,8 +119,8 @@ class IssuingInvoice extends Resource
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
-        - tags [list of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - fields [list of string, default null]: fields to be returned. ex: ["id", "amount", "name"]
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - fields [array of string, default null]: fields to be returned. ex: ["id", "amount", "name"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

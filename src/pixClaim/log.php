@@ -21,7 +21,7 @@ class Log extends Resource
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
         - created [DateTime]: creation datetime for the log.
         - type [string]: type of the PixClaim event which triggered the log creation. ex: "created" or "failed"
-        - errors [list of strings]: list of errors linked to this PixClaim event
+        - errors [array of strings]: list of errors linked to this PixClaim event
         - agent [string]: agent that modified the PixClaim resulting in the Log. Options: "claimer", "claimed".
         - reason [string]: reason why the PixClaim was modified, resulting in the Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
         - claim [PixClaim]: PixClaim entity to which the log refers to.
@@ -65,12 +65,12 @@ class Log extends Resource
     Receive an enumerator of PixClaim\Log objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
+        - ids [array of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - types [list of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled".
-        - claimIds [list of strings, default null]: list of PixClaim ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - types [array of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled".
+        - claimIds [array of strings, default null]: list of PixClaim ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra\user was set before function call
     
     ## Return:
@@ -92,12 +92,12 @@ class Log extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - ids [list of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
+        - ids [array of strings, default null]: Log ids to filter PixClaim Logs. ex: ["5656565656565656"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - types [list of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled".
-        - claimIds [list of strings, default null]: list of PixClaim IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - types [array of strings, default null]: filter retrieved objects by types. ex: "created", "failed", "delivering", "delivered", "confirming", "confirmed", "success", "canceling" and "canceled".
+        - claimIds [array of strings, default null]: list of PixClaim IDs to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

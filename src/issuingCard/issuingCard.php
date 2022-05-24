@@ -50,7 +50,7 @@ class IssuingCard extends Resource
         $this->holderTaxId = Checks::checkParam($params, "holderTaxId");
         $this->holderExternalId = Checks::checkParam($params, "holderExternalId");
         $this->displayName = Checks::checkParam($params, "displayName");
-        $this->rules = Checks::checkParam($params, "rules");
+        $this->rules = IssuingRule::parseRules(Checks::checkParam($params, "rules"));
         $this->binId = Checks::checkParam($params, "binId");
         $this->tags = Checks::checkParam($params, "tags");
         $this->streetLine1 = Checks::checkParam($params, "streetLine1");

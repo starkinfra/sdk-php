@@ -41,7 +41,7 @@ class PixRequest extends Resource
         -cashAmount [Long, default 0]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)
         -cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
         -cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
-        -tags [list of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
+        -tags [array of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
         -method [string, default null]: execution  method for thr creation of the PIX. ex: "manual", "payerQrcode", "dynamicQrcode".
 
     ## Attributes (return-only):
@@ -133,15 +133,15 @@ class PixRequest extends Resource
     Receive an enumerator of PixRequest objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
+        - fields [array of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
-        - externalIds [list of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - endToEndIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
+        - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -162,15 +162,15 @@ class PixRequest extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - fields [list of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
+        - fields [array of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - endToEndIds [list of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
-        - externalIds [list of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - endToEndIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
+        - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixRequests. Duplicated external IDs will cause failures. By default, this parameter will block any PixRequests that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:

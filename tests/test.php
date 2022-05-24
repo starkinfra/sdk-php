@@ -50,7 +50,10 @@ include_once("pixRequest.php");
 include_once("pixRequestLog.php");
 include_once("pixReversal.php"); 
 include_once("pixReversalLog.php");
-include_once("pixStatement.php"); 
+include_once("pixStatement.php");
+include_once("creditNote.php");
+include_once("creditNoteLog.php");
+include_once("webhook.php");
 include_once("event.php");
 include_once("key.php");
 

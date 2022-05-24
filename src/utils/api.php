@@ -48,7 +48,7 @@ class API
                 $clean[$key] = API::castJsonToApiFormat($value, $resourceName);
                 continue;
             }
-            if($value instanceof Resource) {
+            if($value instanceof SubResource) {
                 $clean[$key] = API::castJsonToApiFormat(get_object_vars($value), $resourceName);
                 continue;
             }

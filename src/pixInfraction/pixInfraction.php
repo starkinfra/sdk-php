@@ -106,9 +106,9 @@ class PixInfraction extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [list of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
@@ -133,9 +133,9 @@ class PixInfraction extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [list of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
-        - ids [list of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [list of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
+        - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
