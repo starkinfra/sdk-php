@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.0.4] - 2022-05-24
 ### Added
 - PixChargeback resource for Direct Participants
 - PixClaim resource for Direct Participants
