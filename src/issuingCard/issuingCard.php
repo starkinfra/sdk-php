@@ -95,7 +95,7 @@ class IssuingCard extends Resource
     /**
     # Retrieve IssuingCards
 
-    Receive a generator of IssuingCards objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingCards objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
@@ -110,12 +110,13 @@ class IssuingCard extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - generator of IssuingCards objects with updated attributes
+        - enumerator of IssuingCards objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+
         return Rest::getList($user, IssuingCard::resource(), $options);
     }
 

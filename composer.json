@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "StarkInfra",
-            "email": "developers@starkbank.com",
+            "email": "help@starkbank.com",
             "homepage": "https://starkinfra.com",
             "role": "Developer"
         }
@@ -16,7 +16,7 @@
     "require": {
         "php": ">=7.1",
         "starkbank/ecdsa": "^0.0.5",
-      "ext-json": "*"
+        "ext-json": "*"
     },
     "keywords": [
         "starkinfra",

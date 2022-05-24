@@ -21,5 +21,3 @@ class User extends Resource
         return PrivateKey::fromPem($this->pem);
     }
 }
-
-?>

@@ -97,7 +97,7 @@ class IssuingPurchase extends Resource
     /**
     # Retrieve IssuingPurchases
 
-    Receive a generator of IssuingPurchase objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingPurchase objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - endToEndIds [list of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
@@ -112,7 +112,7 @@ class IssuingPurchase extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - generator of IssuingPurchase objects with updated attributes
+        - enumerator of IssuingPurchase objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

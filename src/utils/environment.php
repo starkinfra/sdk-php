@@ -7,5 +7,3 @@ class Environment extends Enum
     const production = "production";
     const sandbox = "sandbox";
 }
-
-?>

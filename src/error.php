@@ -53,5 +53,3 @@ class InvalidSignatureError extends StarkError
         parent::__construct($message, 0, null);
     }
 }
-
-?>
