@@ -51,12 +51,12 @@ class Log extends Resource
     ## Return:
         - PixKey\Log object with updated attributes
      */
-     public static function get($id, $user = null)
-     {
-         return Rest::getId($user, Log::resource(), $id);
-     }
+    public static function get($id, $user = null)
+    {
+        return Rest::getId($user, Log::resource(), $id);
+    }
 
-     /**
+    /**
     #Retrieve PixKey\Logs
 
     Receive an enumerator of PixKey\Log objects previously created in the Stark Infra API
@@ -101,17 +101,17 @@ class Log extends Resource
         - cursor to retrieve the next page of PixKey\Log objects
      */
     public static function page($options = [], $user = null)
-     {
+    {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, Log::resource(), $options);
-     }
+    }
 
     private static function resource()
     {
         $keyLog = function ($array) {
             $key = function ($array) {
-                return new TestPixKeyLog($array);
+                return new PixKey($array);
             };
             $array["key"] = API::fromApiJson($key, $array["key"]);
             return new Log($array);

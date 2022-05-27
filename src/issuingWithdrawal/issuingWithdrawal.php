@@ -46,22 +46,22 @@ class IssuingWithdrawal extends Resource
     }
 
     /**
-    # Create IssuingWithdrawal
+    # Create a IssuingWithdrawal
 
-    Send a list of IssuingWithdrawal objects for creation in the Stark Infra API
+    Send a IssuingWithdrawal object for creation in the Stark Infra API
 
     ## Parameters (required):
-        - withdrawals [array of IssuingWithdrawal objects]: list of IssuingWithdrawal objects to be created in the API
+        - withdrawal [IssuingWithdrawal object]: list of IssuingWithdrawal objects to be created in the API
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - list of IssuingWithdrawal objects with updated attributes
+        - IssuingWithdrawal object with updated attributes
      */
-    public static function create($withdrawals, $user = null)
+    public static function create($withdrawal, $user = null)
     {
-        return Rest::post($user, IssuingWithdrawal::resource(), $withdrawals);
+        return Rest::postSingle($user, IssuingWithdrawal::resource(), $withdrawal);
     }
 
     /**
