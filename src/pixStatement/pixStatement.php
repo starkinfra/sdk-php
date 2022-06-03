@@ -86,7 +86,7 @@ class PixStatement extends Resource
     Receive an enumerator of PixStatement  objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -106,7 +106,7 @@ class PixStatement extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 

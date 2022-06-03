@@ -46,22 +46,22 @@ class IssuingWithdrawal extends Resource
     }
 
     /**
-    # Create IssuingWithdrawal
+    # Create an IssuingWithdrawal
 
-    Send a list of IssuingWithdrawal objects for creation in the Stark Infra API
+    Send an IssuingWithdrawal object for creation in the Stark Infra API
 
     ## Parameters (required):
-        - withdrawals [array of IssuingWithdrawal objects]: list of IssuingWithdrawal objects to be created in the API
+        - withdrawal [IssuingWithdrawal object]: list of IssuingWithdrawal objects to be created in the API
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - list of IssuingWithdrawal objects with updated attributes
+        - IssuingWithdrawal object with updated attributes
      */
-    public static function create($withdrawals, $user = null)
+    public static function create($withdrawal, $user = null)
     {
-        return Rest::post($user, IssuingWithdrawal::resource(), $withdrawals);
+        return Rest::postSingle($user, IssuingWithdrawal::resource(), $withdrawal);
     }
 
     /**
@@ -113,7 +113,7 @@ class IssuingWithdrawal extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"

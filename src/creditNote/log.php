@@ -65,7 +65,7 @@ class Log extends Resource
     Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
 
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. 
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter for log event types. ex: "created", "paid", "canceled" or "overdue"
@@ -91,7 +91,7 @@ class Log extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default 100]: maximum number of objects to be retrieved. 
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter for log event types. ex: "canceled", "created", "expired", "failed", "refunded", "registered", "sending", "sent", "signed", "success"

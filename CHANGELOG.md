@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- credit receiver's billing address on CreditNote
 
 ## [0.0.4] - 2022-05-24
 ### Added

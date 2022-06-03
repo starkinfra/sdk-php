@@ -96,7 +96,7 @@ class IssuingTransaction extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
         - ids [array of strings, default [], default null]: purchase IDs
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:

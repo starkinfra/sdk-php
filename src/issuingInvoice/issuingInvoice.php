@@ -18,8 +18,8 @@ class IssuingInvoice extends Resource
         - amount [integer]: IssuingInvoice value in cents. Minimum = 0 (R$0,00). ex: 1234 (= R$ 12.34)
 
     ## Parameters (optional):
-        - taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-        - name [string]: payer name. ex: "Iron Bank S.A."
+        - taxId [string, default null]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+        - name [string, default null]: payer name. ex: "Iron Bank S.A."
         - tags [array of strings, default null]: array of strings for tagging
 
     ## Attributes (return-only):
@@ -115,7 +115,7 @@ class IssuingInvoice extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"

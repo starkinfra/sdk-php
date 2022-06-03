@@ -130,6 +130,8 @@ class IssuingPurchase extends Resource
     Use this function instead of query if you want to manually page your requests.
 
     ## Parameters (optional):
+        - cursor [string, default null]: cursor returned on the previous page function call
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - endToEndIds [array of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
         - holderIds [array of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
         - cardIds [array of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
@@ -137,10 +139,9 @@ class IssuingPurchase extends Resource
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - ids [array of strings, default [], default null]: purchase IDs
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
-    
+
     ## Return:
         - list of IssuingPurchase objects with updated attributes
         - cursor to retrieve the next page of IssuingPurchase objects
