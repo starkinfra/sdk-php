@@ -311,13 +311,13 @@ To simplify the following SDK examples, we will only use the `query` function, b
 # Testing in Sandbox
 
 Your initial balance is zero. For many operations in Stark Infra, you'll need funds
-in your account, which can be added to your balance by creating an Issuing Invoice. 
+in your account, which can be added to your balance by creating an starkbank.Invoice. 
 
-In the Sandbox environment, most of the created Invoices will be automatically paid,
+In the Sandbox environment, most of the created starkbank.Invoices will be automatically paid,
 so there's nothing else you need to do to add funds to your account. Just create
-a few Invoices and wait around a bit.
+a few starkbank.Invoices and wait around a bit.
 
-In Production, you (or one of your clients) will need to actually pay this Invoice
+In Production, you (or one of your clients) will need to actually pay this starkbank.Invoice
 for the value to be credited to your account.
 
 
@@ -1618,7 +1618,13 @@ $notes = CreditNote::create([
             'War supply',
             'Invoice #1234'
         ],
-        "externalId" => "my_unique_id"
+        "externalId" => "my_unique_id",
+        "streetLine1" => "Av. Paulista, 200",
+        "streetLine2" => "10 andar",
+        "district" => "Bela Vista",
+        "city" => "Sao Paulo",
+        "stateCode" => "SP",
+        "zipCode" => "01310-000"
     ]);
 ]);
 

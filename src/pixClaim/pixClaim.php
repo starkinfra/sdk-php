@@ -107,7 +107,7 @@ class PixClaim extends Resource
     Receive an enumerator of PixClaims objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
@@ -137,7 +137,7 @@ class PixClaim extends Resource
     
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call.
-        - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"

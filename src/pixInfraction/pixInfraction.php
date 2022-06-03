@@ -23,7 +23,7 @@ class PixInfraction extends Resource
         - type [string]: type of Pix infraction. Options: "fraud", "reversal", "reversalChargeback"
 
     ## Parameters (optional):
-        - description [string]: description for any details that can help with the infraction investigation.
+        - description [string, default null]: description for any details that can help with the infraction investigation.
     
     ## Attributes (return-only):
         - creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
@@ -103,7 +103,7 @@ class PixInfraction extends Resource
     Receive an enumerator of PixInfraction objects previously created in the Stark Infra API
     
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
@@ -130,7 +130,7 @@ class PixInfraction extends Resource
     
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call.
-        - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".

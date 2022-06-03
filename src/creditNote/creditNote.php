@@ -23,11 +23,17 @@ class CreditNote extends Resource
         - name [string]: credit receiver's full name. ex: name="Edward Stark"
         - taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
         - nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
-        - scheduled [Date or string, default now]: date of transfer execution. ex: "2020-03-10"
+        - scheduled [Date or string]: date of transfer execution. ex: "2020-03-10"
         - invoices [array of Invoice objects or dictionaries]: list of Invoices to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
         - payment [Transfer object or dictionary]: payment to be created and sent to the credit receiver. ex: payment=CreditNote\Transfer()
         - signers [array of Signer objects or dictionaries]: Signers contain the name and email of the signer and the method of delivery. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
         - externalId [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
+        - streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
+        - streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
+        - district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
+        - city [string]: credit receiver address city. ex: "Rio de Janeiro"
+        - stateCode [string]: credit receiver address state. ex: "GO"
+        - zipCode [string]: credit receiver address zip code. ex: "01311-200"
 
     ## Parameters (conditionally required):
         - paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
@@ -39,15 +45,15 @@ class CreditNote extends Resource
     ## Attributes (return-only):
         - id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
         - amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
-        - expiration [DateTime]: time interval in seconds between due date and expiration date. ex 123456789
+        - expiration [DateTime]: time interval in seconds between due date and expiration date.
         - documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
         - status [string]: current status of the CreditNote. ex: "created"
         - transactionIds [array of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
         - workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
         - taxAmount [float]: tax amount included in the CreditNote. ex: 100
         - interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
-        - created [DateTime]: creation datetime for the CreditNote. 
-        - updated [DateTime]: latest update datetime for the CreditNote. 
+        - created [DateTime]: creation datetime for the CreditNote.
+        - updated [DateTime]: latest update datetime for the CreditNote.
      */
     function __construct(array $params)
     {
@@ -58,22 +64,27 @@ class CreditNote extends Resource
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> nominalAmount = Checks::checkParam($params, "nominalAmount");
         $this-> scheduled = Checks::checkDateTime(Checks::checkParam($params, "scheduled"));
+        $this-> invoices = CreditNote::parseInvoices(Checks::checkParam($params, "invoices"));
+        $this-> payment = Checks::checkParam($params, "payment");
+        $this-> signers = CreditNote::parseSigners(Checks::checkParam($params, "signers"));
         $this-> externalId = Checks::checkParam($params, "externalId");
-        $this-> interest = Checks::checkParam($params, "interest");
-        $this-> taxAmount = Checks::checkParam($params, "taxAmount");
+        $this-> streetLine1 = Checks::checkParam($params, "streetLine1");
+        $this-> streetLine2 = Checks::checkParam($params, "streetLine2");
+        $this-> district = Checks::checkParam($params, "district");
+        $this-> city = Checks::checkParam($params, "city");
+        $this-> stateCode = Checks::checkParam($params, "stateCode");
+        $this-> zipCode = Checks::checkParam($params, "zipCode");
+        $this-> paymentType = Checks::checkParam($params, "paymentType");
         $this-> rebateAmount = Checks::checkParam($params, "rebateAmount");
+        $this-> tags = Checks::checkParam($params, "tags");
         $this-> amount = Checks::checkParam($params, "amount");
-        $this-> expiration = Checks::checkParam($params, "expiration");
         $this-> expiration = Checks::checkParam($params, "expiration");
         $this-> documentId = Checks::checkParam($params, "documentId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> transactionsIds = Checks::checkParam($params, "transactionsIds");
         $this-> workspaceId = Checks::checkParam($params, "workspaceId");
-        $this-> tags = Checks::checkParam($params, "tags");
-        $this-> invoices = CreditNote::parseInvoices(Checks::checkParam($params, "invoices"));
-        $this-> signers = CreditNote::parseSigners(Checks::checkParam($params, "signers"));
-        $this-> payment = Checks::checkParam($params, "payment");
-        $this-> paymentType = Checks::checkParam($params, "paymentType");
+        $this-> taxAmount = Checks::checkParam($params, "taxAmount");
+        $this-> interest = Checks::checkParam($params, "interest");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
@@ -177,7 +188,7 @@ class CreditNote extends Resource
     {
         return Rest::getId($user, CreditNote::resource(), $id);
     }
-    
+
     /**
     # Retrieve Credit Notes
 
@@ -185,7 +196,7 @@ class CreditNote extends Resource
     Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
 
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved.
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"

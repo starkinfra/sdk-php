@@ -9,30 +9,30 @@ class Transfer extends Resource
 {
     /**
     # CreditNote\Transfer object
-   
+
     Transfer object to be created and sent to the credit receiver.
-   
+
     ## Parameters (required):
     - name [string]: receiver full name. ex: "Anthony Edward Stark"
     - taxId [string]: receiver tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
     - bankCode [string]: code of the receiver bank institution in Brazil. If an ISPB (8 digits) is informed, a Pix transfer will be created, else a TED will be issued. ex: "20018183" or "341"
     - branchCode [string]: receiver bank account branch. Use '-' in case there is a verifier digit. ex: "1357-9"
     - accountNumber [string]: receiver bank account number. Use '-' before the verifier digit. ex: "876543-2"
-   
+
     ## Parameters (optional):
     - accountType [string, default "checking"]: Receiver bank account type. This parameter only has effect on Pix Transfers. ex: "checking", "savings", "salary" or "payment"
     - tags [array of strings, default null]: list of strings for reference when searching for transfers. ex: ["employees", "monthly"]
-   
+
     ## Attributes (return-only):
     - amount [integer]: amount in cents to be transferred. ex: 1234 (= R$ 12.34)
-    - externalId [string, default null]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
-    - scheduled [DateTime or string, default now]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2020-03-10 10:30:00.000"
-    - description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
-    - id [string, default null]: unique id returned when the transfer is created. ex: "5656565656565656"
-    - fee [integer, default null]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
-    - status [string, default null]: current transfer status. ex: "success" or "failed"
-    - transactionIds [array of strings, default null]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
-    - created [DateTime]: creation datetime for the Transfer. 
+    - externalId [string]: url safe string that must be unique among all your transfers. Duplicated externalIds will cause failures. By default, this parameter will block any transfer that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
+    - scheduled [DateTime or string]: date or datetime when the transfer will be processed. May be pushed to next business day if necessary. ex: "2020-03-10 10:30:00.000"
+    - description [string]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
+    - id [string]: unique id returned when the transfer is created. ex: "5656565656565656"
+    - fee [integer]: fee charged when the Transfer is processed. ex: 200 (= R$ 2.00)
+    - status [string]: current transfer status. ex: "success" or "failed"
+    - transactionIds [array of strings]: ledger Transaction IDs linked to this Transfer (if there are two, the second is the chargeback). ex: ["19827356981273"]
+    - created [DateTime]: creation datetime for the Transfer.
     - updated [DateTime]: latest update datetime for the Transfer.
     */
 

@@ -16,19 +16,19 @@ class IssuingRule extends Resource
     ## Parameters (required):
         - name [string]: rule name. ex: "Travel" or "Food"
         - amount [string]: amount to be used in informed interval. ex: 200000 (= R$ 2000.00)
-        - interval [string]: interval to reset the counters of the rule. ex: "instant", "day", "week", "month", "year" or "lifetime"
-
-    ## Attributes (return-only):
-        - id [string]: unique id returned when Rule is created. ex: "5656565656565656"
-        - currencyCode [string]: code of the currency used by the rule. ex: "BRL" or "USD"
+        
+        ## Attributes (return-only):
+        - id [string, default null]: unique id returned when Rule is created. ex: "5656565656565656"
+        - interval [string, default "lifetime"]: interval to reset the counters of the rule. ex: "instant", "day", "week", "month", "year" or "lifetime"
+        - currencyCode [string, default "BRL"]: code of the currency used by the rule. ex: "BRL" or "USD"
+        - categories [array of strings, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
+        - countries [array of strings, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
+        - methods [array of strings, default []]: methods accepted by the rule. ex: ["contactless", "token"]
 
     ## Attributes (expanded return-only):
         - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)
-        - currencyName [string]: currency name. ex: "Brazilian Real"
         - currencySymbol [string]: currency symbol. ex: "R$"
-        - categories [array of strings]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
-        - countries [array of strings]: countries accepted by the rule. ex: ["BRA", "USA"]
-        - methods [array of strings]: methods accepted by the rule. ex: ["contactless", "token"]
+        - currencyName [string]: currency name. ex: "Brazilian Real"
      */
     function __construct(array $params)
     {
