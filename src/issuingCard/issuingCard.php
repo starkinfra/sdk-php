@@ -21,15 +21,15 @@ class IssuingCard extends Resource
 
     ## Parameters (optional):
         - displayName [string, default null]: card displayed name. ex: "ANTHONY STARK"
-        - rules [array of IssuingRule, default null]: [EXPANDABLE] array of card spending rules.
+        - rules [array of IssuingRule, default []]: [EXPANDABLE] array of card spending rules.
         - binId [string, default null]: BIN ID to which the card is bound. ex: "53810200"
-        - tags [array of strings]: array of strings for tagging. ex: ["travel", "food"]
-        - streetLine1 [string, default null]: card holder main address. ex: "Av. Paulista, 200"
-        - streetLine2 [string, default null]: card holder address complement. ex: "Apto. 123"
-        - district [string]: card holder address district / neighbourhood. ex: "Bela Vista"
-        - city [string, default null]: card holder address city. ex: "Rio de Janeiro"
-        - stateCode [string, default null]: card holder address state. ex: "GO"
-        - zipCode [string, null]: card holder address zip code. ex: "01311-200"
+        - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
+        - streetLine1 [string, default sub-issuer street line 1]: card holder main address. ex: "Av. Paulista, 200"
+        - streetLine2 [string, default sub-issuer street line 2]: card holder address complement. ex: "Apto. 123"
+        - district [string, default sub-issuer district]: card holder address district / neighbourhood. ex: "Bela Vista"
+        - city [string, default sub-issuer city]: card holder address city. ex: "Rio de Janeiro"
+        - stateCode [string, default sub-issuer state code]: card holder address state. ex: "GO"
+        - zipCode [string, default sub-issuer zip code]: card holder address zip code. ex: "01311-200"
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
@@ -64,7 +64,10 @@ class IssuingCard extends Resource
         $this->status = Checks::checkParam($params, "status");
         $this->number = Checks::checkParam($params, "number");
         $this->securityCode = Checks::checkParam($params, "securityCode");
-        $this->expiration = Checks::checkParam($params, "expiration");
+        $expiration = Checks::checkParam($params, "expiration");
+        if (!is_null($expiration) && str_contains($expiration, "*"))
+            $expiration = null;
+        $this->expiration = Checks::checkDateTime($expiration);
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
@@ -134,7 +137,7 @@ class IssuingCard extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - expand [array of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     

@@ -2,11 +2,11 @@
 
 namespace StarkInfra;
 use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkInfra\Utils\SubResource;
 use StarkInfra\Utils\Rest;
 
 
-class PixDomain extends Resource
+class PixDomain extends SubResource
 {
     /**
     # PixDomain object
@@ -20,8 +20,6 @@ class PixDomain extends Resource
     */
     function __construct(array $params)
     {
-        parent::__construct($params);
-
         $this->certificates = Checks::checkParam($params, "certificates");
         $this->name = Checks::checkParam($params, "name");
 

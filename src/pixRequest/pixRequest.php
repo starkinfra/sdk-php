@@ -24,7 +24,7 @@ class PixRequest extends Resource
         -senderTaxId [string]: sender's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
         -senderBranchCode [string]: sender's bank account branch code. Use '-' in case there is a verifier digit. ex: "1357-9"
         -senderAccountNumber [string]: sender's bank account number. Use '-' before the verifier digit. ex: "876543-2"
-        -senderAccountType [string, default "checking"]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
+        -senderAccountType [string]: sender's bank account type. ex: "checking", "savings", "salary" or "payment"
         -receiverName [string]: receiver's full name. ex: "Anthony Edward Stark"
         -receiverTaxId [string]: receiver's tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
         -receiverBankCode [string]: receiver's bank institution code in Brazil. ex: "20018183" or "341"
@@ -133,8 +133,7 @@ class PixRequest extends Resource
     Receive an enumerator of PixRequest objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - fields [array of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
-        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
@@ -162,8 +161,7 @@ class PixRequest extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - fields [array of strings, default null]: parameters to be retrieved from PixRequest objects. ex: ["amount", "id"]
-        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"

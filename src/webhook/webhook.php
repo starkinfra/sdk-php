@@ -76,7 +76,7 @@ class Webhook extends Resource
     Receive an enumerator of Webhook subcription objects previously created in the Stark Infra API
     
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. 
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
     
     ## Return:

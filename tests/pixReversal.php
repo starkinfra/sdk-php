@@ -138,7 +138,7 @@ class TestPixReversal
         $cursor = null;
         $endToEndId = null;
         while ($endToEndId == null){
-            list($page, $cursor) = PixRequest::page($options = ["limit" => 2, "status" => "success", "cursor" => $cursor]);
+            list($page, $cursor) = PixRequest::page($options = ["limit" => 100, "status" => "success", "cursor" => $cursor]);
             for ($i = 1; $i <= 2; $i++){
                 if ($page[$i]->amount > 1 && $page[$i]->flow == "in") {
                     $endToEndId = $page[$i]->endToEndId;

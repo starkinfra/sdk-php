@@ -10,7 +10,7 @@ class Invoice extends Resource
 {
     /**
     # CreditNote\Invoice object
-    Invoice object to be issued after contract signature and paid by the credit receiver.
+    Invoice issued after the contract is signed, to be paid by the credit receiver.
     
     ## Parameters (required):
         - amount [integer]: Invoice value in cents. Minimum = 1 (any value will be accepted). ex: 1234 (= R$ 12.34)
@@ -29,10 +29,10 @@ class Invoice extends Resource
         - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
         - link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
         - nominalAmount [integer]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
-        - fineAmount [integer]: Invoice fine value calculated over nominal_amount. ex: 20000
-        - interestAmount [integer]: Invoice interest value calculated over nominal_amount. ex: 10000
-        - discountAmount [integer]: Invoice discount value calculated over nominal_amount. ex: 3000
-        - discounts [array of Invoice\Discount objects, default null]: list of Invoice\Discount objects with "percentage":float and "due":DateTime or string pairs
+        - fineAmount [integer]: Invoice fine value calculated over nominalAmount. ex: 20000
+        - interestAmount [integer]: Invoice interest value calculated over nominalAmount. ex: 10000
+        - discountAmount [integer]: Invoice discount value calculated over nominalAmount. ex: 3000
+        - discounts [array of Invoice\Discount objects]: list of Invoice\Discount objects with "percentage":float and "due":DateTime or string pairs
         - id [string]: unique id returned when Invoice is created. ex: "5656565656565656"
         - brcode [string]: BR Code for the Invoice payment. ex: "00020101021226800014br.gov.bcb.pix2558invoice.starkbank.com/f5333103-3279-4db2-8389-5efe335ba93d5204000053039865802BR5913Arya Stark6009Sao Paulo6220051656565656565656566304A9A0"
         - status [string]: current Invoice status. ex: "registered" or "paid"

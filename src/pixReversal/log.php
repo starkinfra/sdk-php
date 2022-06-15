@@ -62,7 +62,7 @@ class Log extends Resource
     Receive an enumerator of Log objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 35
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter retrieved objects by types. ex: "sent", "denied", "failed", "created", "success", "approved", "credited", "refunded", "processing".

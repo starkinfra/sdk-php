@@ -63,7 +63,7 @@ class TestWebhook
         $params = [
             "url" => "https://webhook.site/",
             "subscriptions" =>[
-                "contract", "credit-note", "signer",
+                "credit-note", "signer",
                 "issuing-card", "issuing-invoice", "issuing-purchase",
                 "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"
             ]

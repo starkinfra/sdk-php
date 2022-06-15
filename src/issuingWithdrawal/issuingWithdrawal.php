@@ -113,7 +113,7 @@ class IssuingWithdrawal extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
