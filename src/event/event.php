@@ -13,6 +13,7 @@ use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
 use StarkInfra\Utils\Request;
 use StarkInfra\Utils\Cache;
+use StarkInfra\Utils\Parse;
 use StarkInfra\Utils\StarkBankDate;
 
 
@@ -27,7 +28,7 @@ class Event extends Resource
 
     ## Attributes:
         - id [string]: unique id returned when the event is created. ex: "5656565656565656"
-        - log [Log]: a Log object from one the subscription services (PixClaim\Log, IssuingCard\Log, PixKey\log or IssuingInvoice\Log)
+        - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
         - created [DateTime]: creation datetime for the notification event.
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
         - subscription [string]: service that triggered this event. ex: "issuing-card", "pix-request.in"
@@ -216,12 +217,12 @@ class Event extends Resource
     /**
     # Retrieve notification Events
 
-    Receive a enumerator of notification Event objects previously created in the Stark Infra API
+    Receive a enumerator of Event objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - after [DateTime or string, default null]: date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [DateTime or string, default null]: date filter for objects created only before specified date. ex: "2020-04-03"
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2020-04-03"
         - isDelivered [bool, default null]: bool to filter successfully delivered events. ex: true or false
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -245,8 +246,8 @@ class Event extends Resource
     ## Parameters (optional):
     - cursor [string, default null]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-    - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+    - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+    - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
     - isDelivered [boolean, default None]: bool to filter successfully delivered events. ex: True or False
     - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
@@ -262,7 +263,7 @@ class Event extends Resource
     /**
     # Delete notification Events
 
-    Delete an array of notification Event entities previously created in the Stark Infra API
+    Delete a single Event entity previously created in the Stark Infra API
 
     ## Parameters (required):
         - id [string]: Event unique id. ex: "5656565656565656"
@@ -318,22 +319,7 @@ class Event extends Resource
      */
     public static function parse($content, $signature, $user = null)
     {
-        $event = API::fromApiJson(Event::resource()["maker"], json_decode($content, true)["event"]);
-
-        try {
-            $signature = Signature::fromBase64($signature);
-        } catch (Exception $e) {
-            throw new InvalidSignatureError("The provided signature is not valid");
-        }
-
-        if (Event::verifySignature($user, $content, $signature)) {
-            return $event;
-        }
-        if (Event::verifySignature($user, $content, $signature, true)) {
-            return $event;
-        }
-
-        throw new InvalidSignatureError("The provided signature and content do not match the Stark Infra public key");
+        return Parse::parseAndVerify($content, $signature, Event ::resource(), $user);
     }
 
     private static function verifySignature($user, $content, $signature, $refresh = false)

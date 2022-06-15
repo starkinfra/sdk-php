@@ -15,7 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 
 ### Added
-- Event->Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
+- Event/Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
 - get, query, page, delete and update function for Event resource.
 
 ## [0.0.4] - 2022-05-24

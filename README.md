@@ -1819,7 +1819,7 @@ You can get a specific webhook event by its id.
 ```php
 use StarkInfra\Event;
 
-$event = Event::get("10827361982368179");
+$event = Event::get("1082736198236817");
 
 print_r($event);
 ```
@@ -1831,7 +1831,7 @@ You can also delete a specific webhook event by its id.
 ```php
 use StarkInfra\Event;
 
-$event = Event::delete("10827361982368179");
+$event = Event::delete("1082736198236817");
 
 print_r($event);
 ```
@@ -1845,7 +1845,7 @@ With this function, you can manually set events retrieved from the API as
 ```php
 use StarkInfra\Event;
 
-$event = Event::update("129837198237192", ["isDelivered" => true]);
+$event = Event::update("1298371982371929", ["isDelivered" => true]);
 
 print_r($event);
 ```

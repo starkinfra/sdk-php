@@ -10,7 +10,7 @@ use StarkInfra\Utils\Rest;
 class Attempt extends Resource
 {
     /**
-    # Event->Attempt object
+    # Event/Attempt object
     
     When an Event delivery fails, an event attempt will be registered.
     It carries information meant to help you debug event reception issues.
@@ -37,9 +37,9 @@ class Attempt extends Resource
     }
 
     /**
-    # Retrieve a specific Event->Attempt
+    # Retrieve a specific Event/Attempt
 
-    Receive a single Event->Attempt object previously created by the Stark Infra API by its id
+    Receive a single Event/Attempt object previously created by the Stark Infra API by its id
     
     ## Parameters (required):
     - id [string]: object unique id. ex: "5656565656565656"
@@ -48,7 +48,7 @@ class Attempt extends Resource
     - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
-    - Event->Attempt object with updated attributes
+    - Event/Attempt object with updated attributes
      */
     public static function get($id, $user = null)
     {
@@ -56,20 +56,20 @@ class Attempt extends Resource
     }
 
     /**
-    # Retrieve Event->Attempts
+    # Retrieve Event/Attempts
 
-    Receive a generator of Event->Attempt objects previously created in the Stark Infra API
+    Receive a generator of Event/Attempt objects previously created in the Stark Infra API
     
     ## Parameters (optional):
     - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-    - after [string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
-    - before [string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
+    - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2020-03-10"
+    - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2020-03-10"
     - eventIds [list of strings, default null]: list of Event ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
     - webhookIds [list of strings, default null]: list of Webhook ids to filter attempts. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
-    - generator of Event->Attempt objects with updated attributes
+    - generator of Event/Attempt objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
@@ -85,8 +85,8 @@ class Attempt extends Resource
     ## Parameters (optional):
     - cursor [string, default null]: cursor returned on the previous page function call
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-    - after [DateTime or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-    - before [DateTime or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+    - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+    - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
     - eventIds [list of strings, default null]: list of Event ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - webhookIds [list of strings, default null]: list of Webhook ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
     - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
