@@ -46,9 +46,9 @@ class IssuingWithdrawal extends Resource
     }
 
     /**
-    # Create a IssuingWithdrawal
+    # Create an IssuingWithdrawal
 
-    Send a IssuingWithdrawal object for creation in the Stark Infra API
+    Send an IssuingWithdrawal object for creation in the Stark Infra API
 
     ## Parameters (required):
         - withdrawal [IssuingWithdrawal object]: list of IssuingWithdrawal objects to be created in the API
