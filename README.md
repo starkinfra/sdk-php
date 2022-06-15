@@ -52,6 +52,7 @@ is as easy as sending a text message to your client!
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [Webhook Events](#webhook-events)
         - [WebhookEvents](#process-webhook-events): Manage webhook events
+        - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
 
@@ -1794,6 +1795,85 @@ if ($event->subscription == "pix-request.in"){
 } elseif ($event->subscription == "issuing-purchase"){
     print_r($event->log->purchase);
 } 
+```
+
+
+## Query webhook events
+
+To search for webhooks events, run:
+
+```php
+use StarkInfra\Event;
+
+$events = Event::query(["after" => "2020-03-20", "isDelivered" => false]);
+
+foreach($events as $event){
+    print_r($event);
+}
+```
+
+## Get a webhook event
+
+You can get a specific webhook event by its id.
+
+```php
+use StarkInfra\Event;
+
+$event = Event::get("10827361982368179");
+
+print_r($event);
+```
+
+## Delete a webhook event
+
+You can also delete a specific webhook event by its id.
+
+```php
+use StarkInfra\Event;
+
+$event = Event::delete("10827361982368179");
+
+print_r($event);
+```
+
+## Set webhook events as delivered
+
+This can be used in case you've lost events.
+With this function, you can manually set events retrieved from the API as
+"delivered" to help future event queries with `isDelivered=false`.
+
+```php
+use StarkInfra\Event;
+
+$event = Event::update("129837198237192", ["isDelivered" => true]);
+
+print_r($event);
+```
+
+## Query failed webhook event delivery attempts information
+
+You can also get information on failed webhook event delivery attempts.
+
+```php
+use StarkInfra\Event\Attempt;
+
+$attempts = Attempt::query(["eventIds" => $event->id, "limit" => 1]);
+
+foreach($attempts as $attempt){
+    print_r($attempt);
+}
+```
+
+## Get a failed webhook event delivery attempt information
+
+To retrieve information on a single attempt, use the following function:
+
+```php
+use StarkInfra\Event\Attempt;
+
+$attempt = Attempt::get("1616161616161616");
+
+print_r($attempt);
 ```
 
 # Handling errors
