@@ -1,9 +1,9 @@
 <?php
 
 namespace Test\Event;
-
 use \Exception;
 use StarkInfra\Event;
+use StarkInfra\Event\Attempt;
 use StarkInfra\Error\InvalidSignatureError;
 
 
@@ -14,6 +14,95 @@ class TestEvent
     const VALID_SIGNATURE = "MEYCIQD0oFxFQX0fI6B7oqjwLhkRhkDjrOiD86wguEKWdzkJbgIhAPNGUUdlNpYBe+npOaHa9WJopzy3WJYl8XJG6f4ek2R/";
     const INVALID_SIGNATURE = "MEYCIQD0oFxFQX0fI6B7oqjwLhkRhkDjrOiD86wjjEKWdzkJbgIhAPNGUUdlNpYBe+npOaHa9WJopzy3WJYl8XJG6f4ek2R/";
 
+    public function queryAndDelete()
+    {
+        $events = iterator_to_array(Event::query(["limit" => 100, "isDelivered" => true]));
+        if (count($events) == 0)
+            throw new Exception("failed");
+        if (count($events) > 100)
+            throw new Exception("failed");
+        $event = $events[array_rand($events, 1)];
+
+        if ($event->isDelivered != true)
+            throw new Exception("failed");
+
+        $deleted = Event::delete($event->id);
+
+        if (is_null($event->id) | $event->id != $deleted->id) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function queryAttempts()
+    {
+        $events = iterator_to_array(Event::query(["limit" => 5, "isDelivered" => false]));
+
+        foreach ($events as $event) {
+            $attempts = iterator_to_array(Attempt::query(["eventIds" => $event->id, "limit" => 1]));
+            if (count($attempts) == 0)
+                throw new Exception("failed");
+        }
+    }
+
+    public function getAttemptsPage()
+    {
+        $ids = [];
+        $cursor = null;
+        for ($i=0; $i < 2; $i++) { 
+            list($page, $cursor) = Attempt::page($options = ["limit" => 5, "cursor" => $cursor]);
+            foreach ($page as $attempt) {
+                if (in_array($attempt->id, $ids)) {
+                    throw new Exception("failed");
+                }
+                array_push($ids, $attempt->id);
+            }
+            if ($cursor == null) {
+                break;
+            }
+        }
+        if (count($ids) != 10) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function queryGetAndUpdate()
+    {
+        $events = iterator_to_array(Event::query(["limit" => 1, "isDelivered" => false, "before" => "2030-01-01"]));
+
+        if (count($events) != 1) {
+            throw new Exception("failed");
+        }
+
+        $event = Event::get($events[0]->id);
+
+        if ($events[0]->id != $event->id) {
+            throw new Exception("failed");
+        }
+
+        $event = Event::update($event->id, ["isDelivered" => true]);
+    }
+
+    public function getPage()
+    {
+        $ids = [];
+        $cursor = null;
+        for ($i=0; $i < 2; $i++) { 
+            list($page, $cursor) = Event::page($options = ["limit" => 5, "cursor" => $cursor]);
+            foreach ($page as $event) {
+                if (in_array($event->id, $ids)) {
+                    throw new Exception("failed");
+                }
+                array_push($ids, $event->id);
+            }
+            if ($cursor == null) {
+                break;
+            }
+        }
+        if (count($ids) != 10) {
+            throw new Exception("failed");
+        }
+    }
+    
     public function parseRight()
     {
         $event_1 = Event::parse(self::CONTENT, self::VALID_SIGNATURE);
@@ -104,6 +193,26 @@ class TestEvent
 echo "\n\nEvent:";
 
 $test = new TestEvent();
+
+echo "\n\t- query and delete";
+$test->queryAndDelete();
+echo " - OK";
+
+echo "\n\t- query attempts";
+$test->queryAttempts();
+echo " - OK";
+
+echo "\n\t- get attempts page";
+$test->getAttemptsPage();
+echo " - OK";
+
+echo "\n\t- query, get and update";
+$test->queryGetAndUpdate();
+echo " - OK";
+
+echo "\n\t- get page";
+$test->getPage();
+echo " - OK";
 
 echo "\n\t- parse right";
 $test->parseRight();

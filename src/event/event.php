@@ -1,11 +1,19 @@
 <?php
 
 namespace StarkInfra;
-
-use StarkInfra\Utils\Parse;
+use \Exception;
+use EllipticCurve\PublicKey;
+use EllipticCurve\Signature;
+use EllipticCurve\Ecdsa;
+use StarkInfra\Error\InvalidSignatureError;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
+use StarkInfra\Utils\Request;
+use StarkInfra\Utils\Cache;
+use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\StarkDate;
 
 
 class Event extends Resource
@@ -19,10 +27,10 @@ class Event extends Resource
 
     ## Attributes:
         - id [string]: unique id returned when the event is created. ex: "5656565656565656"
-        - log [Log]: a Log object from one the subscription services (Transfer\Log, Boleto\Log, BoletoPayment\log or UtilityPayment\Log)
+        - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
         - created [DateTime]: creation datetime for the notification event.
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
-        - subscription [string]: service that triggered this event. ex: "transfer", "utility-payment"
+        - subscription [string]: service that triggered this event. ex: "issuing-card", "pix-request.in"
      */
     function __construct(array $params)
     {
@@ -96,7 +104,7 @@ class Event extends Resource
             };
             $array["purchase"] = API::fromApiJson($purchase, $array["purchase"]);
             $log = function ($array) {
-                return new issuingPurchase\Log($array);
+                return new IssuingPurchase\Log($array);
             };
             return API::fromApiJson($log, $array);
         };
@@ -187,10 +195,114 @@ class Event extends Resource
     }
 
     /**
+    # Retrieve a specific notification Event
+
+    Receive a single notification Event object previously created in the Stark Infra API by passing its id
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - Event object with updated attributes
+     */
+    public static function get($id, $user = null)
+    {
+        return Rest::getId($user, Event::resource(), $id);
+    }
+
+    /**
+    # Retrieve notification Events
+
+    Receive a enumerator of Event objects previously created in the Stark Infra API
+
+    ## Parameters (optional):
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2020-04-03"
+        - isDelivered [bool, default null]: bool to filter successfully delivered events. ex: true or false
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - enumerator of Event objects with updated attributes
+     */
+    public static function query($options = [], $user = null)
+    {
+        $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
+        $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
+        return Rest::getList($user, Event::resource(), $options);
+    }
+
+    /**
+    # Retrieve paged Events
+
+    Receive a list of up to 100 Event objects previously created in the Stark Infra API and the cursor to the next page.
+    Use this function instead of query if you want to manually page your requests.
+
+    ## Parameters (optional):
+    - cursor [string, default null]: cursor returned on the previous page function call
+    - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+    - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+    - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+    - isDelivered [boolean, default None]: bool to filter successfully delivered events. ex: True or False
+    - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+    
+    ## Return:
+    - list of Event objects with updated attributes
+    - cursor to retrieve the next page of Event objects
+     */
+    public static function page($options = [], $user = null)
+    {
+        return Rest::getPage($user, Event::resource(), $options);
+    }
+
+    /**
+    # Delete notification Events
+
+    Delete a single Event entity previously created in the Stark Infra API
+
+    ## Parameters (required):
+        - id [string]: Event unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - deleted Event object
+     */
+    public static function delete($id, $user = null)
+    {
+        return Rest::deleteId($user, Event::resource(), $id);
+    }
+
+    /**
+    # Update notification Event entity
+
+    Update notification Event by passing id.
+    If isDelivered is true, the event will no longer be returned on queries with isDelivered=false.
+
+    ## Parameters (required):
+        - id [array of strings]: Event unique ids. ex: "5656565656565656"
+        - isDelivered [bool]: If true and event hasn't been delivered already, event will be set as delivered. ex: true
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra/Settings::setUser() was used before function call
+
+    ## Return:
+        - target Event with updated attributes
+     */
+    public static function update($id, $options = [], $user = null)
+    {
+        return Rest::patchId($user, Event::resource(), $id, $options);
+    }
+
+    /**
     # Create single notification Event from a content string
 
     Create a single Event object received from event listening at subscribed user endpoint.
-    If the provided digital signature does not check out with the Stark public key, a
+    If the provided digital signature does not check out with the StarkInfra public key, a
     stark.exception.InvalidSignatureException will be raised.
 
     ## Parameters (required):
