@@ -58,4 +58,5 @@ require_once(__DIR__."/creditNote/signer.php");
 require_once(__DIR__."/creditNote/transfer.php");
 require_once(__DIR__."/webhook/webhook.php");
 require_once(__DIR__."/event/event.php");
+require_once(__DIR__."/event/attempt.php");
 require_once(__DIR__."/setting.php");
