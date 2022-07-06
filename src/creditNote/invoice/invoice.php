@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra\CreditNote;
+use StarkInfra\Utils\API;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\API;
 
 
 class Invoice extends Resource
@@ -18,12 +18,12 @@ class Invoice extends Resource
     ## Parameters (optional):
         - due [DateTime or Date or string, default now + 2 days]: Invoice due date in UTC ISO format. ex: "2020-03-10 10:30:00.000" for immediate invoices and "2020-10-28" for scheduled invoices
         - expiration [integer or DateTime, default 5097600 (59 days)]: time interval in seconds between due date and expiration date. ex 123456789
-        - fine [float, default 2.0]: Invoice fine for overdue payment in %. ex: 2.5
-        - interest [float, default 1.0]: Invoice monthly interest for overdue payment in %. ex: 5.2
         - tags [array of strings, default null]: list of strings for tagging
         - descriptions [array of Invoice\Description objects, default null]: list of Invoice\Description objects with "key":string and (optional) "value":string pairs
         
         ## Attributes (return-only):
+        - interest [float]: Invoice monthly interest for overdue payment in %. ex: 5.2
+        - fine [float]: Invoice fine for overdue payment in %. ex: 2.5
         - name [string]: payer name. ex: "Iron Bank S.A."
         - taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
         - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
@@ -48,13 +48,13 @@ class Invoice extends Resource
 
         $this-> amount = Checks::checkParam($params, "amount");
         $this-> due = Checks::checkDateTime(Checks::checkParam($params, "due"));
-        $this-> taxId = Checks::checkParam($params, "taxId");
-        $this-> name = Checks::checkParam($params, "name");
         $this-> expiration = Checks::checkDateInterval(Checks::checkParam($params, "expiration"));
-        $this-> fine = Checks::checkParam($params, "fine");
-        $this-> interest = Checks::checkParam($params, "interest");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> descriptions = Invoice::parseDescriptions(Checks::checkParam($params, "descriptions"));
+        $this-> interest = Checks::checkParam($params, "interest");
+        $this-> fine = Checks::checkParam($params, "fine");
+        $this-> name = Checks::checkParam($params, "name");
+        $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> pdf = Checks::checkParam($params, "pdf");
         $this-> link = Checks::checkParam($params, "link");
         $this-> nominalAmount = Checks::checkParam($params, "nominalAmount");
@@ -63,11 +63,32 @@ class Invoice extends Resource
         $this-> discountAmount = Checks::checkParam($params, "discountAmount");
         $this-> discounts = Invoice::parseDiscounts(Checks::checkParam($params, "discounts"));
         $this-> brcode = Checks::checkParam($params, "brcode");
-        $this-> fee = Checks::checkParam($params, "fee");
         $this-> status = Checks::checkParam($params, "status");
+        $this-> fee = Checks::checkParam($params, "fee");
         $this-> transactionIds = Checks::checkParam($params, "transactionIds");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
+    }
+
+    public static function parseInvoices($invoices) {
+        if (is_null($invoices)){
+            return null;
+        }
+        $parsedInvoices = [];
+        foreach($invoices as $invoice) {
+            if($invoice instanceof Invoice) {
+                array_push($parsedInvoices, $invoice);
+                continue;
+            }
+            $parsedInvoice = function ($array) {
+                $invoiceMaker = function ($array) {
+                    return new Invoice($array);
+                };
+                return API::fromApiJson($invoiceMaker, $array);
+            };
+            array_push($parsedInvoices, $parsedInvoice($invoice));
+        }    
+        return $parsedInvoices;
     }
 
     public static function parseDescriptions($descriptions) {

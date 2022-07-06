@@ -1,11 +1,12 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
+use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
+use StarkInfra\CreditNote\Invoice;
 
 
 class CreditNote extends Resource
@@ -37,21 +38,22 @@ class CreditNote extends Resource
 
     ## Parameters (conditionally required):
         - paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
-    
-    ## Parameters (optional):
-        - rebateAmount [integer, default null]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-        - tags [array of strings, default null]: list of strings for reference when searching for CreditNotes. ex: tags=["employees", "monthly"]
         
+    ## Parameters (optional):
+        - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
+        - tags [array of strings, default []]: list of strings for reference when searching for CreditNotes. ex: tags=["employees", "monthly"]
+        - expiration [DateTinterval or integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration date.
+
     ## Attributes (return-only):
         - id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
         - amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
-        - expiration [DateTime]: time interval in seconds between due date and expiration date.
         - documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
         - status [string]: current status of the CreditNote. ex: "created"
         - transactionIds [array of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
         - workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
         - taxAmount [float]: tax amount included in the CreditNote. ex: 100
         - interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
+        - nominalInterest [float]: yearly nominal interest rate of the creditote, in percentage. ex: 11.5
         - created [DateTime]: creation datetime for the CreditNote.
         - updated [DateTime]: latest update datetime for the CreditNote.
      */
@@ -64,7 +66,7 @@ class CreditNote extends Resource
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> nominalAmount = Checks::checkParam($params, "nominalAmount");
         $this-> scheduled = Checks::checkDateTime(Checks::checkParam($params, "scheduled"));
-        $this-> invoices = CreditNote::parseInvoices(Checks::checkParam($params, "invoices"));
+        $this-> invoices = Invoice::parseInvoices(Checks::checkParam($params, "invoices"));
         $this-> payment = Checks::checkParam($params, "payment");
         $this-> signers = CreditNote::parseSigners(Checks::checkParam($params, "signers"));
         $this-> externalId = Checks::checkParam($params, "externalId");
@@ -77,14 +79,15 @@ class CreditNote extends Resource
         $this-> paymentType = Checks::checkParam($params, "paymentType");
         $this-> rebateAmount = Checks::checkParam($params, "rebateAmount");
         $this-> tags = Checks::checkParam($params, "tags");
-        $this-> amount = Checks::checkParam($params, "amount");
         $this-> expiration = Checks::checkParam($params, "expiration");
+        $this-> amount = Checks::checkParam($params, "amount");
         $this-> documentId = Checks::checkParam($params, "documentId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> transactionsIds = Checks::checkParam($params, "transactionsIds");
         $this-> workspaceId = Checks::checkParam($params, "workspaceId");
         $this-> taxAmount = Checks::checkParam($params, "taxAmount");
         $this-> interest = Checks::checkParam($params, "interest");
+        $this-> nominalInterest = Checks::checkParam($params, "nominalInterest");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
@@ -93,25 +96,10 @@ class CreditNote extends Resource
         list($this->payment, $this->paymentType) = self::parsePayment($this->payment, $this->paymentType);
     }
 
-    public static function parseInvoices($invoices) {
-        $parsedInvoices = [];
-        foreach($invoices as $invoice) {
-            if($invoice instanceof CreditNote\Invoice) {
-                array_push($parsedInvoices, $invoice);
-                continue;
-            }
-            $parsedInvoice = function ($array) {
-                $invoiceMaker = function ($array) {
-                    return new CreditNote\Invoice($array);
-                };
-                return API::fromApiJson($invoiceMaker, $array);
-            };
-            array_push($parsedInvoices, $parsedInvoice($invoice));
-        }    
-        return $parsedInvoices;
-    }
-
     public static function parseSigners($signers) {
+        if (is_null($signers)) {
+            return [];
+        }
         $parsedSigners = [];
         foreach($signers as $signer) {
             if($signer instanceof CreditNote\Signer) {
@@ -229,7 +217,7 @@ class CreditNote extends Resource
         - status [string, default null]: filter for status of retrieved objects. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - list of Credit Note objects with updated attributes

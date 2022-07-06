@@ -41,8 +41,8 @@ class TestWebhook
     {
         $ids = [];
         $cursor = null;
-        for ($i=0; $i < 2; $i++) { 
-            list($page, $cursor) = Webhook::page($options = ["limit" => 5, "cursor" => $cursor]);
+        for ($i=0; $i < 3; $i++) { 
+            list($page, $cursor) = Webhook::page($options = ["limit" => 1, "cursor" => $cursor]);
             foreach ($page as $webhoook) {
                 if (in_array($webhoook->id, $ids)) {
                     throw new Exception("failed");

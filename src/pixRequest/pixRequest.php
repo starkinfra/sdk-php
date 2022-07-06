@@ -1,11 +1,12 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\API;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\StarkDate;
 use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
+use StarkInfra\Utils\StarkDate;
 
 
 class PixRequest extends Resource
@@ -38,7 +39,7 @@ class PixRequest extends Resource
         -description [string, default null]: optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
         -reconciliationId [string, default null]: Reconciliation ID linked to this payment. ex: "b77f5236-7ab9-4487-9f95-66ee6eaf1781"
         -initiatorTaxId [string, default null]: Payment initiator's tax id (CPF/CNPJ). ex: "01234567890" or "20.018.183/0001-80"
-        -cashAmount [Long, default 0]: Amount to be withdrawal from the cashier in cents. ex: 1000 (= R$ 10.00)
+        -cashAmount [Long, default 0]: Amount to be withdrawn from the cashier in cents. ex: 1000 (= R$ 10.00)
         -cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
         -cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
         -tags [array of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
@@ -183,9 +184,10 @@ class PixRequest extends Resource
     }
 
     /**
-    # Parse PixRequests
+    # Parse a PixRequest authorization
 
-    Create a single PixRequest object from a content string received from a handler listening at the request url.
+    Create a single PixRequest object from a content string received from a POST 
+    request to your registered URL.
     If the provided digital signature does not check out with the Stark public key, a
     stark.error.InvalidSignatureError will be raised.
 
@@ -193,7 +195,7 @@ class PixRequest extends Resource
         - content [string]: response content from request received at user endpoint (not parsed)
         - signature [string]: base-64 digital signature received at response header "Digital-Signature"
 
-    ## Parameters (required):
+    ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
@@ -202,6 +204,31 @@ class PixRequest extends Resource
     public static function parse($content, $signature, $user = null)
     {
         return Parse::parseAndVerify($content, $signature, PixRequest ::resource(), $user);
+    }
+
+    /**
+    # PixRequest authorization response
+
+    Helps you respond to a PixRequest authorization request.
+    Authorization requests will be posted at your registered 
+    endpoint whenever inbound PixRequests are received.
+
+    ## Parameters (required):
+        - status [string]: response to the authorization request. ex: "approved" or "denied"
+
+    ## Parameters (conditionally required):
+        - reason [string, default null]: denial reason. Required if the status is "denied". Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+
+    ## Return:
+        - Dumped JSON string that must be returned to us on the PixRequest authorization response
+     */
+    public static function response($params)
+    {
+        $params = ([
+            "status" => Checks::checkParam($params, "status"),
+            "reason" => Checks::checkParam($params, "reason"),
+        ]);
+        return json_encode(API::apiJson($params));
     }
 
     private static function resource()

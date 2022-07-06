@@ -11,12 +11,19 @@ class Parse
 {
     public static function parseAndVerify($content, $signature, $resource, $user)
     {
+        $content = Self::verify($content, $signature, $user);
+
         $json = json_decode($content, true);
         $entity = $json;
         if ($resource["name"] == "Event"){
             $entity = $json[API::lastName($resource["name"])];
         }
 
+        return API::fromApiJson($resource["maker"], $entity);
+    }
+
+    public static function verify($content, $signature, $user)
+    {
         try {
             $signature = Signature::fromBase64($signature);
         } catch (Exception $e) {
@@ -24,10 +31,10 @@ class Parse
         }
 
         if (self::verifySignature($user, $content, $signature)) {
-            return API::fromApiJson($resource["maker"], $entity);
+            return $content;
         }
         if (self::verifySignature($user, $content, $signature, true)) {
-            return API::fromApiJson($resource["maker"], $entity);
+            return $content;
         }
 
         throw new InvalidSignatureError("The provided signature and content do not match the Stark public key");

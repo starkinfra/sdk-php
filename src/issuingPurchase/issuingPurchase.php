@@ -1,9 +1,11 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\API;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -16,17 +18,13 @@ class IssuingPurchase extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
-        - holderName [string]: card holder name. ex: "Tony Stark"
         - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
-        - cardEnding [string]: last 4 digits of the card number. ex: "1234"
         - amount [integer]: IssuingPurchase value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
         - tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
         - issuerAmount [integer]: issuer amount. ex: 1234 (= R$ 12.34)
         - issuerCurrencyCode [string]: issuer currency code. ex: "USD"
-        - issuerCurrencySymbol [string]: issuer currency symbol. ex: "$"
         - merchantAmount [integer]: merchant amount. ex: 1234 (= R$ 12.34)
         - merchantCurrencyCode [string]: merchant currency code. ex: "USD"
-        - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
         - merchantCategoryCode [string]: merchant category code. ex: "eatingPlacesRestaurants"
         - merchantCountryCode [string]: merchant country code. ex: "USA"
         - merchantFee [string]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
@@ -36,28 +34,36 @@ class IssuingPurchase extends Resource
         - walletId [string]: virtual wallet ID. ex: "5656565656565656"
         - methodCode [string]: method code. ex: "chip", "token", "server", "manual", "magstripe" or "contactless"
         - score [float]: internal score calculated for the authenticity of the purchase. ex: 7.6
-        - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
         - endToEndId [string]: unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: endToEndId="679cd385-642b-49d0-96b7-89491e1249a5"
+
+    ## Attributes (IssuingPurchase only):
+        - holderName [string]: card holder name. ex: "Tony Stark"
+        - cardEnding [string]: last 4 digits of the card number. ex: "1234"
+        - issuerCurrencySymbol [string]: issuer currency symbol. ex: "$"
+        - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
+        - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase. ex: ["5067776272105472"]
         - status [string]: current IssuingCard status. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - tags [string]: list of strings for tagging. ex: ["travel", "food"]
-        - created [DateTime]: creation datetime for the IssuingPurchase.
+        - tags [array of string]: array of strings for tagging. ex: ["travel", "food"]
         - updated [DateTime]: latest update datetime for the IssuingPurchase.
-     */
+        - created [DateTime]: creation datetime for the IssuingPurchase.
+        
+    ## Attributes (authorization request only):
+        - isPartialAllowed [bool]: true if the the merchant allows partial purchases. ex: False
+        - purpose [string]: purchase purpose. ex: "purchase"
+        - cardTags [array of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+        - holderTags [array of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
+    */
     function __construct(array $params)
     {
         parent::__construct($params);
 
-        $this->holderName = Checks::checkParam($params, "holderName");
         $this->cardId = Checks::checkParam($params, "cardId");
-        $this->cardEnding = Checks::checkParam($params, "cardEnding");
         $this->amount = Checks::checkParam($params, "amount");
         $this->tax = Checks::checkParam($params, "tax");
         $this->issuerAmount = Checks::checkParam($params, "issuerAmount");
         $this->issuerCurrencyCode = Checks::checkParam($params, "issuerCurrencyCode");
-        $this->issuerCurrencySymbol = Checks::checkParam($params, "issuerCurrencySymbol");
         $this->merchantAmount = Checks::checkParam($params, "merchantAmount");
         $this->merchantCurrencyCode = Checks::checkParam($params, "merchantCurrencyCode");
-        $this->merchantCurrencySymbol = Checks::checkParam($params, "merchantCurrencySymbol");
         $this->merchantCategoryCode = Checks::checkParam($params, "merchantCategoryCode");
         $this->merchantCountryCode = Checks::checkParam($params, "merchantCountryCode");
         $this->merchantFee = Checks::checkParam($params, "merchantFee");
@@ -67,13 +73,21 @@ class IssuingPurchase extends Resource
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->methodCode = Checks::checkParam($params, "methodCode");
         $this->score = Checks::checkParam($params, "score");
-        $this->issuingTransactionIds = Checks::checkParam($params, "issuingTransactionIds");
         $this->endToEndId = Checks::checkParam($params, "endToEndId");
+        $this->holderName = Checks::checkParam($params, "holderName");
+        $this->cardEnding = Checks::checkParam($params, "cardEnding");
+        $this->issuerCurrencySymbol = Checks::checkParam($params, "issuerCurrencySymbol");
+        $this->merchantCurrencySymbol = Checks::checkParam($params, "merchantCurrencySymbol");
+        $this->issuingTransactionIds = Checks::checkParam($params, "issuingTransactionIds");
         $this->status = Checks::checkParam($params, "status");
         $this->tags = Checks::checkParam($params, "tags");
-        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
-
+        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this->isPartialAllowed = Checks::checkParam($params, "isPartialAllowed");
+        $this->purpose = Checks::checkParam($params, "purpose");
+        $this->cardTags = Checks::checkParam($params, "cardTags");
+        $this->holderTags = Checks::checkParam($params, "holderTags");
+        
         Checks::checkParams($params);
     }
 
@@ -140,7 +154,7 @@ class IssuingPurchase extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - ids [array of strings, default [], default null]: purchase IDs
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
         - list of IssuingPurchase objects with updated attributes
@@ -151,6 +165,56 @@ class IssuingPurchase extends Resource
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
         $options["before"] = new StarkDate(Checks::checkParam($options, "before"));
         return Rest::getPage($user, IssuingPurchase::resource(), $options);
+    }
+
+    /**
+    # Create a IssuingPurchase object from a content string
+
+    Create a single IssuingPurchase object from a content string received from a POST 
+    request to your registered URL.
+    If the provided digital signature does not check out with the Stark public key, a
+    StarkInfra\Exception\InvalidSignatureException will be raised.
+
+    ## Parameters (required):
+        - content [string]: response content from request received at user endpoint (not parsed)
+        - signature [string]: base-64 digital signature received at response header "Digital-Signature"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - Parsed IssuingPurchase object
+     */
+    public static function parse($content, $signature, $user = null)
+    {
+        return Parse::parseAndVerify($content, $signature, IssuingPurchase::resource(), $user);
+    }
+
+    /** 
+    # Helps you respond to an IssuingPurchase authorization request.
+
+    ## Parameters (required):
+        - status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
+    
+    ## Parameters (optional):
+        - amount [integer, default null]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
+        - reason [string, default null]: denial reason. Options: "other", "blocked", "lostCard", "stolenCard", "invalidPin", "invalidCard", "cardExpired", "issuerError", "concurrency", "standInDenial", "subIssuerError", "invalidPurpose", "invalidZipCode", "invalidWalletId", "inconsistentCard", "settlementFailed", "cardRuleMismatch", "invalidExpiration", "prepaidInstallment", "holderRuleMismatch", "insufficientBalance", "tooManyTransactions", "invalidSecurityCode", "invalidPaymentMethod", "confirmationDeadline", "withdrawalAmountLimit", "insufficientCardLimit", "insufficientHolderLimit"
+        - tags [array of strings, default null]: tags to filter retrieved object. ex: ["tony", "stark"]
+
+    ## Return:
+        - Dumped JSON string that must be returned to us on the IssuingPurchase authorization response
+    */
+    public static function response($params)
+    {
+        $params = ([
+            "authorization" => [
+                "status" => Checks::checkParam($params, "status"),
+                "amount" => Checks::checkParam($params, "amount"),
+                "reason" => Checks::checkParam($params, "reason"),
+                "tags" => Checks::checkParam($params, "tags"),
+            ]
+        ]);
+        return json_encode(API::apiJson($params));
     }
 
     private static function resource()

@@ -2,17 +2,12 @@
 
 namespace StarkInfra;
 use \Exception;
-use EllipticCurve\PublicKey;
-use EllipticCurve\Signature;
-use EllipticCurve\Ecdsa;
-use StarkInfra\Error\InvalidSignatureError;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
-use StarkInfra\Utils\Request;
-use StarkInfra\Utils\Cache;
+use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Request;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -246,8 +241,8 @@ class Event extends Resource
     - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
     - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
     - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-    - isDelivered [boolean, default None]: bool to filter successfully delivered events. ex: True or False
-    - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+    - isDelivered [boolean, default null]: bool to filter successfully delivered events. ex: True or False
+    - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
     - list of Event objects with updated attributes
@@ -302,8 +297,8 @@ class Event extends Resource
     # Create single notification Event from a content string
 
     Create a single Event object received from event listening at subscribed user endpoint.
-    If the provided digital signature does not check out with the StarkInfra public key, a
-    stark.exception.InvalidSignatureException will be raised.
+    If the provided digital signature does not check out with the Stark public key, a
+    StarkInfra\Exception\InvalidSignatureException will be raised.
 
     ## Parameters (required):
         - content [string]: response content from request received at user endpoint (not parsed)

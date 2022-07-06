@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingHolderLog;
-
 use \Exception;
 use StarkInfra\IssuingHolder\Log;
 
 
 class TestIssuingHolderLog
 {
-
     public function query()
     {
         $logs = Log::query(["limit" => 10]);

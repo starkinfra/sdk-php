@@ -1,7 +1,6 @@
 <?php
 
 namespace Test\PixChargebackLog;
-
 use \Exception;
 use StarkInfra\PixChargeback\Log;
 

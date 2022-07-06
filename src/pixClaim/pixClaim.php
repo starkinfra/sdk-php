@@ -1,11 +1,11 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\StarkDate;
 use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
+use StarkInfra\Utils\StarkDate;
 
 
 class PixClaim extends Resource
@@ -25,7 +25,7 @@ class PixClaim extends Resource
         - branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".
         - name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
         - taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
-        - keyId [string]: id of the registered Pix Key to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+        - keyId [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656".
@@ -104,7 +104,7 @@ class PixClaim extends Resource
     /**
     # Retrieve PixClaim objects
 
-    Receive an enumerator of PixClaims objects previously created in the Stark Infra API
+    Receive an enumerator of PixClaim objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -132,7 +132,7 @@ class PixClaim extends Resource
     /**
     # Retrieve paged PixClaims
 
-    Receive a list of up to 100 PixClaims objects previously created in the Stark Infra API and the cursor to the next page.
+    Receive a list of up to 100 PixClaim objects previously created in the Stark Infra API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
     
     ## Parameters (optional):

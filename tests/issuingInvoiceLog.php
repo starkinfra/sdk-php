@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingInvoiceLog;
-
 use \Exception;
 use StarkInfra\IssuingInvoice\Log;
 
 
 class TestIssuingInvoiceLog
 {
-
     public function queryAndGet()
     {
         $logs = Log::query(["limit" => 10]);

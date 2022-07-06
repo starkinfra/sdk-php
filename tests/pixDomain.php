@@ -1,9 +1,8 @@
 <?php
 
-
 namespace StarkInfra;
-
 use Exception;
+
 
 class TestPixDomain
 {

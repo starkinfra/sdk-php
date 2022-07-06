@@ -2,9 +2,10 @@
 
 namespace Test\PixRequest;
 use \Exception;
-use StarkInfra\Error\InvalidSignatureError;
 use StarkInfra\PixRequest;
 use StarkInfra\Utils\EndToEndId;
+use StarkInfra\Error\InvalidSignatureError;
+
 
 class TestPixRequest
 {
@@ -80,11 +81,11 @@ class TestPixRequest
         $cursor = null;
         for ($i=0; $i < 2; $i++) {
             list($page, $cursor) = PixRequest::page($options = ["limit" => 5, "cursor" => $cursor]);
-            foreach ($page as $pixRequest) {
-                if (in_array($pixRequest->id, $ids)) {
+            foreach ($page as $request) {
+                if (in_array($request->id, $ids)) {
                     throw new Exception("failed");
                 }
-                array_push($ids, $pixRequest->id);
+                array_push($ids, $request->id);
             }
             if ($cursor == null) {
                 break;
@@ -137,7 +138,23 @@ class TestPixRequest
         }
     }
 
-    public static function example($schedule=false)
+    public function createResponse()
+    {
+        $params = [
+            "status" => "approved",
+        ];
+
+        $response = PixRequest::response($params);
+
+        if (gettype($response) != "string") {
+            throw new Exception("failed");
+        }
+        if (strlen($response) == 0) {
+            throw new Exception("failed");
+        }
+    }
+
+    public static function example()
     {
         $params = [
             "amount" => 10,
@@ -153,7 +170,7 @@ class TestPixRequest
             "receiverAccountType" => "checking",
             "receiverName" => "Daenerys Targaryen Stormborn",
             "receiverTaxId" => "01234567890",
-            "endToEndId" => EndToEndId::create("35547753"),
+            "endToEndId" => EndToEndId::create($_SERVER["SANDBOX_BANK_CODE"]),
         ];
         return new PixRequest($params);
     }
@@ -193,4 +210,8 @@ echo " - OK";
 
 echo "\n\t- parse malformed";
 $test->parseMalformed();
+echo " - OK";
+
+echo "\n\t- create response";
+$test->createResponse();
 echo " - OK";

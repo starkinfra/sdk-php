@@ -2,9 +2,9 @@
 
 namespace Test\PixReversal;
 use \Exception;
-use StarkInfra\Error\InvalidSignatureError;
 use StarkInfra\PixRequest;
 use StarkInfra\PixReversal;
+use StarkInfra\Error\InvalidSignatureError;
 
 
 class TestPixReversal
@@ -82,8 +82,8 @@ class TestPixReversal
 
     public function parseRight()
     {
-        $event_1 = PixRequest::parse(self::CONTENT, self::VALID_SIGNATURE);
-        $event_2 = PixRequest::parse(self::CONTENT, self::VALID_SIGNATURE); // using cache
+        $event_1 = PixReversal::parse(self::CONTENT, self::VALID_SIGNATURE);
+        $event_2 = PixReversal::parse(self::CONTENT, self::VALID_SIGNATURE); // using cache
 
         if ($event_1 != $event_2) {
             throw new Exception("failed");
@@ -94,7 +94,7 @@ class TestPixReversal
     {
         $error = false;
         try {
-            $event = PixRequest::parse(self::CONTENT, self::INVALID_SIGNATURE);
+            $event = PixReversal::parse(self::CONTENT, self::INVALID_SIGNATURE);
         } catch (InvalidSignatureError $e) {
             $error = true;
         }
@@ -108,12 +108,28 @@ class TestPixReversal
     {
         $error = false;
         try {
-            $event = PixRequest::parse(self::CONTENT, "something is definitely wrong");
+            $event = PixReversal::parse(self::CONTENT, "something is definitely wrong");
         } catch (InvalidSignatureError $e) {
             $error = true;
         }
 
         if (!$error) {
+            throw new Exception("failed");
+        }
+    }
+
+        public function createResponse()
+    {
+        $params = [
+            "status" => "approved",
+        ];
+
+        $response = PixReversal::response($params);
+
+        if (gettype($response) != "string") {
+            throw new Exception("failed");
+        }
+        if (strlen($response) == 0) {
             throw new Exception("failed");
         }
     }
@@ -150,7 +166,7 @@ class TestPixReversal
             }
         }
         if ($endToEndId == null) {
-            print_r("There are no inbound PixRequests to be reversed in your workspace.");
+            throw new Exception("There are no inbound PixRequests to reverse");
         }
         return $endToEndId;
     }
@@ -186,4 +202,8 @@ echo " - OK";
 
 echo "\n\t- parse malformed";
 $test->parseMalformed();
+echo " - OK";
+
+echo "\n\t- create response";
+$test->createResponse();
 echo " - OK";

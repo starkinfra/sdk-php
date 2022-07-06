@@ -1,7 +1,6 @@
 <?php
 
 namespace Test\PixClaim;
-
 use \Exception;
 use StarkInfra\PixClaim;
 

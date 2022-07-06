@@ -26,15 +26,15 @@ is as easy as sending a text message to your client!
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
     - [Issuing](#issuing)
-        - [BINs](#query-issuing-bins): Account sub-issue BINs
-        - [Holders](#create-issuing-holders): Wallet Card holders
-        - [Cards](#create-issuing-cards): Create virtual Cards
-        - [Purchases](#query-issuing-purchases): View your past purchases
-        - [Invoices](#create-issuing-invoices): Charge your Issuing account
-        - [Withdrawals](#create-issuing-withdrawals): Send money back to your Stark Bank account
-        - [Transactions](#query-issuing-transactions): Account statement entries
-        - [Balance](#get-issuing-balance): Account balance
-        - [Authorization Requests](#process-authorization-requests): Receive incoming Authorization requests
+        - [Products](#query-issuing-products): View available sub-issuer card products (a.k.a. card number ranges or BINs)
+        - [Holders](#create-issuing-holders): Manage card holders
+        - [Cards](#create-issuing-cards): Create virtual and/or physical cards
+        - [Purchases](#process-an-issuing-purchase-authorization): Authorize and view your past purchases
+        - [Invoices](#create-issuing-invoices): Add money to your issuing balance
+        - [Withdrawals](#create-issuing-withdrawals): Send money back to your Workspace from your issuing balance
+        - [Transactions](#query-issuing-transactions): View the transactions that have affected your issuing balance
+        - [Balance](#get-issuing-balance): View your issuing balance
+        - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
         - [PixReversals](#create-pixreversals): Reverse Pix transactions
@@ -46,8 +46,11 @@ is as easy as sending a text message to your client!
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomain): View registered SPI participants certificates
+        - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
+        - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
     - [Credit Note](#credit-note)
         - [CreditNote](#create-credit-notes): Create credit notes
+        - [CreditNotePreview](#create-credit-note-previews): Create credit note previews
     - [Webhook](#webhook)
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
     - [Webhook Events](#webhook-events)
@@ -326,17 +329,17 @@ for the value to be credited to your account.
 
 ## Issuing
 
-### Query Issuing BINs
+### Query Issuing Products
 
-To take a look at the sub-issuer BINs linked to your workspace, just run the following:
+To take a look at the sub-issuer card products available to you, just run the following:
 
 ```php
-use StarkInfra\IssuingBin;
+use StarkInfra\IssuingProduct;
 
-$bins = IssuingBin::query();
+$products = IssuingProduct::query();
 
-foreach ($bins as $bin) {
-    print_r($bin);
+foreach ($products as $product) {
+    print_r($product);
 }
 ```
 
@@ -539,6 +542,41 @@ use StarkInfra\IssuingCard;
 $log = IssuingCard\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+## Process an Issuing Purchase authorization
+
+It's easy to process an IssuingPurchase authorization that arrived in your registered URL. 
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you 
+the request. If you do not approve or decline the authorization within 2 seconds, 
+the authorization will be denied.
+
+```php
+use StarkInfra\IssuingPurchase;
+
+$request = listen();  # this is your handler to listen for authorization requests
+
+$purchase = IssuingPurchase::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+
+# after parsing you should analyse the authorization request and then respond
+
+# To approve:
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingPurchase::response([
+        "status" => "approved",
+    ]);
+);
+
+# To deny:
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingPurchase::response([
+        "status" => "denied",
+        "reason" => "stolenCard",
+    ]);
+);
 ```
 
 ### Query Issuing Purchases
@@ -748,20 +786,58 @@ $balance = IssuingBalance::get();
 print_r($balance);
 ```
 
-### Process Authorization requests
+### Issuing Enums
 
-It’s easy to process events delivered to your Webhook endpoint. 
-Remember to pass the signature header so the SDK can make sure 
-it was really StarkInfra that sent you the event.
+#### Query MerchantCategories
+
+You can query any merchant categories using this resource.
+You may also use MerchantCategories to define specific category filters in IssuingRules.
+Either codes (which represents specific MCCs) or types (code groups) will be accepted as filters.
 
 ```php
-use StarkInfra;
+use StarkInfra\MerchantCategory;
 
-$response = listen();  # this is the method you made to get the events posted to your webhook
+$categories = MerchantCategory::query([
+    "search" => "food"
+]);
 
-$authorization = IssuingAuthorization::parse($response->content, $response->headers["Digital-Signature"]);
+foreach ($categories as $category) {
+    print_r($category);
+}
+```
 
-print_r($authorization);
+#### Query MerchantCountries
+
+You can query any merchant countries using this resource.
+You may also use MerchantCountries to define specific country filters in IssuingRules.
+
+```php
+use StarkInfra\MerchantCountry;
+
+$countries = MerchantCountry::query([
+    "search" => "brazil"
+]);
+
+foreach ($countries as $country) {
+    print_r($country);
+}
+```
+
+#### Query CardMethods
+
+You can query available card methods using this resource.
+You may also use CardMethods to define specific purchase method filters in IssuingRules.
+
+```php
+use StarkInfra\CardMethod;
+
+$methods = CardMethod::query([
+    "search" => "token"
+]);
+
+foreach ($methods as $method) {
+    print_r($method);
+}
 ```
 
 ## Pix
@@ -849,22 +925,6 @@ $request = PixRequest::get("5155966664310784");
 print_r($request);
 ```
 
-## Process PixRequest authorization requests
-
-It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
-
-```php
-use StarkInfra\PixRequest;
-
-$response = listen();  # this is your handler to listen for authorization requests
-
-$request = PixRequest::parse($response->content, $response->headers["Digital-Signature"]);
-
-print_r($request);
-```
-
 ## Query PixRequest logs
 
 You can query Pix Request Logs to better understand Pix Request life cycles.
@@ -893,6 +953,40 @@ use StarkInfra\PixRequest;
 $log = PixRequest\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+## Process PixRequest authorization requests
+
+It's easy to process authorization requests that arrived in your handler. Remember to pass the
+signature header so the SDK can make sure it's StarkInfra that sent you
+the event.
+
+```php
+use StarkInfra\PixRequest;
+
+$request = listen();  # this is your handler to listen for authorization requests
+
+$request = PixRequest::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+
+# after parsing you should analyse the authorization request and then respond
+
+# To approve:
+sendResponse(  # you should also implement this method to respond the read request
+    PixRequest::response([
+        "status" => "approved",
+    ]);
+);
+
+# To deny:
+sendResponse(  # you should also implement this method to respond the read request
+    PixRequest::response([
+        "status" => "denied",
+        "reason" => "invalidAccountNumber",
+    ]);
+);
 ```
 
 ## Create PixReversals
@@ -956,22 +1050,6 @@ $reversal = PixReversal::get("5155966664310784");
 print_r($reversal);
 ```
 
-## Process PixReversal authorization reversals
-
-It's easy to process authorization reversals that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
-
-```php
-use StarkInfra\PixReversal;
-
-$response = listen();  # this is your handler to listen for authorization requests
-
-$reversal = PixReversal::parse($response->content, $response->headers["Digital-Signature"]);
-
-print_r($reversal);
-```
-
 ## Query PixReversal logs
 
 You can query Pix Reversal logs to better understand Pix Reversal life cycles.
@@ -1000,6 +1078,41 @@ use StarkInfra\PixReversal;
 $log = PixReversal\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+## Process PixReversal authorization reversals
+
+It's easy to process authorization reversals that arrived in your handler. Remember to pass the
+signature header so the SDK can make sure it's StarkInfra that sent you
+the event.
+
+```php
+use StarkInfra\PixReversal;
+
+$request = listen();  # this is your handler to listen for authorization requests
+
+$reversal = PixReversal::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+
+# after parsing you should analyse the authorization request and then respond
+
+# To approve:
+sendResponse(  # you should also implement this method to respond the read request
+    PixReversal::response([
+        "status" => "approved",
+    ]);
+);
+
+# To deny:
+sendResponse(
+    PixReversal::response([
+        "status" => "denied",
+        "reason" => "invalidAccountNumber",
+    ]);
+);
+
 ```
 
 ## Get your PixBalance
@@ -1503,7 +1616,7 @@ print_r($chargeback);
 
 ### Patch a PixChargeback
 
-A received Pix Chargeback can be accepted or rejected by patching its status.
+A received Pix Chargeback can be approved or denied by patching its status.
 After a Pix Chargeback is patched, its status changes to closed.
 
 ```php
@@ -1564,7 +1677,7 @@ print_r($log);
 
 ### Query PixDomain
 
-You can query for certificates of registered SPI participants able to issue dynamic QR Codes.
+You can query for certificates of registered SPI participants able to issue DynamicBrcodes.
 
 ```php
 use StarkInfra\PixDomain;
@@ -1574,6 +1687,210 @@ $domains = PixDomain::query();
 for $domain in $domains{
     print($domain);
 }
+```
+
+### Create StaticBrcodes
+
+StaticBrcodes store account information via a QR code or an image 
+that represents a PixKey and a few extra fixed parameters, such as 
+an amount and a reconciliation ID. They can easily be used to 
+receive Pix transactions.
+
+```php
+use StarkInfra\StaticBrcode;
+
+$brcodes = StaticBrcode::create([
+    new StaticBrcode([
+        "name" => "Jamie Lannister",
+        "keyId" => "+5511988887777",
+        "amount" => 100,
+        "reconciliationId" => "123",
+        "city" =>"Rio de Janeiro"
+    ]);
+]);
+
+for $brcode in $brcodes{
+    print($brcode);
+}
+```
+
+### Query StaticBrcodes
+
+You can query multiple StaticBrcodes according to filters.
+
+```php
+use StarkInfra\StaticBrcode;
+
+$brcodes = StaticBrcode::query([
+    "limit" => 50, 
+    "after" => "2022-01-01",
+    "before" => "2022-01-20",
+    "uuids" => ["5ddde28043a245c2848b08cf315effa2"],
+]);
+
+for $brcode in $brcodes{
+    print_r($brcode);
+}
+```
+
+### Get a StaticBrcodes
+
+After its creation, information on a StaticBrcode may be retrieved by its UUID.
+
+```php
+use StarkInfra\StaticBrcode;
+
+$brcode = StaticBrcode::get("5ddde28043a245c2848b08cf315effa2");
+
+print_r($brcode);
+```
+
+### Create DynamicBrcodes
+
+BR codes store information represented by Pix QR Codes, which are used to send or receive Pix transactions in a convenient way.
+DynamicBrcodes represent charges with information that can change at any time, since all 
+data needed for the payment is requested dynamically to your registered URL.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$brcodes = DynamicBrcode::create([
+    new DynamicBrcode([
+        "name" => "Jamie Lannister",
+        "city" =>"Rio de Janeiro"
+        "externalId" => "my_unique_id",
+        "type" => "instant",
+    ]);
+]);
+
+for $brcode in $brcodes{
+    print($brcode);
+}
+```
+
+### Query DynamicBrcodes
+
+You can query multiple DynamicBrcodes according to filters.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$brcodes = DynamicBrcode::query([
+    "limit" => 50, 
+    "after" => "2022-01-01",
+    "before" => "2022-01-20",
+    "uuids" => ["5ddde28043a245c2848b08cf315effa2"],
+]);
+
+for $brcode in $brcodes{
+    print_r($brcode);
+}
+```
+
+### Get a DynamicBrcode
+
+After its creation, information on a DynamicBrcode may be retrieved by its UUID.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$brcode = DynamicBrcode::get("5ddde28043a245c2848b08cf315effa2");
+
+print_r($brcode);
+```
+
+### Verify a DynamicBrcode Read
+
+When a DynamicBrcode is read by your user, a GET request will be made to the URL stored in the DynamicBrcode to 
+retrieve additional information needed to complete the transaction.
+Use this method to verify the authenticity of a GET request received at your registered endpoint.
+If the provided digital signature does not check out with the Stark public key, a
+StarkInfra\Exception\InvalidSignatureException will be raised.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$request = listen();  # this is the method you made to get the read requests posted to your registered endpoint
+
+$uuid = DynamicBrcode::verify(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+```
+
+### Respond to a Due DynamicBrcode Read
+
+When a due DynamicBrcode is read by your user, a GET request will be made to your 
+registered URL to retrieve additional information needed to complete the transaction.
+
+The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
+in the following format.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$request = listen();  # this is the method you made to get the read requests posted to your registered endpoint
+
+$uuid = DynamicBrcode::verify(
+    getUuid($request->url),  # you should implement this method to extract the UUID from the request's URL
+    $request->headers["Digital-Signature"]
+);
+
+$invoice = getInvoice($uuid); # you should implement this method to get information on the BR code from its uuid
+
+sendResponse(  # you should also implement this method to respond the read request
+    DynamicBrcode::responseDue([
+        "version" => $invoice->version,
+        "created" => $invoice->created,
+        "due" => $invoice->due,
+        "keyId" => $invoice->keyId,
+        "status" => $invoice->status,
+        "reconciliationId" => $invoice->reconciliationId,
+        "amount" => $invoice->amount,
+        "senderName" => $invoice->senderName,
+        "receiverName" => $invoice->receiverName,
+        "receiverStreetLine" => $invoice->receiverStreetLine,
+        "receiverCity" => $invoice->receiverCity,
+        "receiverStateCode" => $invoice->receiverStateCode,
+        "receiverZipCode" => $invoice->receiverZipCode
+    ]);
+);
+```
+
+### Repond to an Instant DynamicBrcode read
+
+When an instant DynamicBrcode is read by your user, a GET request containing the 
+BR code's UUID will be made to your registered URL to retrieve additional information 
+needed to complete the transaction.
+
+The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
+in the following format.
+
+```php
+use StarkInfra\DynamicBrcode;
+
+$request = listen();  # this is the method you made to get the read requests posted to your registered endpoint
+
+$uuid = DynamicBrcode::verify(
+    getUuid($request->url),  # you should implement this method to extract the uuid from the request's URL
+    $request->headers["Digital-Signature"]
+);
+
+$invoice = getInvoice($uuid); # you should implement this method to get the information of the BR code from its uuid
+
+sendResponse(  # you should also implement this method to respond the read request
+    DynamicBrcode::responseDue([
+        "version" => $invoice->version,
+        "created" => $invoice->created,
+        "keyId" => $invoice->keyId,
+        "status" => $invoice->status,
+        "reconciliationid" => $invoice->reconciliationId,
+        "amount" => $invoice->amount,
+        "cashierType" => $invoice->cashierType,
+        "cashierBankCode" => $invoice->cashierBankCode,
+        "cashAmount" => $invoice->cashAmount
+    ]);
+);
 ```
 
 ## Credit Note
@@ -1703,6 +2020,33 @@ use StarkInfra\CreditNote\Log;
 $log = Log::get("5155966664310784");
 
 print_r($log);
+```
+
+## Credit Note Preview
+
+## Create credit note previews
+You can create a Credit Note Previews to preview a CCB contract
+based on a specific table type:
+
+```php
+use StarkInfra\CreditNotePreview;
+
+$previews = CreditNotePreview::create([
+    new CreditNotePreview([
+        "type" => "american",
+        "nominalAmount" => 100000,
+        "scheduled" => "2022-10-11",
+        "taxId" => "012.345.678-90",
+        "initialDue" => "2022-11-11",
+        "nominalInterest" => 10,
+        "count" => 5,
+        "interval" => "month",
+    ]);
+]);
+
+foreach($previews as $preview){
+    print_r($preview);
+}
 ```
 
 ## Webhook

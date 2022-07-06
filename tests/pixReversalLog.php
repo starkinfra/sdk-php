@@ -9,14 +9,14 @@ class TestPixReversalLog
 {
     public function queryAndGet()
     {
-        $pixReversalLogs = iterator_to_array(Log::query(["limit" => 10, "types" => ["created"]]));
+        $pixReversalLogs = iterator_to_array(Log::query(["limit" => 10, "types" => ["processing"]]));
 
         if (count($pixReversalLogs) != 10) {
             throw new Exception("failed");
         }
 
         foreach($pixReversalLogs as $log) {
-            if ($log->type != "created") {
+            if ($log->type != "processing") {
                 throw new Exception("failed");
             }
         }

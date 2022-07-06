@@ -35,6 +35,10 @@ class Rest
                 $query["limit"] = min($limit, 100);
             }
 
+            if (!array_key_exists("cursor", $json)) {
+                break;
+            }
+
             $cursor = $json["cursor"];
             $query["cursor"] = $cursor;
             if (empty($cursor) | is_null($cursor) | (!is_null($limit) & $limit <= 0)) {

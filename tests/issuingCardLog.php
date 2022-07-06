@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingCardLog;
-
 use \Exception;
 use StarkInfra\IssuingCard\Log;
 
 
 class TestIssuingCardLog
 {
-
     public function query()
     {
         $logs = Log::query(["limit" => 10]);

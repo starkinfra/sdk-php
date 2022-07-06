@@ -1,8 +1,8 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\SubResource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\SubResource;
 
 
 class Certificate extends SubResource

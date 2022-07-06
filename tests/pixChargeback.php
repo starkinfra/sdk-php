@@ -1,7 +1,6 @@
 <?php
 
 namespace Test\PixChargeback;
-
 use Exception;
 use StarkInfra\PixChargeback;
 use StarkInfra\Utils\ReturnId;

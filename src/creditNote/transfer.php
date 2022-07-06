@@ -1,8 +1,8 @@
 <?php
 
 namespace StarkInfra\CreditNote;
-use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 
 
 class Transfer extends Resource
@@ -35,7 +35,6 @@ class Transfer extends Resource
     - created [DateTime]: creation datetime for the Transfer.
     - updated [DateTime]: latest update datetime for the Transfer.
     */
-
     function __construct(array $params)
     {
         parent::__construct($params);
@@ -56,5 +55,7 @@ class Transfer extends Resource
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this-> transactionIds = Checks::checkParam($params, "transactionIds");
+
+        Checks::checkParams($params);
     }
 }

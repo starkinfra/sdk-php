@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -14,7 +14,7 @@ class PixKey extends Resource
 
     PixKeys link bank account information to key ids.
     Key ids are a convenient way to search and pass bank account information.
-    When you initialize a Pix Key, the entity will not be automatically
+    When you initialize a PixKey, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the created object.
 
@@ -34,7 +34,7 @@ class PixKey extends Resource
         - owned [DateTime]: datetime when the key was owned by the holder. 
         - ownerType [string]: type of the owner of the PixKey. Options: "business" or "individual".
         - status [string]: current PixKey status. Options: "created", "registered", "canceled", "failed"
-        - bankCode [string]: bankCode of the account linked to the Pix Key. ex: "20018183".
+        - bankCode [string]: bankCode of the account linked to the PixKey. ex: "20018183".
         - bankName [string]: name of the bank that holds the account linked to the PixKey. ex: "StarkBank"
         - type [string]: type of the PixKey. Options: "cpf", "cnpj", "phone", "email" and "evp",
         - created [DateTime]: created datetime for the PixKey. 
@@ -106,7 +106,7 @@ class PixKey extends Resource
     /**
     # Retrieve PixKeys
 
-    Receive an enumerator of PixKeys objects previously created in the Stark Infra API
+    Receive an enumerator of PixKey objects previously created in the Stark Infra API
     
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -132,7 +132,7 @@ class PixKey extends Resource
     /**
     # Retrieve PixKeys
 
-    Receive an enumerator of PixKeys objects previously created in the Stark Infra API
+    Receive an enumerator of PixKey objects previously created in the Stark Infra API
     
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call.

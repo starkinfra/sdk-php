@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -97,7 +97,7 @@ class IssuingWithdrawal extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - enumerator of IssuingWithdrawals objects with updated attributes
+        - enumerator of IssuingWithdrawal objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

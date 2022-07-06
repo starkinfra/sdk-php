@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -98,7 +98,7 @@ class IssuingCard extends Resource
     /**
     # Retrieve IssuingCards
 
-    Receive an enumerator of IssuingCards objects previously created in the Stark Infra API
+    Receive an enumerator of IssuingCard objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
@@ -113,7 +113,7 @@ class IssuingCard extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - enumerator of IssuingCards objects with updated attributes
+        - enumerator of IssuingCard objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
@@ -126,7 +126,7 @@ class IssuingCard extends Resource
     /**
     # Retrieve paged IssuingCards
 
-    Receive an array of IssuingCards objects previously created in the Stark Infra API and the cursor to the next page.
+    Receive an array of IssuingCard objects previously created in the Stark Infra API and the cursor to the next page.
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
@@ -142,8 +142,8 @@ class IssuingCard extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:
-        - array of IssuingCards objects with updated attributes
-        - cursor to retrieve the next page of IssuingCards objects
+        - array of IssuingCard objects with updated attributes
+        - cursor to retrieve the next page of IssuingCard objects
      */
     public static function page($options = [], $user = null)
     {

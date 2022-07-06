@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingInvoice;
-
 use \Exception;
 use StarkInfra\IssuingInvoice;
 
 
 class TestIssuingInvoice
 {
-
     public function query()
     {
         $invoices = IssuingInvoice::query(["limit" => 10]);

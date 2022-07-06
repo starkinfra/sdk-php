@@ -24,7 +24,7 @@ class Webhook extends Resource
     function __construct(array $params)
     {
         parent::__construct($params);
-     
+
         $this-> url = Checks::checkParam($params, "url");
         $this-> subscriptions = Checks::checkParam($params, "subscriptions");
         

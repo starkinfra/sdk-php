@@ -1,10 +1,10 @@
 <?php
 
 namespace StarkInfra\PixClaim;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
+use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 use StarkInfra\PixClaim;
 

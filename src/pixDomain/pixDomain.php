@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
+use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\SubResource;
-use StarkInfra\Utils\Rest;
 
 
 class PixDomain extends SubResource

@@ -4,6 +4,7 @@ namespace Test\PixKey;
 use \Exception;
 use StarkInfra\PixKey;
 
+
 class TestPixKey
 {
     public function create()
@@ -16,9 +17,9 @@ class TestPixKey
 
     public function queryAndCancel()
     {
-        $keys = iterator_to_array(PixKey::query(["limit"=>10, "status" => ["registered"]]));
+        $keys = iterator_to_array(PixKey::query(["limit"=>5, "status" => ["registered"]]));
 
-        if (count($keys) != 10){
+        if (count($keys) != 5){
             throw new Exception("failed");
         }
 
@@ -109,9 +110,9 @@ echo "\n\t- create";
 $test->create();
 echo " - OK";
 
-// echo "\n\t- query and cancel";
-// $test->queryAndCancel();
-// echo " - OK";
+echo "\n\t- query and cancel";
+$test->queryAndCancel();
+echo " - OK";
 
 echo "\n\t- query and get";
 $test->queryAndGet();

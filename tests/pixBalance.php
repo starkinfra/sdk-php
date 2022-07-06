@@ -7,13 +7,13 @@ use StarkInfra\PixBalance;
 
 class TestPixBalance
 {
-  public function get()
-  {
-    $balance = PixBalance::get();
-    if (!is_int($balance->amount)) {
-      throw new Exception("failed");
+    public function get()
+    {
+        $balance = PixBalance::get();
+        if (!is_int($balance->amount)) {
+            throw new Exception("failed");
+        }
     }
-  }
 }
 
 echo "\n\nPixBalance:";

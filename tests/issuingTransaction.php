@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingTransaction;
-
 use \Exception;
 use StarkInfra\IssuingTransaction;
 
 
 class TestIssuingTransaction
 {
-
     public function query()
     {
         $transactions = IssuingTransaction::query(["limit" => 10]);
