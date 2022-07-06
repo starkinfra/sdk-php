@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingBalance;
-
 use \Exception;
 use StarkInfra\IssuingBalance;
 
 
 class TestIssuingBalance
 {
-
     public function get()
     {
         $balance = IssuingBalance::get();

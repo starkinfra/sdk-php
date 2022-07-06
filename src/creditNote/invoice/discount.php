@@ -1,8 +1,9 @@
 <?php
 
 namespace StarkInfra\CreditNote\Invoice;
-use StarkInfra\Utils\SubResource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\SubResource;
+
 
 class Discount extends SubResource
 {
@@ -19,5 +20,7 @@ class Discount extends SubResource
     {
         $this-> percentage = Checks::checkParam($params, "percentage");
         $this-> due = Checks::checkParam($params, "due");
+
+        Checks::checkParams($params);
     }
 }

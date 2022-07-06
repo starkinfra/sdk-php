@@ -1,8 +1,9 @@
 <?php
 
 namespace StarkInfra\CreditNote\Invoice;
-use StarkInfra\Utils\SubResource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\SubResource;
+
 
 class Description extends SubResource
 {
@@ -19,5 +20,7 @@ class Description extends SubResource
     {
         $this-> key = Checks::checkParam($params, "key");
         $this-> value = Checks::checkParam($params, "value");
+
+        Checks::checkParams($params);
     }
 }

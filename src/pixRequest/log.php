@@ -1,10 +1,10 @@
 <?php
 
 namespace StarkInfra\PixRequest;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\API;
+use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 use StarkInfra\PixRequest;
 
@@ -92,7 +92,7 @@ class Log extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter retrieved objects by types. ex: "sent", "denied", "failed", "created", "success", "approved", "credited", "refunded", "processing".
         - requestIds [array of strings, default null]: list of PixRequest ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - list of PixRequest\Log objects with updated attributes

@@ -1,11 +1,11 @@
 <?php
 
 namespace Test\CreditNote;
-use \Exception;
-use StarkInfra\CreditNote;
 use \DateTime;
+use \Exception;
 use \DateTimeZone;
 use \DateInterval;
+use StarkInfra\CreditNote;
 
 
 class TestCreditNote
@@ -13,7 +13,6 @@ class TestCreditNote
     public function createAndCancel()
     {
         $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
-
         if (is_null($creditNote->id)) {
             throw new Exception("failed");
         }
@@ -27,9 +26,9 @@ class TestCreditNote
 
     public function queryAndGet()
     {
-        $creditNotes = iterator_to_array(CreditNote::query(["limit" => 10]));
+        $creditNotes = iterator_to_array(CreditNote::query(["limit" => 5]));
         
-        if (count($creditNotes) != 10) {
+        if (count($creditNotes) != 5) {
             throw new Exception("failed");
         }
 
@@ -45,7 +44,7 @@ class TestCreditNote
         $ids = [];
         $cursor = null;
         for ($i=0; $i < 2; $i++) { 
-            list($page, $cursor) = CreditNote::page($options = ["limit" => 5, "cursor" => $cursor]);
+            list($page, $cursor) = CreditNote::page($options = ["limit" => 2, "cursor" => $cursor]);
             foreach ($page as $creditNote) {
                 if (in_array($creditNote->id, $ids)) {
                     throw new Exception("failed");
@@ -56,7 +55,7 @@ class TestCreditNote
                 break;
             }
         }
-        if (count($ids) != 10) {
+        if (count($ids) != 4) {
             throw new Exception("failed");
         }
     }
@@ -81,8 +80,6 @@ class TestCreditNote
                 new CreditNote\Invoice([
                     "amount" => 120000,
                     "due" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval("P2Y3M")))->format("Y-m-d"),
-                    "fine" => 3.0,
-                    "interest" => 1.0,
                     "descriptions" => [
                         new CreditNote\Invoice\Description([
                             "key" => "key",

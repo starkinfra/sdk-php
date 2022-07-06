@@ -1,14 +1,13 @@
 <?php
 
 namespace Test\IssuingHolder;
-
 use \Exception;
 use Test\Utils\Rule;
 use StarkInfra\IssuingHolder;
 
+
 class TestIssuingHolder
 {
-
     public function query()
     {
         $holders = IssuingHolder::query(["limit" => 10, "expand" => ["rules"]]);
@@ -50,7 +49,7 @@ class TestIssuingHolder
 
     public function postPatchAndCancel()
     {
-        $holders = IssuingHolder::create(TestIssuingHolder::generateExampleHoldersJson(2), ["expand" => "rules"]);
+        $holders = IssuingHolder::create(TestIssuingHolder::generateExampleHoldersJson(1), ["expand" => "rules"]);
         $holderId = $holders[0]->id;
         $holder = IssuingHolder::update($holderId, ["name" => "Updated Name"]);
         if ($holder->name != "Updated Name") {

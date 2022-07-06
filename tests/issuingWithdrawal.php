@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingWithdrawal;
-
 use \Exception;
 use StarkInfra\IssuingWithdrawal;
 
 
 class TestIssuingWithdrawal
 {
-
     public function query()
     {
         $withdrawals = IssuingWithdrawal::query(["limit" => 10]);

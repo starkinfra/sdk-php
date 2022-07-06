@@ -1,17 +1,17 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 
 
-class IssuingBin extends Resource
+class IssuingProduct extends Resource
 {
     /**
-    # IssuingBin object
+    # IssuingProduct object
 
-    The IssuingBin object displays the informations of BINs registered to your Workspace.
+    The IssuingProduct object displays the informations of BINs registered to your Workspace.
 
     ## Attributes (return-only):
         - id [string]: unique BIN number registered within the card network. ex: "53810200"
@@ -19,8 +19,8 @@ class IssuingBin extends Resource
         - settlement [string]: settlement type. ex: "credit"
         - category [string]: purchase category. ex: "prepaid"
         - client [string]: client type. ex: "business"
-        - created [DateTime]: creation datetime for the IssuingBin.
-        - updated [DateTime]: latest update datetime for the IssuingBin.
+        - created [DateTime]: creation datetime for the IssuingProduct.
+        - updated [DateTime]: latest update datetime for the IssuingProduct.
      */
     function __construct(array $params)
     {
@@ -37,49 +37,49 @@ class IssuingBin extends Resource
     }
 
     /**
-    # Retrieve IssuingBins
+    # Retrieve IssuingProducts
 
-    Receive an enumerator of IssuingBin objects previously registered in the Stark Infra API
+    Receive an enumerator of IssuingProduct objects previously registered in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - enumerator of Bin objects with updated attributes
+        - enumerator of IssuingProduct objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
-        return Rest::getList($user, IssuingBin::resource(), $options);
+        return Rest::getList($user, IssuingProduct::resource(), $options);
     }
 
     /**
-    # Retrieve paged IssuingBins
+    # Retrieve paged IssuingProducts
 
-    Receive an array of up to 100 IssuingBin objects previously registered in the Stark Infra API and the cursor to the next page.
+    Receive an array of up to 100 IssuingProduct objects previously registered in the Stark Infra API and the cursor to the next page.
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-        - user [Organization/Project object, default null, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - array of IssuingBin objects with updated attributes
-        - cursor to retrieve the next page of IssuingBin objects
+        - array of IssuingProduct objects with updated attributes
+        - cursor to retrieve the next page of IssuingProduct objects
      */
     public static function page($options = [], $user = null)
     {
-        return Rest::getPage($user, IssuingBin::resource(), $options);
+        return Rest::getPage($user, IssuingProduct::resource(), $options);
     }
 
     private static function resource()
     {
-        $bin = function ($array) {
-            return new IssuingBin($array);
+        $product = function ($array) {
+            return new IssuingProduct($array);
         };
         return [
-            "name" => "IssuingBin",
-            "maker" => $bin,
+            "name" => "IssuingProduct",
+            "maker" => $product,
         ];
     }
 }

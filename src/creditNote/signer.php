@@ -1,10 +1,11 @@
 <?php
 
 namespace StarkInfra\CreditNote;
-use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\SubResource;
 
-class Signer extends Resource
+
+class Signer extends SubResource
 {
     /**
     # CreditNote\Signer object
@@ -18,10 +19,10 @@ class Signer extends Resource
     */
     function __construct(array $params)
     {
-        parent::__construct($params);
-
         $this-> name = Checks::checkParam($params, "name");
         $this-> contact = Checks::checkParam($params, "contact");
         $this-> method = Checks::checkParam($params, "method");
+
+        Checks::checkParams($params);
     }
 }

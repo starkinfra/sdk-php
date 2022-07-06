@@ -2,8 +2,8 @@
 
 namespace Test;
 require_once("src/init.php");
-include_once("tests/utils/rule.php");
 require_once('vendor/autoload.php');
+include_once("tests/utils/rule.php");
 
 
 $projectId = $_SERVER["SANDBOX_ID"]; # "9999999999999999",
@@ -23,7 +23,7 @@ $project = new \StarkInfra\Project([
 echo "\n\nStarting tests\n";
 
 include_once("issuingBalance.php");
-include_once("issuingBin.php");
+include_once("issuingProduct.php");
 include_once("issuingCard.php");
 include_once("issuingCardLog.php");
 include_once("issuingHolder.php");
@@ -34,14 +34,16 @@ include_once("issuingPurchase.php");
 include_once("issuingPurchaseLog.php");
 include_once("issuingTransaction.php");
 include_once("issuingWithdrawal.php");
-include_once("issuingAuthorization.php");
+include_once("merchantCategory.php");
+include_once("merchantCountry.php");
+include_once("cardMethod.php");
 include_once("pixDomain.php");
 include_once("pixBalance.php");
 include_once("pixChargeback.php"); 
 include_once("pixChargebackLog.php");
 include_once("pixClaim.php"); 
 include_once("pixClaimLog.php");
-include_once("pixDirector.php"); 
+include_once("pixDirector.php");
 include_once("pixInfraction.php"); 
 include_once("pixInfractionLog.php");
 include_once("pixKey.php");
@@ -51,8 +53,11 @@ include_once("pixRequestLog.php");
 include_once("pixReversal.php"); 
 include_once("pixReversalLog.php");
 include_once("pixStatement.php");
+include_once("dynamicBrcode.php");
+include_once("staticBrcode.php");
 include_once("creditNote.php");
 include_once("creditNoteLog.php");
+include_once("creditNotePreview.php");
 include_once("webhook.php");
 include_once("event.php");
 include_once("key.php");

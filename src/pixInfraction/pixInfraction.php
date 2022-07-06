@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
+use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -26,12 +26,12 @@ class PixInfraction extends Resource
         - description [string, default null]: description for any details that can help with the infraction investigation.
     
     ## Attributes (return-only):
+        - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
         - creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
         - agent [string]: Options: "reporter" if you created the PixInfraction, "reported" if you received the PixInfraction.
         - analysis [string]: analysis that led to the result.
         - bacenId [string]: central bank's unique UUID that identifies the Pix Infraction.
         - debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
-        - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
         - reportedBy [string]: agent that reported the PixInfraction. Options: "debited", "credited".
         - result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
         - status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".

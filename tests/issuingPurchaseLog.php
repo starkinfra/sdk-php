@@ -1,14 +1,12 @@
 <?php
 
 namespace Test\IssuingPurchaseLog;
-
 use \Exception;
 use StarkInfra\IssuingPurchase\Log;
 
 
 class TestIssuingPurchaseLog
 {
-
     public function queryAnGet()
     {
         $purchases = Log::query(["limit" => 10]);

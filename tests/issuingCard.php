@@ -1,10 +1,9 @@
 <?php
 
 namespace Test\IssuingCard;
-
 use \Exception;
+use Test\Utils\Rule;
 use StarkInfra\IssuingCard;
-use StarkInfra\IssuingHolder;
 
 
 class TestIssuingCard
@@ -12,7 +11,6 @@ class TestIssuingCard
     public function query()
     {
         $cards = IssuingCard::query(["limit" => 10, "expand" => ["rules"]]);
-
         foreach ($cards as $card) {
             if (is_null($card->id)) {
                 throw new Exception("failed");
@@ -50,8 +48,10 @@ class TestIssuingCard
 
     public function postAndCancel()
     {
-        $holder = iterator_to_array(IssuingHolder::query(["limit" => 1]))[0];
-        $cards = IssuingCard::create(TestIssuingCard::generateExampleCardsJson($holder, 2), ["expand" => "securityCode"]);
+        $cards = IssuingCard::create(
+            TestIssuingCard::generateExampleCardsJson(2), 
+            ["expand" => ["rules", "securityCode"]]
+        );
         if ($cards[0]->securityCode == "***") {
             throw new Exception("failed");
         }
@@ -83,14 +83,15 @@ class TestIssuingCard
         }
     }
 
-    public static function generateExampleCardsJson($holder, $n=1)
+    public static function generateExampleCardsJson($n=1)
     {
         $cards = [];
         foreach (range(1, $n) as $index) {
             $card = new IssuingCard([
-                "holderName" => $holder->name,
-                "holderTaxId" => $holder->taxId,
-                "holderExternalId" => $holder->externalId,
+                "holderName" => "Jamie Lannister",
+                "holderTaxId" => "20.018.183/0001-80",
+                "holderExternalId" => strval(rand(0, 9999999999999)),
+                "rules" => Rule::generateExampleRulesJson()
             ]);
             array_push($cards, $card);
         }

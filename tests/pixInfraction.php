@@ -1,7 +1,6 @@
 <?php
 
 namespace Test\PixInfraction;
-
 use Exception;
 use StarkInfra\PixInfraction;
 use StarkInfra\Utils\EndToEndId;

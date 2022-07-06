@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
+use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -28,13 +28,13 @@ class PixChargeback extends Resource
         - description [string, default null]: description for the PixChargeback.
 
     ## Attributes (return-only):
+        - id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
         - analysis [string]: analysis that led to the result.   
         - bacenId [string]: central bank's unique UUID that identifies the PixChargeback.
         - senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
         - receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
         - rejectionReason [string]: reason for the rejection of the Pix chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
         - chargebackId [string]: return id of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
-        - id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
         - result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixChargeback. 
@@ -103,7 +103,7 @@ class PixChargeback extends Resource
     /**
     # Retrieve PixChargeback objects
 
-    Receive an enumerator of PixChargebacks objects previously created in the Stark Infra API
+    Receive an enumerator of PixChargeback objects previously created in the Stark Infra API
     
         ## Parameters (optional):
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
@@ -127,7 +127,7 @@ class PixChargeback extends Resource
     /**
     # Retrieve paged PixChargebacks
     
-    Receive a list of up to 100 PixChargebacks objects previously created in the Stark Infra API and the cursor to the next page.
+    Receive a list of up to 100 PixChargeback objects previously created in the Stark Infra API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
     
     ## Parameters (optional):

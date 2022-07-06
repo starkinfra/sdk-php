@@ -1,10 +1,11 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Parse;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\API;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Parse;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -29,7 +30,6 @@ class PixReversal extends Resource
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
         - returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
-        - bankCode [string]: code of the bank institution in Brazil. ex: "20018183" or "341"
         - fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
         - status [string]: current PixReversal status. ex: "registered" or "paid"
         - flow [string]: direction of money flow. ex: "in" or "out"
@@ -46,7 +46,6 @@ class PixReversal extends Resource
         $this-> reason = Checks::checkParam($params, "reason");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> returnId = Checks::checkParam($params, "returnId");
-        $this-> bankCode = Checks::checkParam($params, "bankCode");
         $this-> fee = Checks::checkParam($params, "fee");
         $this-> status = Checks::checkParam($params, "status");
         $this-> flow = Checks::checkParam($params, "flow");
@@ -153,7 +152,8 @@ class PixReversal extends Resource
     /**
     # Parse PixReversals
 
-    Create a single PixReversal object from a content string received from a handler listening at the request url.
+    Create a single PixReversal object from a content string received from a POST 
+    request to your registered URL.
     If the provided digital signature does not check out with the Stark public key, a
     stark.error.InvalidSignatureError will be raised.
 
@@ -170,6 +170,31 @@ class PixReversal extends Resource
     public static function parse($content, $signature, $user = null)
     {
         return Parse::parseAndVerify($content, $signature, PixReversal ::resource(), $user);
+    }
+
+    /**
+    # PixReversal authorization response
+
+    Helps you respond to a PixReversal authorization request.
+    Authorization requests will be posted at your registered endpoint whenever 
+    inbound PixReversals are received.
+
+    ## Parameters (required):
+        - status [string]: response to the authorization request. ex: "approved" or "denied"
+
+    ## Parameters (conditionally required):
+        - reason [string, default null]: denial reason. Required if the status is "denied". Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
+
+    ## Return:
+        - Dumped JSON string that must be returned to us on the PixReversal authorization response
+     */
+    public static function response($params)
+    {
+        $params = ([
+            "status" => Checks::checkParam($params, "status"),
+            "reason" => Checks::checkParam($params, "reason"),
+        ]);
+        return json_encode(API::apiJson($params));
     }
 
     private static function resource()

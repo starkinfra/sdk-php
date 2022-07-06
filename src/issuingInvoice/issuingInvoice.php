@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
 
@@ -98,7 +98,7 @@ class IssuingInvoice extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - enumerator of IssuingInvoices objects with updated attributes
+        - enumerator of IssuingInvoice objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {
@@ -124,8 +124,8 @@ class IssuingInvoice extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - list of IssuingInvoices objects with updated attributes
-        - cursor to retrieve the next page of IssuingInvoices objects
+        - list of IssuingInvoice objects with updated attributes
+        - cursor to retrieve the next page of IssuingInvoice objects
      */
     public static function page($options = [], $user = null)
     {

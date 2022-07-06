@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
 use StarkInfra\Utils\API;
+use StarkInfra\Utils\Checks;
+use StarkInfra\Utils\Resource;
 
 
 class IssuingRule extends Resource
@@ -41,18 +41,18 @@ class IssuingRule extends Resource
         $this->counterAmount = Checks::checkParam($params, "counterAmount");
         $this->currencyName = Checks::checkParam($params, "currencyName");
         $this->currencySymbol = Checks::checkParam($params, "currencySymbol");
-        $this->categories = Checks::checkParam($params, "categories");
-        $this->countries = Checks::checkParam($params, "countries");
-        $this->methods = Checks::checkParam($params, "methods");
+        $this->categories = MerchantCategory::parseCategories(Checks::checkParam($params, "categories"));
+        $this->countries = MerchantCountry::parseCountries(Checks::checkParam($params, "countries"));
+        $this->methods = CardMethod::parseMethods(Checks::checkParam($params, "methods"));
 
         Checks::checkParams($params);
     }
 
     public static function parseRules($rules) {
-        $parsedRules = [];
         if ($rules == null) {
             return null;
         }
+        $parsedRules = [];
         foreach($rules as $rule) {
             if($rule instanceof IssuingRule) {
                 array_push($parsedRules, $rule);

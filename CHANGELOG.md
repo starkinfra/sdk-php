@@ -14,8 +14,21 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- StaticBrcode resource
+- DynamicBrcode resource 
+- CreditNotePreview resource
+- CardMethod sub-resource
+- MerchantCountry sub-resource
+- MerchantCategory sub-resource
 - Event/Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
-- get, query, page, delete and update function for Event resource.
+- parse method for IssuingPurchase resource
+- get, query, page, delete and update methods to the Event resource.
+- response method to PixRequest, PixReversal and IssuingPurchase resources
+### Changed
+- resource name from IssuingBin to IssuingProduct
+### Removed 
+- IssuingAuthorization resource
+- bankCode attribute from PixReversal resource
 
 ## [0.1.0] - 2022-06-03
 ### Added

@@ -1,9 +1,9 @@
 <?php
 
 namespace Test\PixKeyLog;
-
-use StarkInfra\PixKey\Log;
 use \Exception;
+use StarkInfra\PixKey\Log;
+
 
 class TestPixKeyLog
 {

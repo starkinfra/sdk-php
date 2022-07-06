@@ -1,9 +1,9 @@
 <?php
 
 namespace Test\PixInfractionLog;
-
 use \Exception;
 use StarkInfra\PixInfraction\Log;
+
 
 class TestPixInfractionLog
 {
