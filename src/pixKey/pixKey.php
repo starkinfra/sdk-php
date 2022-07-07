@@ -97,7 +97,7 @@ class PixKey extends Resource
     ## Return:
         - PixKey object that corresponds to the given id.
     */
-    public static function get($id, $payerId, $params = null, $user = null)
+    public static function get($id, $payerId, $params = [], $user = null)
     {
         $params["payerId"] = $payerId;
         return Rest::getId($user, PixKey::resource(), $id, $params);

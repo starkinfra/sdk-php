@@ -27,7 +27,7 @@ class CreditNote extends Resource
         - scheduled [Date or string]: date of transfer execution. ex: "2020-03-10"
         - invoices [array of Invoice objects or dictionaries]: list of Invoices to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
         - payment [Transfer object or dictionary]: payment to be created and sent to the credit receiver. ex: payment=CreditNote\Transfer()
-        - signers [array of Signer objects or dictionaries]: Signers contain the name and email of the signer and the method of delivery. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+        - signers [array of CreditSigner objects or dictionaries]: signers contain the name and email of the signer and the method of delivery. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
         - externalId [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
         - streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
         - streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
@@ -102,13 +102,13 @@ class CreditNote extends Resource
         }
         $parsedSigners = [];
         foreach($signers as $signer) {
-            if($signer instanceof CreditNote\Signer) {
+            if($signer instanceof CreditSigner) {
                 array_push($parsedSigners, $signer);
                 continue;
             }
             $parsedSigner = function ($array) {
                 $signerMaker = function ($array) {
-                    return new CreditNote\Signer($array);
+                    return new CreditSigner($array);
                 };
                 return API::fromApiJson($signerMaker, $array);
             };

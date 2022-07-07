@@ -6,6 +6,7 @@ use \Exception;
 use \DateTimeZone;
 use \DateInterval;
 use StarkInfra\CreditNote;
+use StarkInfra\CreditSigner;
 
 
 class TestCreditNote
@@ -89,7 +90,7 @@ class TestCreditNote
                 ])
             ], 
             "signers" =>[
-                new CreditNote\Signer([
+                new CreditSigner([
                     "contact" =>  "jamie.lannister@gmail.com",
                     "method" => "link",
                     "name" => "Jamie Lannister",

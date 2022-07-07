@@ -864,7 +864,7 @@ $requests = PixRequest::create([
         "receiverAccountType" => "checking",
         "receiverName" => "Daenerys Targaryen Stormborn",
         "receiverTaxId" => "012.345.678-90",
-        "endToEndId" => EndToEndId.create("20018183"),
+        "endToEndId" => EndToEndId::create("20018183"),
     ]),
     new PixRequest([
         "amount" => 200,
@@ -880,7 +880,7 @@ $requests = PixRequest::create([
         "receiverAccountType" => "checking",
         "receiverName" => "Daenerys Targaryen Stormborn",
         "receiverTaxId" => "012.345.678-90",
-        "endToEndId" => EndToEndId.create("20018183"),
+        "endToEndId" => EndToEndId::create("20018183"),
     ]);
 ]);
 
@@ -1235,12 +1235,13 @@ avoiding sweep blocks by the Central Bank.
 
 ```php
 use StarkInfra\PixKey;
+use StarkInfra\Utils\EndToEndId;
 
 $key = PixKey::get(
     "5915632394567680",
     "20.018.183/0001-80",
     [
-        "name" => "Jamie Lannister"
+        "endToEndId" => EndToEndId::create("20018183")
     ]
 );
 
@@ -1508,9 +1509,7 @@ use StarkInfra\PixInfraction;
 
 $infraction = PixInfraction::update(
     "5155165527080960",
-    [
-        "result" => "agreed"
-    ]
+    "agreed"
 )
 
 print_r($infraction)
@@ -1900,6 +1899,9 @@ You can create a Credit Note to generate a CCB contract:
 
 ```php
 use StarkInfra\CreditNote;
+use StarkInfra\CreditSigner;
+use StarkInfra\CreditNote\Invoice;
+use StarkInfra\CreditNote\Transfer;
 
 $notes = CreditNote::create([
     new CreditNote([
@@ -1925,7 +1927,7 @@ $notes = CreditNote::create([
             ])
         ], 
         "signers" =>[
-            new Signer([
+            new CreditSigner([
                 "contact" =>  "jamie.lannister@gmail.com",
                 "method" => "link",
                 "name" => "Jamie Lannister",
@@ -2061,7 +2063,7 @@ $webhooks = Webhook::create([
     new Webhook([
         "url" => "https://webhook.site/",
         "subscriptions" =>[
-            "contract", "credit-note", "signer",
+            "credit-note"
             "issuing-card", "issuing-invoice", "issuing-purchase",
             "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"
         ]
@@ -2194,7 +2196,7 @@ With this function, you can manually set events retrieved from the API as
 ```php
 use StarkInfra\Event;
 
-$event = Event::update("1298371982371929", ["isDelivered" => true]);
+$event = Event::update("1298371982371929",  true);
 
 print_r($event);
 ```
