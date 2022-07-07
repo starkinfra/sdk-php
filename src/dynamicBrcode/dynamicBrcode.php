@@ -32,7 +32,7 @@ class DynamicBrcode extends Resource
         - type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"
 
     ## Attributes (return-only):
-        - id [string]: id returned on creation, this is the BR code's QR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
+        - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
         - uuid [string]: unique uuid returned when the DynamicBrcode is created. ex: "4e2eab725ddd495f9c98ffd97440702d"
         - url [string]: url to the BR code's image. ex: "https://brcode-h.development.starkinfra.com/dynamic-qrcode/901e71f2447c43c886f58366a5432c4b.png"
         - updated [DateTime]: latest update datetime for the DynamicBrcode.

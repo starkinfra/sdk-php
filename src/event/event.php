@@ -288,9 +288,9 @@ class Event extends Resource
     ## Return:
         - target Event with updated attributes
      */
-    public static function update($id, $options = [], $user = null)
+    public static function update($id, $isDelivered, $user = null)
     {
-        return Rest::patchId($user, Event::resource(), $id, $options);
+        return Rest::patchId($user, Event::resource(), $id, [$isDelivered]);
     }
 
     /**

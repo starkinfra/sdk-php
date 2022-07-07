@@ -26,6 +26,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - response method to PixRequest, PixReversal and IssuingPurchase resources
 ### Changed
 - resource name from IssuingBin to IssuingProduct
+- Creditnote\Signer sub-resource to CreditSigner resource
 ### Removed 
 - IssuingAuthorization resource
 - bankCode attribute from PixReversal resource
