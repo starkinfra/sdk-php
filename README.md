@@ -94,16 +94,16 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 composer require starkinfra/sdk
 ```
 
-To use the bindings, use Composer's autoload:
+To use the bindings, use following the command:
 
 ```sh
-require_once('vendor/autoload.php');
+require_once('vendor/starkinfra/sdk/src/init.php');
 ```
 
 1.2 Manual installation: You can also download the latest release from GitHub and then, to use the bindings, include the init.php file.
 
 ```sh
-require_once('/path/to/starkinfra/sdk-php/init.php');
+require_once('/path/to/starkinfra/sdk-php/src/init.php');
 ```
 
 ## 2. Create your Private and Public Keys
