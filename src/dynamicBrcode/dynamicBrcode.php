@@ -235,7 +235,7 @@ class DynamicBrcode extends Resource
         - keyId [string]: receiver's PixKey id. Can be a tax_id (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
         - status [string]: BR code's status. Options: "created", "overdue", "paid", "canceled" or "expired"
         - reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. ex: "cd65c78aeb6543eaaa0170f68bd741ee"
-        - amount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
+        - nominalAmount [integer]: A positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender must set it at the moment of payment. Example: amount=100 (R$1.00).
         - senderName [string]: sender's full name. ex: "Anthony Edward Stark"
         - receiverName [string]: receiver's full name. ex: "Jamie Lannister"
         - receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
@@ -251,6 +251,9 @@ class DynamicBrcode extends Resource
         - interestAmount [integer, default 0]: interest amount charged if the sender pays after the due datetime calculated from a percent interest.
         - discountAmount [integer, default 0]: discount amount applied if the sender pays at a specific datetime before the due datetime.
         - description [string, default null]: additional information to be shown to the sender at the moment of payment.
+        - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.
+        - interest [float, default 1.0]: Interest percentage charged if the sender pays after the due datetime.
+        - discounts [array of dictionaries, default null]: array of dictionaries with "percentage":float and "due":DateTime or string pairs.
 
     ## Return:
         - Dumped JSON string that must be returned to us
@@ -264,7 +267,7 @@ class DynamicBrcode extends Resource
             "keyId" => Checks::checkParam($params, "keyId"),
             "status" => Checks::checkParam($params, "status"),
             "reconciliationId" => Checks::checkParam($params, "reconciliationId"),
-            "amount" => Checks::checkParam($params, "amount"),
+            "nominalAmount" => Checks::checkParam($params, "nominalAmount"),
             "senderName" => Checks::checkParam($params, "senderName"),
             "receiverName" => Checks::checkParam($params, "receiverName"),
             "receiverStreetLine" => Checks::checkParam($params, "receiverStreetLine"),
@@ -278,6 +281,9 @@ class DynamicBrcode extends Resource
             "interestAmount" => Checks::checkParam($params, "interestAmount"),
             "discountAmount" => Checks::checkParam($params, "discountAmount"),
             "description" => Checks::checkParam($params, "description"),
+            "fine" => Checks::checkParam($params, "fine"),
+            "interest" => Checks::checkParam($params, "interest"),
+            "discounts" => Checks::checkParam($params, "discounts"),
         ]);
         return json_encode(API::apiJson($params));
     }

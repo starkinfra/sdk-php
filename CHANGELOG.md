@@ -13,6 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- fineAmount to fine, interestAmount to interest and discountAmount to discounts on DynamicBrcode::responseDue
+- amount to nominalAmount on DynamicBrcode::responseDue
+### Fixed
+- JSON body returned from PixRequest::response() method
+- JSON body returned from PixReversal::response() method
 
 ## [0.2.0] - 2022-07-07
 ### Added

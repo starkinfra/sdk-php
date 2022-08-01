@@ -111,7 +111,7 @@ class TestDynamicBrcode
 
     public function createResponseDue()
     {
-        $brcodeJson = DynamicBrcode::responseInstant(TestDynamicBrcode::dueReadExample());
+        $brcodeJson = DynamicBrcode::responseDue(TestDynamicBrcode::dueReadExample());
         if (gettype($brcodeJson) != "string") {
             throw new Exception("failed");
         }
@@ -174,7 +174,19 @@ class TestDynamicBrcode
             "fineAmount" => rand(0, 1000),
             "interestAmount" => rand(0, 1000),
             "discountAmount" => rand(0, 1000),
-            "description" => "teste Php"
+            "description" => "teste Php",
+            "fine" => rand(0, 100),
+            "interest" => rand(0, 1),
+            "discounts" => [
+                [
+                    "percentage" => 2,
+                    "due" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval('P33D')))->format('Y-m-d H:i:s'),
+                ],
+                [
+                    "percentage" => 1,
+                    "due" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval('P34D')))->format('Y-m-d H:i:s'),
+                ]
+            ]
         ];
     }
 
