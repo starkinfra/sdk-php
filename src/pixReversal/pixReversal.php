@@ -191,8 +191,10 @@ class PixReversal extends Resource
     public static function response($params)
     {
         $params = ([
-            "status" => Checks::checkParam($params, "status"),
-            "reason" => Checks::checkParam($params, "reason"),
+            "authorization" => [
+                "status" => Checks::checkParam($params, "status"),
+                "reason" => Checks::checkParam($params, "reason"),
+            ]
         ]);
         return json_encode(API::apiJson($params));
     }

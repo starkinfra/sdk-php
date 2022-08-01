@@ -164,7 +164,7 @@ class TestPixRequest
             "senderAccountType" => "checking",
             "senderName" => "Tony",
             "senderTaxId" => "594.739.480-42",
-            "receiverBankCode" => "341",
+            "receiverBankCode" => $_SERVER["SANDBOX_BANK_CODE"],
             "receiverAccountNumber" => "00000-1",
             "receiverBranchCode" => "0001",
             "receiverAccountType" => "checking",
