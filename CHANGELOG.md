@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.3.0] - 2022-08-02
 ### Changed
 - fineAmount to fine, interestAmount to interest and discountAmount to discounts on DynamicBrcode::responseDue
 - amount to nominalAmount on DynamicBrcode::responseDue
