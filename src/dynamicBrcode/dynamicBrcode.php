@@ -247,9 +247,6 @@ class DynamicBrcode extends Resource
         - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR code cannot be paid anymore.
         - senderTaxId [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
         - receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
-        - fineAmount [integer, default 0]: amount charged if the sender pays after the due datetime.
-        - interestAmount [integer, default 0]: interest amount charged if the sender pays after the due datetime calculated from a percent interest.
-        - discountAmount [integer, default 0]: discount amount applied if the sender pays at a specific datetime before the due datetime.
         - description [string, default null]: additional information to be shown to the sender at the moment of payment.
         - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.
         - interest [float, default 1.0]: Interest percentage charged if the sender pays after the due datetime.
@@ -277,9 +274,6 @@ class DynamicBrcode extends Resource
             "expiration" => Checks::checkDateInterval(Checks::checkParam($params, "expiration")),
             "senderTaxId" => Checks::checkParam($params, "senderTaxId"),
             "receiverTaxId" => Checks::checkParam($params, "receiverTaxId"),
-            "fineAmount" => Checks::checkParam($params, "fineAmount"),
-            "interestAmount" => Checks::checkParam($params, "interestAmount"),
-            "discountAmount" => Checks::checkParam($params, "discountAmount"),
             "description" => Checks::checkParam($params, "description"),
             "fine" => Checks::checkParam($params, "fine"),
             "interest" => Checks::checkParam($params, "interest"),
