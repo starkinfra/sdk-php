@@ -15,7 +15,7 @@ class CardMethod extends SubResource
     CardMethod's codes are used to define methods filters in IssuingRules.
 
     ## Parameters (required):
-        - code [string]: method's code. Options: "chip", "token", "server", "manual", "magstripe", "contactless"
+        - code [string]: method's code. Options: "chip", "token", "server", "manual", "contactless"
 
     ## Attributes (return-only):
         - name [string]: method's name. ex: "token"

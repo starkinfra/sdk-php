@@ -111,7 +111,7 @@ class TestDynamicBrcode
 
     public function createResponseDue()
     {
-        $brcodeJson = DynamicBrcode::responseDue(TestDynamicBrcode::dueReadExample());
+        $brcodeJson = DynamicBrcode::responseInstant(TestDynamicBrcode::dueReadExample());
         if (gettype($brcodeJson) != "string") {
             throw new Exception("failed");
         }
@@ -162,7 +162,7 @@ class TestDynamicBrcode
             "keyId" => "testePhp@gmail.com",
             "status" => ['created', 'paid', 'voided'][rand(0, 2)],
             "reconciliationId" => strval(rand(999999, 99999999)),
-            "amount" => strval(mt_rand(10, 999999)),
+            "nominalAmount" => strval(mt_rand(10, 999999)),
             "senderName" => ['Arya Stark', 'Jamie Lannister', 'Ned Stark'][rand(0, 2)],
             "senderTaxId" => "012.345.678-90",
             "receiverName" => ['Arya Stark', 'Jamie Lannister', 'Ned Stark'][rand(0, 2)],
@@ -171,22 +171,10 @@ class TestDynamicBrcode
             "receiverStateCode" => "SP",
             "receiverZipCode" => "01311-300",
             "receiverTaxId" => "20.018.183/0001-80",
-            "fineAmount" => rand(0, 1000),
-            "interestAmount" => rand(0, 1000),
-            "discountAmount" => rand(0, 1000),
-            "description" => "teste Php",
-            "fine" => rand(0, 100),
-            "interest" => rand(0, 1),
-            "discounts" => [
-                [
-                    "percentage" => 2,
-                    "due" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval('P33D')))->format('Y-m-d H:i:s'),
-                ],
-                [
-                    "percentage" => 1,
-                    "due" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval('P34D')))->format('Y-m-d H:i:s'),
-                ]
-            ]
+            "fine" => rand(0, 1000),
+            "interest" => rand(0, 1000),
+            "discounts" => rand(0, 1000),
+            "description" => "teste Php"
         ];
     }
 
@@ -198,7 +186,7 @@ class TestDynamicBrcode
             "keyId" => "testePhp@gmail.com",
             "status" => ['created', 'paid', 'voided'][rand(0, 2)],
             "reconciliationId" => strval(rand(999999, 99999999)),
-            "amount" => strval(mt_rand(10, 999999)),
+            "nominalAmount" => strval(mt_rand(10, 999999)),
         ];
     }
 }

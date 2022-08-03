@@ -13,6 +13,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+<<<<<<< HEAD
 
 ## [0.3.1] - 2022-08-04
 ### Fixed
@@ -25,6 +26,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Fixed
 - JSON body returned from PixRequest::response() method
 - JSON body returned from PixReversal::response() method
+=======
+### Added
+- missing parameters to IssuingPurchase docstring
+>>>>>>> b9f3042 (Rebase)
 
 ## [0.2.0] - 2022-07-07
 ### Added

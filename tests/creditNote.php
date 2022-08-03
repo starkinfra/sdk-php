@@ -64,7 +64,7 @@ class TestCreditNote
     public function exampleCCB()
     {
         $params = [
-            "templateId" => "5707012469948416",
+            "templateId" => $_SERVER["SANDBOX_TEMPLATE_ID"],
             "name" => "Jamie Lannister",
             "taxId" => "012.345.678-90",
             "nominalAmount" => 100000,

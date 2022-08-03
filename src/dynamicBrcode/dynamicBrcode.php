@@ -181,7 +181,7 @@ class DynamicBrcode extends Resource
         - keyId [string]: receiver's PixKey id. Can be a tax_id (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
         - status [string]: BR code's status. Options: "created", "overdue", "paid", "canceled" or "expired"
         - reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. ex: "cd65c78aeb6543eaaa0170f68bd741ee"
-        - amount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
+        - nominalAmount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
 
     ## Parameters (conditionally-required):
         - cashierType [string]: cashier's type. Required if the cashAmount is different from 0. Options: "merchant", "participant" and "other"
@@ -206,7 +206,7 @@ class DynamicBrcode extends Resource
             "keyId" => Checks::checkParam($params, "keyId"),
             "status" => Checks::checkParam($params, "status"),
             "reconciliationId" => Checks::checkParam($params, "reconciliationId"),
-            "amount" => Checks::checkParam($params, "amount"),
+            "nominalAmount" => Checks::checkParam($params, "nominalAmount"),
             "cashierType" => Checks::checkParam($params, "cashierType"),
             "cashierBankCode" => Checks::checkParam($params, "cashierBankCode"),
             "cashAmount" => Checks::checkParam($params, "cashAmount"),
@@ -235,7 +235,7 @@ class DynamicBrcode extends Resource
         - keyId [string]: receiver's PixKey id. Can be a tax_id (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
         - status [string]: BR code's status. Options: "created", "overdue", "paid", "canceled" or "expired"
         - reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. ex: "cd65c78aeb6543eaaa0170f68bd741ee"
-        - nominalAmount [integer]: A positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender must set it at the moment of payment. Example: amount=100 (R$1.00).
+        - nominalAmount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
         - senderName [string]: sender's full name. ex: "Anthony Edward Stark"
         - receiverName [string]: receiver's full name. ex: "Jamie Lannister"
         - receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
@@ -247,10 +247,10 @@ class DynamicBrcode extends Resource
         - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR code cannot be paid anymore.
         - senderTaxId [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
         - receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
+        - fine [integer, default 0]: amount charged if the sender pays after the due datetime.
+        - interest [integer, default 0]: interest amount charged if the sender pays after the due datetime calculated from a percent interest.
+        - discounts [integer, default 0]: discount amount applied if the sender pays at a specific datetime before the due datetime.
         - description [string, default null]: additional information to be shown to the sender at the moment of payment.
-        - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.
-        - interest [float, default 1.0]: Interest percentage charged if the sender pays after the due datetime.
-        - discounts [array of dictionaries, default null]: array of dictionaries with "percentage":float and "due":DateTime or string pairs.
 
     ## Return:
         - Dumped JSON string that must be returned to us
@@ -274,10 +274,10 @@ class DynamicBrcode extends Resource
             "expiration" => Checks::checkDateInterval(Checks::checkParam($params, "expiration")),
             "senderTaxId" => Checks::checkParam($params, "senderTaxId"),
             "receiverTaxId" => Checks::checkParam($params, "receiverTaxId"),
-            "description" => Checks::checkParam($params, "description"),
             "fine" => Checks::checkParam($params, "fine"),
             "interest" => Checks::checkParam($params, "interest"),
             "discounts" => Checks::checkParam($params, "discounts"),
+            "description" => Checks::checkParam($params, "description"),
         ]);
         return json_encode(API::apiJson($params));
     }
