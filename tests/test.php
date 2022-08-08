@@ -57,7 +57,7 @@ include_once("dynamicBrcode.php");
 include_once("staticBrcode.php");
 include_once("creditNote.php");
 include_once("creditNoteLog.php");
-include_once("creditNotePreview.php");
+include_once("creditPreview.php");
 include_once("webhook.php");
 include_once("event.php");
 include_once("key.php");

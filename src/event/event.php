@@ -1,12 +1,10 @@
 <?php
 
 namespace StarkInfra;
-use \Exception;
 use StarkInfra\Utils\API;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Parse;
 use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Request;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
@@ -137,7 +135,7 @@ class Event extends Resource
     {
         return function ($array) {
             $claim = function ($array) {
-                return new PixRequest($array);
+                return new PixClaim($array);
             };
             $array["claim"] = API::fromApiJson($claim, $array["claim"]);
             $log = function ($array) {
@@ -151,7 +149,7 @@ class Event extends Resource
     {
         return function ($array) {
             $key = function ($array) {
-                return new PixRequest($array);
+                return new PixKey($array);
             };
             $array["key"] = API::fromApiJson($key, $array["key"]);
             $log = function ($array) {
@@ -165,7 +163,7 @@ class Event extends Resource
     {
         return function ($array) {
             $infraction = function ($array) {
-                return new PixRequest($array);
+                return new PixInfraction($array);
             };
             $array["infraction"] = API::fromApiJson($infraction, $array["infraction"]);
             $log = function ($array) {
@@ -179,7 +177,7 @@ class Event extends Resource
     {
         return function ($array) {
             $chargeback = function ($array) {
-                return new PixRequest($array);
+                return new PixChargeback($array);
             };
             $array["chargeback"] = API::fromApiJson($chargeback, $array["chargeback"]);
             $log = function ($array) {

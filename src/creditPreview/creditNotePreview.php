@@ -1,13 +1,12 @@
 <?php
 
-namespace StarkInfra;
-use StarkInfra\Utils\Rest;
+namespace StarkInfra\CreditPreview;
 use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkInfra\Utils\SubResource;
 use StarkInfra\CreditNote\Invoice;
 
 
-class CreditNotePreview extends Resource
+class CreditNotePreview extends SubResource
 {
     /**
     # CreditNotePreview object
@@ -42,8 +41,6 @@ class CreditNotePreview extends Resource
      */
     function __construct(array $params)
     {
-        parent::__construct($params);
-
         $this-> type = Checks::checkParam($params, "type");
         $this-> nominalAmount = Checks::checkParam($params, "nominalAmount");
         $this-> scheduled = Checks::checkDateTime(Checks::checkParam($params, "scheduled"));
@@ -60,35 +57,5 @@ class CreditNotePreview extends Resource
         $this-> interval = Checks::checkParam($params, "interval");
 
         Checks::checkParams($params);
-    }
-
-    /**
-    # Create CreditNotePreviews
-
-    Create CreditNotePreviews in the Stark Infra API
-
-    ## Parameters (required):
-        - previews [array of CreditNotePreview objects]: CreditNotePreview objects to be created in the API.
-
-    ## Parameters (optional):
-        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
-
-    ## Return:
-        - Array of CreditNotePreview objects with updated attributes
-     */
-    public static function create($previews, $user = null)
-    {
-        return Rest::post($user, CreditNotePreview::resource(), $previews);
-    }
-
-    private static function resource()
-    {
-        $preview = function ($array) {
-            return new CreditNotePreview ($array);
-        };
-        return [
-            "name" => "CreditNotePreview",
-            "maker" => $preview,
-        ];
     }
 }
