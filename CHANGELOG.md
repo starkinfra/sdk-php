@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.4.0] - 2022-08-26
 ### Changed
 - settlement parameter to fundingType in IssuingProduct resource
 - client parameter to holderType in IssuingProduct resource
