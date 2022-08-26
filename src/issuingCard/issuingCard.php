@@ -156,7 +156,7 @@ class IssuingCard extends Resource
     /**
     # Retrieve a specific IssuingCard
 
-    Receive a single IssuingCards object previously created in the Stark Infra API by its id
+    Receive a single IssuingCard object previously created in the Stark Infra API by its id
 
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
@@ -167,7 +167,7 @@ class IssuingCard extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - IssuingCards object with updated attributes
+        - IssuingCard object with updated attributes
      */
     public static function get($id, $params=null, $user = null)
     {

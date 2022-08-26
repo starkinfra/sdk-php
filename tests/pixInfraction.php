@@ -24,7 +24,7 @@ class TestPixInfraction
         ));
         foreach($infractions as $infraction)
         {
-            if ($infraction->agent == "reporter") {
+            if ($infraction->flow == "out") {
                 $infractionCanceled = PixInfraction::cancel($infraction->id);
 
                 if ($infraction->id != $infractionCanceled->id) {

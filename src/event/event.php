@@ -1,12 +1,10 @@
 <?php
 
 namespace StarkInfra;
-use \Exception;
 use StarkInfra\Utils\API;
 use StarkInfra\Utils\Rest;
 use StarkInfra\Utils\Parse;
 use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Request;
 use StarkInfra\Utils\Resource;
 use StarkInfra\Utils\StarkDate;
 
@@ -25,7 +23,7 @@ class Event extends Resource
         - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
         - created [DateTime]: creation datetime for the notification event.
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
-        - subscription [string]: service that triggered this event. ex: "issuing-card", "pix-request.in"
+        - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"
      */
     function __construct(array $params)
     {
@@ -53,7 +51,8 @@ class Event extends Resource
             "pix-reversal.out" => Event::pixReversalLogResource(),
             "issuing-card" => Event::issuingCardLogResource(),
             "issuing-invoice" => Event::issuingInvoiceLogResource(),
-            "issuing-purchase" => Event::issuingPurchaseLogResource()
+            "issuing-purchase" => Event::issuingPurchaseLogResource(),
+            "credit-note" => Event::creditNoteLogResource(),
         ];
 
         if (!isset($makerOptions[$subscription])) {
@@ -137,7 +136,7 @@ class Event extends Resource
     {
         return function ($array) {
             $claim = function ($array) {
-                return new PixRequest($array);
+                return new PixClaim($array);
             };
             $array["claim"] = API::fromApiJson($claim, $array["claim"]);
             $log = function ($array) {
@@ -151,7 +150,7 @@ class Event extends Resource
     {
         return function ($array) {
             $key = function ($array) {
-                return new PixRequest($array);
+                return new PixKey($array);
             };
             $array["key"] = API::fromApiJson($key, $array["key"]);
             $log = function ($array) {
@@ -165,7 +164,7 @@ class Event extends Resource
     {
         return function ($array) {
             $infraction = function ($array) {
-                return new PixRequest($array);
+                return new PixInfraction($array);
             };
             $array["infraction"] = API::fromApiJson($infraction, $array["infraction"]);
             $log = function ($array) {
@@ -179,11 +178,25 @@ class Event extends Resource
     {
         return function ($array) {
             $chargeback = function ($array) {
-                return new PixRequest($array);
+                return new PixChargeback($array);
             };
             $array["chargeback"] = API::fromApiJson($chargeback, $array["chargeback"]);
             $log = function ($array) {
                 return new PixChargeback\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function creditNoteLogResource()
+    {
+        return function ($array) {
+            $note = function ($array) {
+                return new CreditNote($array);
+            };
+            $array["note"] = API::fromApiJson($note, $array["note"]);
+            $log = function ($array) {
+                return new CreditNote\Log($array);
             };
             return API::fromApiJson($log, $array);
         };

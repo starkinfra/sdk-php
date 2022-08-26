@@ -24,6 +24,9 @@ class IssuingInvoice extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
+        - brcode [string]: BR Code for the Invoice payment. ex: "00020101021226930014br.gov.bcb.pix2571brcode-h.development.starkinfra.com/v2/d7f6546e194d4c64a153e8f79f1c41ac5204000053039865802BR5925Stark Bank S.A. - Institu6009Sao Paulo62070503***63042109"
+        - due [DateTime]: Invoice due datetime for the IssuingInvoice.
+        - link [string]: public Invoice webpage URL. ex: "https://starkbank-card-issuer.development.starkbank.com/invoicelink/d7f6546e194d4c64a153e8f79f1c41ac"
         - status [string]: current IssuingInvoice status. ex: "created", "paid", "canceled" or "overdue"
         - issuingTransactionId [string]: ledger transaction ids linked to this IssuingInvoice. ex: "issuing-invoice/5656565656565656"
         - created [DateTime]: creation datetime for the IssuingInvoice. 
@@ -37,6 +40,9 @@ class IssuingInvoice extends Resource
         $this->taxId = Checks::checkParam($params, "taxId");
         $this->name = Checks::checkParam($params, "name");
         $this->tags = Checks::checkParam($params, "tags");
+        $this->brcode = Checks::checkParam($params, "brcode");
+        $this->due = Checks::checkDateTime(Checks::checkParam($params, "due"));
+        $this->link = Checks::checkParam($params, "link");
         $this->status = Checks::checkParam($params, "status");
         $this->issuingTransactionId = Checks::checkParam($params, "issuingTransactionId");
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));

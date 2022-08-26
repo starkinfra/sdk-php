@@ -169,7 +169,13 @@ class PixReversal extends Resource
      */
     public static function parse($content, $signature, $user = null)
     {
-        return Parse::parseAndVerify($content, $signature, PixReversal ::resource(), $user);
+        $reversal = Parse::parseAndVerify($content, $signature, PixReversal ::resource(), $user);
+
+        $reversal->fee = $reversal->fee ? $reversal->fee : 0;
+        $reversal->tags = $reversal->tags ? $reversal->tags : [];
+        $reversal->externalId = $reversal->externalId ? $reversal->externalId : "";
+
+        return $reversal;
     }
 
     /**

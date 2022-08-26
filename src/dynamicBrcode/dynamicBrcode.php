@@ -30,6 +30,7 @@ class DynamicBrcode extends Resource
 
     ## Parameters (optional):
         - type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"
+        - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
         - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -46,8 +47,9 @@ class DynamicBrcode extends Resource
         $this-> city = Checks::checkParam($params, "city");
         $this-> externalId = Checks::checkParam($params, "externalId");
         $this-> type = Checks::checkParam($params, "type");
-        $this-> url = Checks::checkParam($params, "url");
+        $this-> tags = Checks::checkParam($params, "tags");
         $this-> uuid = Checks::checkParam($params, "uuid");
+        $this-> url = Checks::checkParam($params, "url");
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         
@@ -103,6 +105,7 @@ class DynamicBrcode extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - externalIds [array of strings, default null]: list of externalIds to filter retrieved objects. ex: ["my_external_id1", "my_external_id2"]
+        - tags [array of strings, default null]: array of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
@@ -129,6 +132,7 @@ class DynamicBrcode extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - externalIds [array of strings, default null]: list of externalIds to filter retrieved objects. ex: ["my_external_id1", "my_external_id2"]
+        - tags [array of strings, default null]: array of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
@@ -235,7 +239,7 @@ class DynamicBrcode extends Resource
         - keyId [string]: receiver's PixKey id. Can be a tax_id (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
         - status [string]: BR code's status. Options: "created", "overdue", "paid", "canceled" or "expired"
         - reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. ex: "cd65c78aeb6543eaaa0170f68bd741ee"
-        - nominalAmount [integer]: A positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender must set it at the moment of payment. Example: amount=100 (R$1.00).
+        - nominalAmount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
         - senderName [string]: sender's full name. ex: "Anthony Edward Stark"
         - receiverName [string]: receiver's full name. ex: "Jamie Lannister"
         - receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
@@ -247,10 +251,10 @@ class DynamicBrcode extends Resource
         - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR code cannot be paid anymore.
         - senderTaxId [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
         - receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
-        - description [string, default null]: additional information to be shown to the sender at the moment of payment.
         - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.
         - interest [float, default 1.0]: Interest percentage charged if the sender pays after the due datetime.
-        - discounts [array of dictionaries, default null]: array of dictionaries with "percentage":float and "due":DateTime or string pairs.
+        - discounts [array of dictionaries, default null]: array of dictionaries with "percentage":float and "due":date.datetime or string pairs.
+        - description [string, default null]: additional information to be shown to the sender at the moment of payment.
 
     ## Return:
         - Dumped JSON string that must be returned to us
@@ -274,10 +278,10 @@ class DynamicBrcode extends Resource
             "expiration" => Checks::checkDateInterval(Checks::checkParam($params, "expiration")),
             "senderTaxId" => Checks::checkParam($params, "senderTaxId"),
             "receiverTaxId" => Checks::checkParam($params, "receiverTaxId"),
-            "description" => Checks::checkParam($params, "description"),
             "fine" => Checks::checkParam($params, "fine"),
             "interest" => Checks::checkParam($params, "interest"),
             "discounts" => Checks::checkParam($params, "discounts"),
+            "description" => Checks::checkParam($params, "description"),
         ]);
         return json_encode(API::apiJson($params));
     }

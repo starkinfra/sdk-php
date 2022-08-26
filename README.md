@@ -48,12 +48,13 @@ is as easy as sending a text message to your client!
         - [PixDomain](#query-pixdomain): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
+        - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
     - [Credit Note](#credit-note)
         - [CreditNote](#create-credit-notes): Create credit notes
-        - [CreditNotePreview](#create-credit-note-previews): Create credit note previews
+    - [Credit Preview](#credit-previews)
+        - [CreditNotePreview](#create-a-creditnotepreview): Create a credit note preview
     - [Webhook](#webhook)
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
-    - [Webhook Events](#webhook-events)
         - [WebhookEvents](#process-webhook-events): Manage webhook events
         - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
@@ -1349,7 +1350,7 @@ $claims = PixClaim::query([
     "status" => "delivered",
     "ids" => ["5729405850615808"],
     "type" => "ownership",
-    "agent" => "claimed",
+    "flow" => "in",
     "keyType" => "phone",
     "keyId" => "+5511989898989"
 ]);
@@ -1892,6 +1893,22 @@ sendResponse(  # you should also implement this method to respond the read reque
 );
 ```
 
+## Create BrcodePreviews
+You can create BrcodePreviews to preview BR Codes before paying them.
+
+```php
+use StarkInfra\BrcodePreview;
+
+$previews = BrcodePreview::create([
+    new BrcodePreview(["id" => "00020126420014br.gov.bcb.pix0120nedstark@hotmail.com52040000530398654075000.005802BR5909Ned Stark6014Rio de Janeiro621605126674869738606304FF71"]),
+    new BrcodePreview(["id" => "00020126430014br.gov.bcb.pix0121aryastark@hotmail.com5204000053039865406100.005802BR5910Arya Stark6014Rio de Janeiro6216051262678188104863042BA4"])
+]);
+
+foreach ($previews as $preview) {
+    print_r($preview);
+}
+```
+
 ## Credit Note
 
 ## Create credit notes 
@@ -2024,32 +2041,108 @@ $log = Log::get("5155966664310784");
 print_r($log);
 ```
 
-## Credit Note Preview
+## Credit Preview
+You can preview different types of credits before creating them (Currently we only have CreditNote previews):
 
-## Create credit note previews
-You can create a Credit Note Previews to preview a CCB contract
-based on a specific table type:
+### Create a CreditNotePreview
+You can preview a Credit Note before the creation of the CCB contract:
 
 ```php
-use StarkInfra\CreditNotePreview;
+use StarkInfra\CreditPreview;
+use StarkInfra\CreditNote\Invoice;
 
-$previews = CreditNotePreview::create([
-    new CreditNotePreview([
-        "type" => "american",
-        "nominalAmount" => 100000,
-        "scheduled" => "2022-10-11",
-        "taxId" => "012.345.678-90",
-        "initialDue" => "2022-11-11",
-        "nominalInterest" => 10,
-        "count" => 5,
-        "interval" => "month",
-    ]);
+$previews = CreditPreview::create([
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "type" => "american",
+            "nominalAmount" => 100000,
+            "scheduled" => "2022-10-11",
+            "taxId" => "012.345.678-90",
+            "initialDue" => "2022-11-11",
+            "nominalInterest" => 10,
+            "count" => 5,
+            "interval" => "month",
+        ])
+    ]),
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "initialAmount" => 2478,
+            "initialDue" => "2022-10-22",
+            "nominalAmount" => 90583,
+            "nominalInterest" => 3.7,
+            "rebateAmount" => 23,
+            "scheduled" => "2022-09-28",
+            "taxId" => "477.954.506-44",
+            "type" => "sac"
+        ])
+    ]),
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "initialAmount" => 4449,
+            "initialDue" => "2022-09-16",
+            "interval" => "year",
+            "nominalAmount" => 96084,
+            "nominalInterest" => 3.1,
+            "rebateAmount" => 239,
+            "scheduled" => "2022-09-02",
+            "taxId" => "81.882.684/0001-02",
+            "type" => "price"
+        ])
+    ]),
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "count" => 8,
+            "initialDue" => "2022-09-18",
+            "nominalAmount" => 6161,
+            "nominalInterest" => 3.2,
+            "scheduled" => "2022-09-03",
+            "taxId" => "59.352.830/0001-20",
+            "type" => "american"
+        ])
+    ]),
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "initialDue" => "2022-09-13",
+            "nominalAmount" => 86237,
+            "nominalInterest" => 2.6,
+            "scheduled" => "2022-09-03",
+            "taxId" => "37.293.955/0001-94",
+            "type" => "bullet"
+        ])
+    ]),
+    new CreditPreview([
+        "type" => "credit-note",
+        "credit" => new CreditPreview\CreditNotePreview([
+            "invoices" => [
+                new Invoice([
+                    "amount" => 14500,
+                    "due" => "2022-10-19"
+                ]),
+                new Invoice([
+                    "amount" => 14500,
+                    "due" => "2022-11-25"
+                ])
+            ],
+            "nominalAmount" => 29000,
+            "rebateAmount" => 900,
+            "scheduled" => "2022-09-31",
+            "taxId" => "36.084.400/0001-70",
+            "type" => "custom"
+        ])
+    ]),
 ]);
 
 foreach($previews as $preview){
     print_r($preview);
 }
 ```
+
+**Note**: Instead of using CreditPreview objects, you can also pass each element in dictionary format
 
 ## Webhook
 
@@ -2109,7 +2202,6 @@ $webhooks = Webhook::delete("1082736198236817");
 
 print_r($webhook);
 ```
-## Webhook Events
 
 ## Process Webhook events
 

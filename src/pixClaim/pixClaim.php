@@ -26,14 +26,15 @@ class PixClaim extends Resource
         - name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
         - taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
         - keyId [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+        - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656".
         - status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
         - type [string]: type of Pix Claim. Options: "ownership", "portability".
         - keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email".
-        - agent [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
-        - bankCode [string]: bankCode of the account linked to the PixKey being claimed. ex: "20018183".
+        - flow [string]: Options: "claimer" if you requested the PixClaim or "claimed" if you received a PixClaim request.
+        - claimerBankCode [string]: bankCode of the Pix participant that created the PixClaim. ex: "20018183".
         - claimedBankCode [string]: bankCode of the account donating the PixKey. ex: "20018183".
         - created [DateTime]: created datetime for the PixClaim.
         - updated [DateTime]: update datetime for the PixClaim.
@@ -50,11 +51,12 @@ class PixClaim extends Resource
         $this-> name = Checks::checkParam($params, "name");
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> keyId = Checks::checkParam($params, "keyId");
+        $this-> tags = Checks::checkParam($params, "tags");
         $this-> status = Checks::checkParam($params, "status");
         $this-> type = Checks::checkParam($params, "type");
         $this-> keyType = Checks::checkParam($params, "keyType");
-        $this-> agent = Checks::checkParam($params, "agent");
-        $this-> bankCode = Checks::checkParam($params, "bankCode");
+        $this-> flow = Checks::checkParam($params, "flow");
+        $this-> claimerBankCode = Checks::checkParam($params, "claimerBankCode");
         $this-> claimedBankCode = Checks::checkParam($params, "claimedBankCode");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
@@ -113,9 +115,10 @@ class PixClaim extends Resource
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-        - agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
         - keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
         - keyId [string, default null]: filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+        - flow [string, default null]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+        - tags [array of strings, default null]: array of strings to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
@@ -143,9 +146,10 @@ class PixClaim extends Resource
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "confirmed", "success", "canceled"
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - type [strings, default null]: filter for the type of retrieved PixClaims. Options: "ownership" or "portability".
-        - agent [string, default null]: filter for the agent of retrieved PixClaims. Options: "claimer" or "claimed".
         - keyType [string, default null]: filter for the PixKey type of retrieved PixClaims. Options: "cpf", "cnpj", "phone", "email" and "evp",
         - keyId [string, default null]: filter PixClaims linked to a specific PixKey id. Example: "+5511989898989".
+        - flow [string, default null]: direction of the Pix Claim. Options: "in" if you received the PixClaim or "out" if you created the PixClaim.
+        - tags [array of strings, default null]: array of strings to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

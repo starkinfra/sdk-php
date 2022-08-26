@@ -22,11 +22,11 @@ class Invoice extends Resource
         - descriptions [array of Invoice\Description objects, default null]: list of Invoice\Description objects with "key":string and (optional) "value":string pairs
         
         ## Attributes (return-only):
-        - interest [float]: Invoice monthly interest for overdue payment in %. ex: 5.2
-        - fine [float]: Invoice fine for overdue payment in %. ex: 2.5
         - name [string]: payer name. ex: "Iron Bank S.A."
         - taxId [string]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
         - pdf [string]: public Invoice PDF URL. ex: "https://invoice.starkbank.com/pdf/d454fa4e524441c1b0c1a729457ed9d8"
+        - fine [float]: Invoice fine for overdue payment in %. ex: 2.5
+        - interest [float]: Invoice monthly interest for overdue payment in %. ex: 5.2
         - link [string]: public Invoice webpage URL. ex: "https://my-workspace.sandbox.starkbank.com/invoicelink/d454fa4e524441c1b0c1a729457ed9d8"
         - nominalAmount [integer]: Invoice emission value in cents (will change if invoice is updated, but not if it's paid). ex: 400000
         - fineAmount [integer]: Invoice fine value calculated over nominalAmount. ex: 20000
@@ -51,11 +51,11 @@ class Invoice extends Resource
         $this-> expiration = Checks::checkDateInterval(Checks::checkParam($params, "expiration"));
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> descriptions = Invoice::parseDescriptions(Checks::checkParam($params, "descriptions"));
-        $this-> interest = Checks::checkParam($params, "interest");
-        $this-> fine = Checks::checkParam($params, "fine");
         $this-> name = Checks::checkParam($params, "name");
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> pdf = Checks::checkParam($params, "pdf");
+        $this-> fine = Checks::checkParam($params, "fine");
+        $this-> interest = Checks::checkParam($params, "interest");
         $this-> link = Checks::checkParam($params, "link");
         $this-> nominalAmount = Checks::checkParam($params, "nominalAmount");
         $this-> fineAmount = Checks::checkParam($params, "fineAmount");
