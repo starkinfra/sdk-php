@@ -203,7 +203,14 @@ class PixRequest extends Resource
      */
     public static function parse($content, $signature, $user = null)
     {
-        return Parse::parseAndVerify($content, $signature, PixRequest ::resource(), $user);
+        $request = Parse::parseAndVerify($content, $signature, PixRequest ::resource(), $user);
+
+        $request->fee = $request->fee ? $request->fee : 0;
+        $request->tags = $request->tags ? $request->tags : [];
+        $request->externalId = $request->externalId ? $request : "";
+        $request->description = $request->description ? $request->description : "";
+
+        return $request;
     }
 
     /**

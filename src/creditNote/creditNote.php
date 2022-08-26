@@ -52,8 +52,8 @@ class CreditNote extends Resource
         - transactionIds [array of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
         - workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
         - taxAmount [float]: tax amount included in the CreditNote. ex: 100
-        - interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
         - nominalInterest [float]: yearly nominal interest rate of the creditote, in percentage. ex: 11.5
+        - interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
         - created [DateTime]: creation datetime for the CreditNote.
         - updated [DateTime]: latest update datetime for the CreditNote.
      */
@@ -86,8 +86,8 @@ class CreditNote extends Resource
         $this-> transactionsIds = Checks::checkParam($params, "transactionsIds");
         $this-> workspaceId = Checks::checkParam($params, "workspaceId");
         $this-> taxAmount = Checks::checkParam($params, "taxAmount");
-        $this-> interest = Checks::checkParam($params, "interest");
         $this-> nominalInterest = Checks::checkParam($params, "nominalInterest");
+        $this-> interest = Checks::checkParam($params, "interest");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 

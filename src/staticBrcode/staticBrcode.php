@@ -25,6 +25,7 @@ class StaticBrcode extends Resource
     ## Parameters (optional):
         - amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
         - reconciliationId [string, default null]: id to be used for conciliation of the resulting Pix transaction. ex: "123"
+        - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
         - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -42,6 +43,7 @@ class StaticBrcode extends Resource
         $this-> city = Checks::checkParam($params, "city");
         $this-> amount = Checks::checkParam($params, "amount");
         $this-> reconciliationId = Checks::checkParam($params, "reconciliationId");
+        $this-> tags = Checks::checkParam($params, "tags");
         $this-> uuid = Checks::checkParam($params, "uuid");
         $this-> url = Checks::checkParam($params, "url");
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
@@ -98,6 +100,7 @@ class StaticBrcode extends Resource
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
+        - tags [array of strings, default null]: list of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
@@ -123,6 +126,7 @@ class StaticBrcode extends Resource
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
+        - tags [array of strings, default null]: list of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

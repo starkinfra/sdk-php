@@ -14,24 +14,22 @@ class IssuingProduct extends Resource
     The IssuingProduct object displays the informations of BINs registered to your Workspace.
 
     ## Attributes (return-only):
-        - id [string]: unique BIN number registered within the card network. ex: "53810200"
+        - id [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
         - network [string]: card network flag. ex: "mastercard"
-        - settlement [string]: settlement type. ex: "credit"
-        - category [string]: purchase category. ex: "prepaid"
-        - client [string]: client type. ex: "business"
+        - fundingType [string]: type of funding used for payment. ex: "credit", "debit"
+        - holderType [string]: holder type. ex: "business", "individual"
+        - code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
         - created [DateTime]: creation datetime for the IssuingProduct.
-        - updated [DateTime]: latest update datetime for the IssuingProduct.
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
         $this->network = Checks::checkParam($params, "network");
-        $this->settlement = Checks::checkParam($params, "settlement");
-        $this->category = Checks::checkParam($params, "category");
-        $this->client = Checks::checkParam($params, "client");
+        $this->fundingType = Checks::checkParam($params, "fundingType");
+        $this->holderType = Checks::checkParam($params, "holderType");
+        $this->code = Checks::checkParam($params, "code");
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
-        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
         Checks::checkParams($params);
     }

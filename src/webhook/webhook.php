@@ -16,7 +16,7 @@ class Webhook extends Resource
     
     ## Parameters (required):
         - url [string]: Url that will be notified when an event occurs.
-        - subscriptions [array of strings]: list of any non-empty combination of the available services. ex: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"]
+        - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"]
     
     ## Attributes:
         - id [string, default null]: unique id returned when the webhook is created. ex: "5656565656565656"
@@ -38,7 +38,7 @@ class Webhook extends Resource
     
     ## Parameters (required):
         - url [string]: url to which notification events will be sent to. ex: "https://webhook.site/60e9c18e-4b5c-4369-bda1-ab5fcd8e1b29"
-        - subscriptions [array of strings]: list of any non-empty combination of the available services. ex: ["credit-note"]
+        - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"]
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call

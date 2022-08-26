@@ -22,7 +22,6 @@ class Log extends Resource
         - created [DateTime]: creation datetime for the log.
         - type [string]: type of the PixClaim event which triggered the log creation. ex: "created" or "failed"
         - errors [array of strings]: list of errors linked to this PixClaim event
-        - agent [string]: agent that modified the PixClaim resulting in the Log. Options: "claimer", "claimed".
         - reason [string]: reason why the PixClaim was modified, resulting in the Log. Options: "fraud", "userRequested", "accountClosure", "defaultOperation", "reconciliation".
         - claim [PixClaim]: PixClaim entity to which the log refers to.
      */
@@ -33,7 +32,6 @@ class Log extends Resource
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> type = Checks::checkParam($params, "type");
         $this-> errors = Checks::checkParam($params, "errors");
-        $this-> agent = Checks::checkParam($params, "agent");
         $this-> reason = Checks::checkParam($params, "reason");
         $this-> claim = Checks::checkParam($params, "claim");
 

@@ -13,6 +13,29 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- settlement parameter to fundingType in IssuingProduct resource
+- client parameter to holderType in IssuingProduct resource
+- CreditNotePreview sub-resource to CreditPreview.CreditNotePreview sub-resource
+- agent parameter to flow in PixInfraction and PixChargeback resources
+- agent parameter to flow on query and page methods in PixInfraction and PixChargeback
+- bankCode parameter to claimerBankCode in PixClaim resource
+### Added
+- brcode, link and due attributes to IssuingInvoice resource
+- code attribute for IssuingProduct resource
+- expand parameter to create method in IssuingHolder resource
+- CreditPreview sub-resource
+- default to fee, externalId and tags on PixRequest and PixReversal parse method
+- BrcodePreview resource
+- tags parameter to PixClaim, PixInfraction, Pix Chargeback, DynamicBrcode and StaticBrcode resources
+- flow parameter to PixClaim resource
+- flow parameter to query and page methods in PixClaim resource
+- tags parameter to query and page methods in PixChargeback, PixClaim and PixInfraction resources
+- zipCode, purchase, isPartialAllowed, cardTags and holderTags attributes to IssuingPurchase resource
+### Removed
+- updated and category parameters from IssuingProduct resource
+- bacenId parameter from PixChargeback and PixInfraction resources
+- agent parameter from PixClaim\Log resource
 
 ## [0.3.1] - 2022-08-04
 ### Fixed
@@ -34,7 +57,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - CardMethod sub-resource
 - MerchantCountry sub-resource
 - MerchantCategory sub-resource
-- Event/Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
+- Event\Attempt sub-resource to allow retrieval of information on failed webhook event delivery attempts
 - parse method for IssuingPurchase resource
 - get, query, page, delete and update methods to the Event resource.
 - response method to PixRequest, PixReversal and IssuingPurchase resources

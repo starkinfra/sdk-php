@@ -26,16 +26,17 @@ class PixChargeback extends Resource
 
     ## Parameters (optional):
         - description [string, default null]: description for the PixChargeback.
+        - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixChargeback is created. ex: "5656565656565656"
         - analysis [string]: analysis that led to the result.   
-        - bacenId [string]: central bank's unique UUID that identifies the PixChargeback.
         - senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
         - receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
         - rejectionReason [string]: reason for the rejection of the Pix chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
-        - chargebackId [string]: return id of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
+        - reversalReferenceId [string]: returnId or endToEndId of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
         - result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
+        - flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixChargeback. 
         - updated [DateTime]: update datetime for the PixChargeback. 
@@ -48,13 +49,14 @@ class PixChargeback extends Resource
         $this-> referenceId = Checks::checkParam($params, "referenceId");
         $this-> reason = Checks::checkParam($params, "reason");
         $this-> description = Checks::checkParam($params, "description");
+        $this-> tags = Checks::checkParam($params, "tags");
         $this-> analysis = Checks::checkParam($params, "analysis");
-        $this-> bacenId = Checks::checkParam($params, "bacenId");
         $this-> senderBankCode = Checks::checkParam($params, "senderBankCode");
         $this-> receiverBankCode = Checks::checkParam($params, "receiverBankCode");
         $this-> rejectionReason = Checks::checkParam($params, "rejectionReason");
         $this-> reversalReferenceId = Checks::checkParam($params, "reversalReferenceId");
         $this-> result = Checks::checkParam($params, "result");
+        $this-> flow = Checks::checkParam($params, "flow");
         $this-> status = Checks::checkParam($params, "status");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
@@ -111,6 +113,8 @@ class PixChargeback extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - flow [string, default null]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
+        - tags [array of strings, default null]: filter for tags of retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:
@@ -137,6 +141,8 @@ class PixChargeback extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
+        - flow [string, default null]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
+        - tags [array of strings, default null]: filter for tags of retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
