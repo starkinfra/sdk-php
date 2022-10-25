@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.5.0] - 2022-10-25
 ### Changed
 - internal structure to use starkcore as a dependency
 - PixDirector from resource to sub-resource
