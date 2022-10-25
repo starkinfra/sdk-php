@@ -23,14 +23,14 @@ class StaticBrcode extends Resource
         - city [string]: receiver's city name. ex: "Rio de Janeiro"
 
     ## Parameters (optional):
-        - amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
-        - reconciliationId [string, default null]: id to be used for conciliation of the resulting Pix transaction. ex: "123"
+        - amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)
+        - reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. ex: "123"
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
-        - id [string]: id returned on creation, this is the BR code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
+        - id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
         - uuid [string]: unique uuid returned when a StaticBrcode is created. ex: "97756273400d42ce9086404fe10ea0d6"
-        - url [string]: url to the BR code image. ex: "https://brcode-h.development.starkinfra.com/static-qrcode/97756273400d42ce9086404fe10ea0d6.png"
+        - url [string]: url to the BR Code image. ex: "https://brcode-h.development.starkinfra.com/static-qrcode/97756273400d42ce9086404fe10ea0d6.png"
         - updated [DateTime]: latest update datetime for the StaticBrcode.
         - created [DateTime]: creation datetime for the StaticBrcode.
      */

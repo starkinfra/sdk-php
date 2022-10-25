@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Changed
 - internal structure to use starkcore as a dependency
+- PixDirector from resource to sub-resource
 
 ## [0.4.0] - 2022-08-26
 ### Changed
@@ -26,10 +27,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - bankCode parameter to claimerBankCode in PixClaim resource
 ### Added
 - brcode, link and due attributes to IssuingInvoice resource
-- code attribute for IssuingProduct resource
+- code attribute to IssuingProduct resource
 - expand parameter to create method in IssuingHolder resource
 - CreditPreview sub-resource
-- default to fee, externalId and tags on PixRequest and PixReversal parse method
+- default to fee, externalId and tags to parse method in PixRequest and PixReversal resources
 - BrcodePreview resource
 - tags parameter to PixClaim, PixInfraction, Pix Chargeback, DynamicBrcode and StaticBrcode resources
 - flow parameter to PixClaim resource

@@ -51,8 +51,8 @@ is as easy as sending a text message to your client!
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
     - [Credit Note](#credit-note)
         - [CreditNote](#create-credit-notes): Create credit notes
-    - [Credit Preview](#credit-previews)
-        - [CreditNotePreview](#create-a-creditnotepreview): Create a credit note preview
+    - [Credit Preview](#credit-preview)
+        - [CreditNotePreview](#create-creditnotepreviews): Create credit note previews
     - [Webhook](#webhook)
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage webhook events
@@ -2046,8 +2046,8 @@ print_r($log);
 ## Credit Preview
 You can preview different types of credits before creating them (Currently we only have CreditNote previews):
 
-### Create a CreditNotePreview
-You can preview a Credit Note before the creation of the CCB contract:
+### Create CreditNotePreviews
+You can preview Credit Note before the creation of the CCB contracts:
 
 ```php
 use StarkInfra\CreditPreview;
