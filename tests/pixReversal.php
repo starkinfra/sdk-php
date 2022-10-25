@@ -4,7 +4,7 @@ namespace Test\PixReversal;
 use \Exception;
 use StarkInfra\PixRequest;
 use StarkInfra\PixReversal;
-use StarkInfra\Error\InvalidSignatureError;
+use StarkCore\Error\InvalidSignatureError;
 
 
 class TestPixReversal

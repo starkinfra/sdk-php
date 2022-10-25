@@ -1,9 +1,9 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\API;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkCore\Utils\API;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\Resource;
 
 
 class IssuingRule extends Resource

@@ -1,8 +1,8 @@
 <?php
 
 namespace StarkInfra\CreditNote;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\SubResource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\SubResource;
 
 
 class Signer extends SubResource

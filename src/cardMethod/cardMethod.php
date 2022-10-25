@@ -1,10 +1,10 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\API;
+use StarkCore\Utils\API;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\SubResource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\SubResource;
 
 
 class CardMethod extends SubResource

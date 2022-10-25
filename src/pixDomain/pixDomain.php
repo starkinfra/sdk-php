@@ -2,8 +2,8 @@
 
 namespace StarkInfra;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\SubResource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\SubResource;
 
 
 class PixDomain extends SubResource

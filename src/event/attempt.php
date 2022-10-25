@@ -2,8 +2,8 @@
 
 namespace StarkInfra\Event;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\Resource;
 
 
 class Attempt extends Resource

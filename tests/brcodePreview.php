@@ -15,7 +15,7 @@ class TestBrcodePreview
 
         $dynamicBrcodes = iterator_to_array(DynamicBrcode::query(["limit" => 2]));
         
-        $brcodes = array_combine($staticBrcodes, $dynamicBrcodes);
+        $brcodes = array_merge($staticBrcodes, $dynamicBrcodes);
 
         $brcodeIdList = [];
         foreach ($brcodes as $brcode) {
@@ -43,7 +43,7 @@ class TestBrcodePreview
     }
 }
 
-echo "\n\nPayment Preview:";
+echo "\n\nBrcode Preview:";
 
 $test = new TestBrcodePreview();
 
