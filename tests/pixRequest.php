@@ -4,7 +4,7 @@ namespace Test\PixRequest;
 use \Exception;
 use StarkInfra\PixRequest;
 use StarkInfra\Utils\EndToEndId;
-use StarkInfra\Error\InvalidSignatureError;
+use StarkCore\Error\InvalidSignatureError;
 
 
 class TestPixRequest

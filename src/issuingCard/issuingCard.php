@@ -2,9 +2,9 @@
 
 namespace StarkInfra;
 use StarkInfra\Utils\Rest;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\StarkDate;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\Resource;
+use StarkCore\Utils\StarkDate;
 
 
 class IssuingCard extends Resource
@@ -65,7 +65,7 @@ class IssuingCard extends Resource
         $this->number = Checks::checkParam($params, "number");
         $this->securityCode = Checks::checkParam($params, "securityCode");
         $expiration = Checks::checkParam($params, "expiration");
-        if (!is_null($expiration) && str_contains($expiration, "*"))
+        if (!is_null($expiration) && preg_match("/(\*+)/", $expiration) === 1)
             $expiration = null;
         $this->expiration = Checks::checkDateTime($expiration);
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));

@@ -3,7 +3,7 @@
 namespace Test\IssuingPurchase;
 use \Exception;
 use StarkInfra\IssuingPurchase;
-use StarkInfra\Error\InvalidSignatureError;
+use StarkCore\Error\InvalidSignatureError;
 
 
 class TestIssuingPurchase
