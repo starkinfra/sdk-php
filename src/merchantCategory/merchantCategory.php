@@ -12,7 +12,7 @@ class MerchantCategory extends SubResource
     /**
     # MerchantCategory object
 
-    MerchantCategory's codes and types are used to define categories filters in IssuingRules.
+    MerchantCategory's codes and types are used to define category filters in IssuingRules.
     A MerchantCategory filter must define exactly one parameter between code and type.
     A type, such as "food", "services", etc., defines an entire group of merchant codes,
     whereas a code only specifies a specific MCC.
@@ -38,7 +38,7 @@ class MerchantCategory extends SubResource
     /**
     # Retrieve MerchantCategories
 
-    Receive an enumerator of MerchantCategory objects previously created in the Stark Infra API
+    Receive an enumerator of MerchantCategory objects available in the Stark Infra API
 
     ## Parameters (optional):
         - search [string, default null]: keyword to search for code, type, name or number. ex: "pets"

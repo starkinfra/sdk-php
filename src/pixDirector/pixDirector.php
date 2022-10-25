@@ -3,10 +3,10 @@
 namespace StarkInfra;
 use StarkInfra\Utils\Rest;
 use StarkCore\Utils\Checks;
-use StarkCore\Utils\Resource;
+use StarkCore\Utils\SubResource;
 
 
-class PixDirector extends Resource
+class PixDirector extends SubResource
 {
     /**
     # PixDirector object
@@ -24,13 +24,10 @@ class PixDirector extends Resource
         - teamPhones [array of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
     
     ## Attributes (return-only):
-        - id [string]: unique id returned when the PixDirector is created. ex: "5656565656565656"
         - status [string]: current PixDirector status. ex: "success"
     */
     function __construct(array $params)
     {
-        parent::__construct($params);
-
         $this-> email = Checks::checkParam($params, "email");
         $this-> name = Checks::checkParam($params, "name");
         $this-> password = Checks::checkParam($params, "password");

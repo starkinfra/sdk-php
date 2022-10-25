@@ -33,7 +33,7 @@ class CardMethod extends SubResource
     /**
     # Retrieve CardMethods
 
-    Receive an enumerator of CardMethod objects previously created in the Stark Infra API
+    Receive an enumerator of CardMethod objects available in the Stark Infra API
 
     ## Parameters (optional):
         - search [string, default null]: keyword to search for code, type, name or number. ex: "token"

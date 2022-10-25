@@ -11,7 +11,7 @@ class IssuingProduct extends Resource
     /**
     # IssuingProduct object
 
-    The IssuingProduct object displays the informations of BINs registered to your Workspace.
+    The IssuingProduct object displays information of available card products registered to your Workspace.
 
     ## Attributes (return-only):
         - id [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
@@ -37,7 +37,7 @@ class IssuingProduct extends Resource
     /**
     # Retrieve IssuingProducts
 
-    Receive an enumerator of IssuingProduct objects previously registered in the Stark Infra API
+    Receive a generator of available IssuingProduct objects registered to your workspace.
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35

@@ -13,7 +13,8 @@ class PixClaim extends Resource
     /**
     # PixClaim object
 
-    PixClaims intend to transfer a PixKey from one account to another.
+    A Pix Claim is a request to transfer a Pix Key from an account hosted at another
+    Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.    
     When you initialize a PixClaim, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the created object.
@@ -67,8 +68,8 @@ class PixClaim extends Resource
     /**
     # Create PixClaim objects
     
-    Create a PixClaim to request the transfer of a PixKey to an account
-    hosted at other Pix participants in the Stark Infra API.
+    Create a Pix Claim to request the transfer of a Pix Key from an account
+    hosted at another Pix participant to an account under your bank code.
     
     ## Parameters (required):
         - claim [PixClaim object]: PixClaim object to be created in the API.

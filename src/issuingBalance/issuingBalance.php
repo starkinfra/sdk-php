@@ -18,7 +18,7 @@ class IssuingBalance extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
-        - amount [integer]: current balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+        - amount [integer]: current issuing balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
         - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
         - updated [DateTime]: update datetime for the IssuingBalance. 
      */

@@ -12,10 +12,8 @@ class CreditNotePreview extends SubResource
     # CreditNotePreview object
 
     A CreditNotePreview is used to preview a CCB contract between the borrower 
-    and lender with a specific table type. When you initialize a CreditNotePreview, 
-    the entity will be automatically sent to the Stark Infra API.
-    The 'create' function sends the objects to the Stark Infra API and 
-    returns the list of preview data.
+    and lender with a specific table type.
+    When you initialize a CreditNotePreview, the entity will not be automatically sent to the Stark Infra API.
 
     ## Parameters (required):
         - type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"
@@ -35,9 +33,9 @@ class CreditNotePreview extends SubResource
         - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
 
     ## Attributes (return-only):
-        - amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
+        - amount [integer]: credit note value in cents. ex: 1234 (= R$ 12.34)
         - interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
-        - taxAmount [integer]: tax amount included in the CreditNote. ex: 100
+        - taxAmount [integer]: tax amount included in the credit note. ex: 100
      */
     function __construct(array $params)
     {
