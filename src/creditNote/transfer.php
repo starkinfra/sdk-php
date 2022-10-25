@@ -1,8 +1,8 @@
 <?php
 
 namespace StarkInfra\CreditNote;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\Resource;
 
 
 class Transfer extends Resource

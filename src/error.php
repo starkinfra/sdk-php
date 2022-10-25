@@ -1,55 +1,21 @@
 <?php
 
 namespace StarkInfra\Error;
-use \Exception;
 
-class StarkError extends Exception {}
 
-class ErrorElement extends StarkError
-{
-    public function __construct($code, $message)
-    {
-        parent::__construct($code . ": " . $message, 0, null);
+class StarkError extends \StarkCore\Error\StarkError {};
 
-        $this->errorCode = $code;
-        $this->errorMessage = $message;
-    }
-}
 
-class InputErrors extends StarkError
-{
-    public function __construct($content)
-    {
-        parent::__construct(json_encode($content), 0, null);
+class ErrorElement extends \StarkCore\Error\ErrorElement {};
 
-        $errors = [];
-        foreach ($content as $error){ 
-            $errors[] = new ErrorElement($error["code"], $error["message"]); 
-        } 
-        $this->errors = $errors;
-    }
-}
 
-class InternalServerError extends StarkError
-{
-    public function __construct($message = "Houston, we have a problem.")
-    {
-        parent::__construct($message, 0, null);
-    }
-}
+class InputErrors extends \StarkCore\Error\InputErrors {};
 
-class UnknownError extends StarkError
-{
-    public function __construct($message)
-    {
-        parent::__construct("Unknown exception encountered: " . $message, 0, null);
-    }
-}
 
-class InvalidSignatureError extends StarkError
-{
-    public function __construct($message)
-    {
-        parent::__construct($message, 0, null);
-    }
-}
+class InternalServerError extends \StarkCore\Error\InternalServerError {};
+
+
+class UnknownError extends \StarkCore\Error\UnknownError {};
+
+
+class InvalidSignatureError extends \StarkCore\Error\InvalidSignatureError {};

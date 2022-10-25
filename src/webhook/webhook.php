@@ -2,8 +2,8 @@
 
 namespace StarkInfra;
 
-use StarkInfra\Utils\Resource;
-use StarkInfra\Utils\Checks;
+use StarkCore\Utils\Resource;
+use StarkCore\Utils\Checks;
 use StarkInfra\Utils\Rest;
 
 class Webhook extends Resource

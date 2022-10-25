@@ -1,8 +1,8 @@
 <?php
 
 namespace StarkInfra;
-use StarkInfra\Utils\Checks;
-use StarkInfra\Utils\Resource;
+use StarkCore\Utils\Checks;
+use StarkCore\Utils\Resource;
 
 
 class CreditSigner extends Resource

@@ -6,7 +6,7 @@ use \Exception;
 use \DateInterval;
 use \DateTimeZone;
 use StarkInfra\DynamicBrcode;
-use StarkInfra\Error\InvalidSignatureError;
+use StarkCore\Error\InvalidSignatureError;
 
 
 class TestDynamicBrcode

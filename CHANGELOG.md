@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Changed
+- internal structure to use starkcore as a dependency
 
 ## [0.4.0] - 2022-08-26
 ### Changed
