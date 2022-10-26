@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- repeated autoload requirement
 
 ## [0.5.0] - 2022-10-25
 ### Changed

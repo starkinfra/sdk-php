@@ -1,7 +1,6 @@
 <?php
 
 namespace Test;
-require_once("src/init.php");
 require_once('vendor/autoload.php');
 include_once("tests/utils/rule.php");
 
