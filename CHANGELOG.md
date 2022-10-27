@@ -14,6 +14,10 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+## [0.5.2] - 2022-10-27
+### Fixed
+- ecdsa dependency missing classmap
+
 ## [0.5.1] - 2022-10-26
 ### Fixed
 - repeated autoload requirement
