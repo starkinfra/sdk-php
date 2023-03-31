@@ -11,6 +11,12 @@ use StarkInfra\CreditNote;
 
 class Log extends Resource
 {
+
+    public $created;
+    public $type;
+    public $errors;
+    public $note;
+
     /**
     # CreditNote\Log object
 
@@ -42,7 +48,7 @@ class Log extends Resource
     /**
     # Retrieve a specific CreditNote\Log
 
-    Receive a single Log object previously created by the Stark Infra API by passing its id
+    Receive a single CreditNote\Log object previously created by the Stark Infra API by passing its id
 
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
@@ -51,7 +57,7 @@ class Log extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - Log object with updated attributes
+        - CreditNote\Log object with updated attributes
      */
     public static function get($id, $user = null)
     {
@@ -73,7 +79,7 @@ class Log extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - enumerator of Log objects with updated attributes
+        - enumerator of CreditNote\Log objects with updated attributes
      */
     public static function query($options = [], $user = null)
     {

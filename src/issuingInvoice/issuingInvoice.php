@@ -9,18 +9,31 @@ use StarkCore\Utils\StarkDate;
 
 class IssuingInvoice extends Resource
 {
+
+    public $amount;
+    public $taxId;
+    public $name;
+    public $tags;
+    public $brcode;
+    public $due;
+    public $link;
+    public $status;
+    public $issuingTransactionId;
+    public $created;
+    public $updated;
+
     /**
     # IssuingInvoice object
 
-    Displays the IssuingInvoice objects created to your Workspace.
+        The IssuingInvoice objects created in your Workspace load your Issuing balance when paid.
 
     ## Parameters (required):
         - amount [integer]: IssuingInvoice value in cents. Minimum = 0 (R$0,00). ex: 1234 (= R$ 12.34)
 
     ## Parameters (optional):
-        - taxId [string, default null]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
-        - name [string, default null]: payer name. ex: "Iron Bank S.A."
-        - tags [array of strings, default null]: array of strings for tagging
+        - taxId [string, default sub-issuer taxId]: payer tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
+        - name [string, default sub-issuer name]: payer name. ex: "Iron Bank S.A."
+        - tags [array of strings, default null]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingInvoice is created. ex: "5656565656565656"
@@ -52,18 +65,18 @@ class IssuingInvoice extends Resource
     }
 
     /**
-    # Create Invoices
+    # Create an IssuingInvoice
 
-    Send a list of IssuingInvoice objects for creation in the Stark Infra API
+    Send an IssuingInvoice objects for creation in the Stark Infra API
 
     ## Parameters (required):
-        - invoices [array of IssuingInvoice objects]: array of IssuingInvoice objects to be created in the API
+        - invoice [IssuingInvoice object]: IssuingInvoice object to be created in the API
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - list of IssuingInvoice objects with updated attributes
+        - IssuingInvoice object with updated attributes
      */
     public static function create($invoices, $user = null)
     {
@@ -98,9 +111,8 @@ class IssuingInvoice extends Resource
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. ex: "created", "paid", "canceled" or "overdue"
+        - status [string, default null]: filter for status of retrieved objects. ex: "created", "expired", "overdue", "paid"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - fields [array of string, default []]: fields to be returned. ex: ["id", "amount", "name"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -124,10 +136,9 @@ class IssuingInvoice extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
+        - status [string, default null]: filter for status of retrieved objects. ex: "created", "expired", "overdue", "paid"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - fields [array of string, default null]: fields to be returned. ex: ["id", "amount", "name"]
-        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:
         - list of IssuingInvoice objects with updated attributes

@@ -9,11 +9,24 @@ use StarkCore\Utils\StarkDate;
 
 class StaticBrcode extends Resource
 {
+
+    public $name;
+    public $keyId;
+    public $city;
+    public $amount;
+    public $reconciliationId;
+    public $tags;
+    public $uuid;
+    public $url;
+    public $updated;
+    public $created;
+
     /**
     # StaticBrcode object
 
     A StaticBrcode stores account information in the form of a PixKey and can be used to create 
     Pix transactions easily.
+
     When you initialize a StaticBrcode, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
 
@@ -46,19 +59,19 @@ class StaticBrcode extends Resource
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> uuid = Checks::checkParam($params, "uuid");
         $this-> url = Checks::checkParam($params, "url");
-        $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         
         Checks::checkParams($params);
     }
 
     /**
-    # Create StaticBrcode objects
+    # Create StaticBrcodes
 
-    Create StaticBrcodes in the Stark Infra API
+    Send a list of StaticBrcode objects for creation at the Stark Infra API
 
     ## Parameters (optional):
-        - brcodes [array of StaticBrcode objects]: StaticBrcode objects to be created in the API.
+        - brcodes [array of StaticBrcode objects]: list of StaticBrcode objects to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -72,9 +85,9 @@ class StaticBrcode extends Resource
     }
 
     /**
-    # Retrieve a StaticBrcode object
+    # Retrieve a specific StaticBrcode
 
-    Retrieve a StaticBrcode object linked to your Workspace in the Stark Infra API using its uuid.
+    Receive a single StaticBrcode object previously created in the Stark Infra API by its uuid
     
     ## Parameters (required):
         - uuid [string]: object unique uuid. ex: "97756273400d42ce9086404fe10ea0d6".
@@ -91,7 +104,7 @@ class StaticBrcode extends Resource
     }
 
     /**
-    # Retrieve StaticBrcode objects
+    # Retrieve StaticBrcodes
 
     Receive an enumerator of StaticBrcode objects previously created in the Stark Infra API
     
@@ -117,7 +130,7 @@ class StaticBrcode extends Resource
     /**
     # Retrieve paged StaticBrcodes
     
-    Receive a list of up to 100 StaticBrcode objects previously created in the Stark Infra API and the cursor to the next page.
+    Receive an array of up to 100 StaticBrcode objects previously created in the Stark Infra API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
     
     ## Parameters (optional):

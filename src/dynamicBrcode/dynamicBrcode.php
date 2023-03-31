@@ -11,16 +11,29 @@ use StarkCore\Utils\StarkDate;
 
 class DynamicBrcode extends Resource
 {
+
+    public $name;
+    public $city;
+    public $externalId;
+    public $type;
+    public $tags;
+    public $uuid;
+    public $url;
+    public $updated;
+    public $created;
+    
     /**
     # DynamicBrcode object
 
     BR Codes store information represented by Pix QR Codes, which are used to
     send or receive Pix transactions in a convenient way.
+    
     DynamicBrcodes represent charges with information that can change at any time,
     since all data needed for the payment is requested dynamically to an URL stored
     in the BR Code. Stark Infra will receive the GET request and forward it to your
     registered endpoint with a GET request containing the UUID of the BR Code for
     identification.
+
     When you initialize a DynamicBrcode, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the created object.
@@ -59,12 +72,12 @@ class DynamicBrcode extends Resource
     }
 
     /**
-    # Create DynamicBrcode objects
+    # Create DynamicBrcodes
 
-    Create DynamicBrcodes in the Stark Infra API
+    Send an array of DynamicBrcode objects for creation at the Stark Infra API
 
     ## Parameters (required):
-        - brcodes [array of DynamicBrcode objects]: list of DynamicBrcode objects to be created in the API.
+        - brcodes [array of DynamicBrcode objects]: array of DynamicBrcode objects to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -78,7 +91,7 @@ class DynamicBrcode extends Resource
     }
 
     /**
-    # Retrieve a DynamicBrcode object
+    # Retrieve a specific DynamicBrcode
 
     Retrieve a DynamicBrcode object linked to your Workspace in the Stark Infra API using its uuid.
     
@@ -97,7 +110,7 @@ class DynamicBrcode extends Resource
     }
 
     /**
-    # Retrieve DynamicBrcode objects
+    # Retrieve DynamicBrcodes
 
     Receive an enumerator of DynamicBrcode objects previously created in the Stark Infra API
     
@@ -105,8 +118,8 @@ class DynamicBrcode extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - externalIds [array of strings, default null]: list of externalIds to filter retrieved objects. ex: ["my_external_id1", "my_external_id2"]
+        - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - tags [array of strings, default null]: array of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
@@ -132,8 +145,8 @@ class DynamicBrcode extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. Max = 100. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - externalIds [array of strings, default null]: list of externalIds to filter retrieved objects. ex: ["my_external_id1", "my_external_id2"]
+        - uuids [array of strings, default null]: list of uuids to filter retrieved objects. ex: ["97756273400d42ce9086404fe10ea0d6", "12212250d9cd43e68b3b7c474c9b0e36"]
         - tags [array of strings, default null]: array of tags to filter retrieved objects. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
@@ -152,7 +165,7 @@ class DynamicBrcode extends Resource
     /**
     # Verify a DynamicBrcode read request
 
-    When a DynamicBrcode is read by a user, a GET request will be made to your registered URL 
+    When a DynamicBrcode is read by an user, a GET request will be made to your registered URL 
     to retrieve additional information needed to complete the transaction.
     These GET requests will have their uuids signed with a digital signature passed in the header.
     Use this method to verify the uuid with the digital signature.
@@ -178,8 +191,7 @@ class DynamicBrcode extends Resource
 
     When an instant DynamicBrcode is read by your user, a GET request containing the BR Code's UUID will be made 
     to your registered URL to retrieve additional information needed to complete the transaction.
-    The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
-    in the following format.
+    The GET request must be answered within 5 seconds and with a HTTP status code 200.
 
     ## Parameters (required):
         - version [integer]: integer that represents how many times the BR Code was updated. ex: 1.
@@ -228,18 +240,17 @@ class DynamicBrcode extends Resource
     /** 
     # Helps you respond to a due DynamicBrcode read
 
-    When a due DynamicBrcode is read by your user, a GET request containing the BR Code's 
+    When a due DynamicBrcode is read by your user, a GET request containing the Brcode's 
     UUID will be made to your registered URL to retrieve additional information needed 
     to complete the transaction.
-    The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
+    The GET request must be answered within 5 seconds, with a HTTP status code 200, and 
     in the following format.
 
     ## Parameters (required):
         - version [integer]: integer that represents how many times the BR Code was updated.
         - created [DateTime or string]: creation datetime in ISO format of the DynamicBrcode. ex: "2022-05-17"
         - due [DateTime or string]: requested payment due datetime in ISO format. ex: "2022-06-17"
-        - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR Code cannot be paid anymore.
-        - keyId [string]: receiver's PixKey id. Can be a tax_id (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
+        - keyId [string]: receiver's PixKey id. Can be a taxId (CPF/CNPJ), a phone number, an email or an alphanumeric sequence (EVP). ex: "+5511989898989"
         - status [string]: BR Code's status. Options: "created", "overdue", "paid", "canceled" or "expired"
         - reconciliationId [string]: id to be used for conciliation of the resulting Pix transaction. ex: "cd65c78aeb6543eaaa0170f68bd741ee"
         - nominalAmount [integer]: positive integer that represents the amount in cents of the resulting Pix transaction. ex: 1234 (= R$ 12.34)
@@ -250,7 +261,8 @@ class DynamicBrcode extends Resource
         - receiverStateCode [string]: receiver's address state code. ex: "SP"
         - receiverZipCode [string]: receiver's address zip code. ex: "01234-567"
         
-    ## Parameters (optional):
+        ## Parameters (optional):
+        - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR Code cannot be paid anymore.
         - senderTaxId [string, default null]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
         - receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
         - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.

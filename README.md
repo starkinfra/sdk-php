@@ -4,10 +4,6 @@ Welcome to the Stark Infra PHP SDK! This tool is made for PHP
 developers who want to easily integrate with our API.
 This SDK version is compatible with the Stark Infra API v2.
 
-If you have no idea what Stark Infra is, check out our [website](https://starkinfra.com/) 
-and discover a world where receiving or making payments 
-is as easy as sending a text message to your client!
-
 # Introduction
 
 ## Index
@@ -26,14 +22,18 @@ is as easy as sending a text message to your client!
 - [Testing in Sandbox](#testing-in-sandbox) 
 - [Usage](#usage)
     - [Issuing](#issuing)
-        - [Products](#query-issuing-products): View available sub-issuer card products (a.k.a. card number ranges or BINs)
-        - [Holders](#create-issuing-holders): Manage card holders
-        - [Cards](#create-issuing-cards): Create virtual and/or physical cards
-        - [Purchases](#process-an-issuing-purchase-authorization): Authorize and view your past purchases
-        - [Invoices](#create-issuing-invoices): Add money to your issuing balance
-        - [Withdrawals](#create-issuing-withdrawals): Send money back to your Workspace from your issuing balance
-        - [Transactions](#query-issuing-transactions): View the transactions that have affected your issuing balance
-        - [Balance](#get-issuing-balance): View your issuing balance
+        - [Products](#query-issuingproducts): View available sub-issuer card products (a.k.a. card number ranges or BINs)
+        - [Holders](#create-issuingholders): Manage card holders
+        - [Cards](#create-issuingcards): Create virtual and/or physical cards
+        - [Design](#query-issuingdesigns): View your current card or package designs
+        - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
+        - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+        - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
+        - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
+        - [Invoices](#create-issuinginvoices): Add money to your issuing balance
+        - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
+        - [Balance](#get-your-issuingbalance): View your issuing balance
+        - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
@@ -45,17 +45,20 @@ is as easy as sending a text message to your client!
         - [PixDirector](#create-a-pixdirector): Create a Pix Director
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
-        - [PixDomain](#query-pixdomain): View registered SPI participants certificates
+        - [PixDomain](#query-pixdomains): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
-    - [Credit Note](#credit-note)
-        - [CreditNote](#create-credit-notes): Create credit notes
-    - [Credit Preview](#credit-preview)
-        - [CreditNotePreview](#create-creditnotepreviews): Create credit note previews
-    - [Webhook](#webhook)
+    - [Lending](#lending)
+        - [CreditNote](#create-creditnotes): Create credit notes
+        - [CreditPreview](#create-creditpreviews): Create credit previews
+        - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
+    - [Identity](#identity)
+        - [IndividualIdentity](#create-individualidentities): Create individual identities
+        - [IndividualDocument](#create-individualdocuments): Create individual documents
+    - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
-        - [WebhookEvents](#process-webhook-events): Manage webhook events
+        - [WebhookEvents](#process-webhook-events): Manage Webhook events
         - [WebhookEventAttempts](#query-failed-webhook-event-delivery-attempts-information): Query failed webhook event deliveries
 - [Handling errors](#handling-errors)
 - [Help and Feedback](#help-and-feedback)
@@ -88,8 +91,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 # Setup
 
 ## 1. Install our SDK
-
-### 1. Install our SDK
 
 1.1 Composer: To install the package with Composer, run:
 
@@ -141,7 +142,7 @@ Since this user is unique in your entire organization, only one credential can b
 
 3.1. To create a Project in Sandbox:
 
-3.1.1. Log into [Starkinfra Sandbox](https://web.sandbox.starkinfra.com)
+3.1.1. Log into [StarkInfra Sandbox](https://web.sandbox.starkinfra.com)
 
 3.1.2. Go to Menu > Integrations
 
@@ -178,7 +179,7 @@ $project = new StarkInfra\Project([
 
 3.2. To create Organization credentials in Sandbox:
 
-3.2.1. Log into [Starkinfra Sandbox](https://web.sandbox.starkinfra.com)
+3.2.1. Log into [StarkInfra Sandbox](https://web.sandbox.starkinfra.com)
 
 3.2.2. Go to Menu > Integrations
 
@@ -288,9 +289,7 @@ foreach ($transactions as $transaction) {
 }
 ```
 
-- The `page` function gives you full control over the API pagination. With each function call, you receive up to
-100 results and the cursor to retrieve the next batch of elements. This allows you to stop your queries and
-pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `null`.
+- The `page` function gives you full control over the API pagination. With each function call, you receive up to 100 results and the cursor to retrieve the next batch of elements. This allows you to stop your queries and pick up from where you left off whenever it is convenient. When there are no more elements to be retrieved, the returned cursor will be `null`.
 
 ```php
 use StarkInfra;
@@ -312,7 +311,7 @@ To simplify the following SDK examples, we will only use the `query` function, b
 # Testing in Sandbox
 
 Your initial balance is zero. For many operations in Stark Infra, you'll need funds
-in your account, which can be added to your balance by creating an starkbank.Invoice. 
+in your account, which can be added to your balance by creating a starkbank.Invoice. 
 
 In the Sandbox environment, most of the created starkbank.Invoices will be automatically paid,
 so there's nothing else you need to do to add funds to your account. Just create
@@ -324,9 +323,11 @@ for the value to be credited to your account.
 
 # Usage
 
+Here are a few examples on how to use the SDK. If you have any doubts, check out the function or class docstring to get more info or go straight to our [API docs].
+
 ## Issuing
 
-### Query Issuing Products
+### Query IssuingProducts
 
 To take a look at the sub-issuer card products available to you, just run the following:
 
@@ -340,9 +341,12 @@ foreach ($products as $product) {
 }
 ```
 
-### Create Issuing Holders
+This will tell which card products and card number prefixes you have at your disposal.
 
-You can create card holders to your Workspace.
+### Create IssuingHolders
+
+You can create card holders to which your cards will be bound.
+They support spending rules that will apply to all underlying cards.
 
 ```php
 use StarkInfra\IssuingHolder;
@@ -368,11 +372,12 @@ $holders = IssuingHolder::create([
 
 foreach ($holders as $holder) {
     print_r($holder);
+}
 ```
 
 **Note**: Instead of using IssuingHolder objects, you can also pass each transfer element in dictionary format
 
-### Query Issuing Holders
+### Query IssuingHolders
 
 You can query multiple holders according to filters.
 
@@ -383,9 +388,10 @@ $holders = IssuingHolder::query();
 
 foreach ($holders as $holder) {
     print_r($holder);
+}
 ```
 
-### Delete an Issuing Holder
+### Cancel an IssuingHolder
 
 To cancel a single Issuing Holder by its id, run:
 
@@ -397,7 +403,7 @@ $holder = IssuingHolder::cancel("5155165527080960");
 print_r($holder);
 ```
 
-### Get an Issuing Holder
+### Get an IssuingHolder
 
 To get a single Issuing Holder by its id, run:
 
@@ -409,7 +415,7 @@ $holder = IssuingHolder::get("5155165527080960");
 print_r($holder);
 ```
 
-### Query Issuing Holder logs
+### Query IssuingHolder logs
 
 You can query holder logs to better understand holder life cycles.
 
@@ -423,7 +429,7 @@ foreach ($logs as $log) {
 }
 ```
 
-### Get an Issuing Holder log
+### Get an IssuingHolder log
 
 You can also get a specific log by its id.
 
@@ -435,9 +441,9 @@ $log = IssuingHolder\Log::get("5155165527080960");
 print_r($log);
 ```
 
-### Create Issuing Cards
+### Create IssuingCards
 
-You can issue cards with specific spending rules to make purchases.
+You can issue cards with specific spending rules.
 
 ```php
 use StarkInfra\IssuingCard;
@@ -460,9 +466,10 @@ $cards = IssuingCard::create([
 
 foreach ($cards as $card) {
     print_r($card);
+}
 ```
 
-### Query Issuing Cards
+### Query IssuingCards
 
 You can get a list of created cards given some filters.
 
@@ -479,7 +486,7 @@ foreach ($cards as $card) {
 }
 ```
 
-### Get an Issuing Card
+### Get an IssuingCard
 
 After its creation, information on a card may be retrieved by its id.
 
@@ -491,9 +498,9 @@ $card = IssuingCard::get("5155165527080960");
 print_r($card);
 ```
 
-### Update an Issuing Card
+### Update an IssuingCard
 
-You can update a specific Issuing Card by its id.
+You can update a specific card by its id.
 
 ```php
 use StarkInfra\IssuingCard;
@@ -503,10 +510,9 @@ $card = IssuingCard::update("5155165527080960", ["status" => "blocked"]);
 print_r($card);
 ```
 
-### Cancel an Issuing Card
+### Cancel an IssuingCard
 
 You can also cancel a card by its id.
-Note that this is not possible if it has been processed already.
 
 ```php
 use StarkInfra\IssuingCard;
@@ -516,7 +522,7 @@ $card = IssuingCard::cancel("5155165527080960");
 print_r($card);
 ```
 
-### Query Issuing Card logs
+### Query IssuingCard logs
 
 Logs are pretty important to understand the life cycle of a card.
 
@@ -527,9 +533,10 @@ $logs = IssuingCard\Log::query(["limit" => 150]);
 
 foreach ($logs as $log) {
     print_r($log);
+}
 ```
 
-### Get an Issuing Card log
+### Get an IssuingCard log
 
 You can get a single log by its id.
 
@@ -541,12 +548,243 @@ $log = IssuingCard\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Process an Issuing Purchase authorization
+### Query IssuingDesigns
 
-It's easy to process an IssuingPurchase authorization that arrived in your registered URL. 
-Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you 
-the request. If you do not approve or decline the authorization within 2 seconds, 
-the authorization will be denied.
+You can get a list of available designs given some filters.
+
+```php
+use StarkInfra\IssuingDesign;
+
+$designs = IssuingDesign::query(["limit" => 1]);
+
+foreach ($designs as $design) {
+    print_r($design);
+}
+```
+
+### Get an IssuingDesign
+
+Information on a design may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingDesign;
+
+$design = IssuingDesign::get("5155165527080960");
+
+print_r($design);
+```
+
+### Query IssuingStocks
+
+You can get a list of available stocks given some filters.
+
+```php
+use StarkInfra\IssuingStock;
+
+$stocks = IssuingStock::query(["limit" => 1]);
+
+foreach ($stocks as $stock) {
+    print_r($stock);
+}
+```
+
+### Get an IssuingStock
+
+Information on a stock may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingStock;
+
+$stock = IssuingStock::get("5155165527080960");
+
+print_r($stock);
+```
+
+### Query IssuingStock logs
+
+Logs are pretty important to understand the life cycle of a stock.
+
+```php
+use StarkInfra\IssuingStock;
+
+$logs = IssuingStock\Log::query(["limit" => 150]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get an IssuingStock log
+
+You can get a single log by its id.
+
+```php
+use StarkInfra\IssuingStock;
+
+$log = IssuingStock\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create IssuingRestocks
+
+You can order restocks for a specific IssuingStock.
+
+```php
+use StarkInfra\IssuingRestock;
+
+$restocks = IssuingRestock::create([
+    new IssuingRestock([
+        "count" => 100,
+        "stockId" => "5136459887542272"
+    ]),
+]);
+
+foreach ($restocks as $restock) {
+    print_r($restock);
+}
+```
+
+### Query IssuingRestocks
+
+You can get a list of created restocks given some filters.
+
+```php
+use StarkInfra\IssuingRestock;
+
+$restocks = IssuingRestock::query(["limit" => 1]);
+
+foreach ($restocks as $restock) {
+    print_r($restock);
+}
+```
+
+### Get an IssuingRestock
+
+After its creation, information on a restock may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingRestock;
+
+$restock = IssuingRestock::get("5664445921492992");
+    
+print_r($restock);
+```
+
+### Query IssuingRestock logs
+
+Logs are pretty important to understand the life cycle of a restock.
+
+```php
+use StarkInfra\IssuingRestock;
+
+$logs = IssuingRestock\Log::query(["limit" => 150]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get an IssuingRestock log
+
+You can get a single log by its id.
+
+```php
+use StarkInfra\IssuingRestock;
+
+$log = IssuingRestock\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create IssuingEmbossingRequests
+
+You can create a request to emboss a physical card.
+
+```php
+use StarkInfra\IssuingEmbossingRequest;
+
+$requests = IssuingEmbossingRequest::create([
+    new IssuingEmbossingRequest([
+        "cardDesignId" => "5648359658356736", 
+        "envelopeDesignId" => "5747368922185728", 
+        "cardId" => "5714424132272128", 
+        "displayName1" => "Antonio Stark", 
+        "shippingCity" => "Sao Paulo",
+        "shippingCountryCode" => "BRA",
+        "shippingDistrict" => "Bela Vista",
+        "shippingService" => "loggi",
+        "shippingStateCode" => "SP",
+        "shippingStreetLine1" => "Av. Paulista, 200",
+        "shippingStreetLine2" => "10 andar",
+        "shippingTrackingNumber" => "My_custom_tracking_number",
+        "shippingZipCode" => "12345-678",
+        "embosserId" => "5746980898734080"
+    ])
+]);
+
+foreach ($requests as $request) {
+    print_r($request);
+}
+```
+
+### Query IssuingEmbossingRequests
+
+You can get a list of created embossing requests given some filters.
+
+```php
+use StarkInfra\IssuingEmbossingRequest;
+
+$requests = IssuingEmbossingRequest::query(["limit" => 10]);
+
+foreach ($requests as $request) {
+    print_r($request);
+}
+```
+
+### Get an IssuingEmbossingRequest
+
+After its creation, information on an embossing request may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingEmbossingRequest;
+
+$request = IssuingEmbossingRequest::get("5664445921492992");
+    
+print_r($request);
+```
+
+### Query IssuingEmbossingRequest logs
+
+Logs are pretty important to understand the life cycle of an embossing request.
+
+```php
+use StarkInfra\IssuingEmbossingRequest;
+
+$logs = IssuingEmbossingRequest\Log::query(["limit" => 150]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get an IssuingEmbossingRequest log
+
+You can get a single log by its id.
+
+```php
+use StarkInfra\IssuingEmbossingRequest;
+
+$log = IssuingEmbossingRequest\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+## Process Purchase Authorizations
+
+It's easy to process purchase authorizations delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
 
 ```php
 use StarkInfra\IssuingPurchase;
@@ -576,7 +814,7 @@ sendResponse(  # you should also implement this method to respond the read reque
 );
 ```
 
-### Query Issuing Purchases
+### Query IssuingPurchases
 
 You can get a list of created purchases given some filters.
 
@@ -593,7 +831,7 @@ foreach ($purchases as $purchase) {
 }
 ```
 
-### Get an Issuing Purchase
+### Get an IssuingPurchase
 
 After its creation, information on a purchase may be retrieved by its id. 
 
@@ -605,7 +843,7 @@ $log = IssuingPurchase::get("5155165527080960");
 print_r($log);
 ```
 
-### Query Issuing Purchase logs
+### Query IssuingPurchase logs
 
 Logs are pretty important to understand the life cycle of a purchase.
 
@@ -619,7 +857,7 @@ foreach($logs as $log) {
 }
 ```
 
-### Get an Issuing Purchase log
+### Get an IssuingPurchase log
 
 You can get a single log by its id.
 
@@ -631,7 +869,7 @@ $log = IssuingPurchase\Log::get("5155165527080960");
 print_r($log);
 ```
 
-### Create Issuing Invoices
+### Create IssuingInvoices
 
 You can create Pix invoices to transfer money from accounts you have in any bank to your Issuing balance, allowing you to run your issuing operation.
 
@@ -651,7 +889,7 @@ foreach ($invoices as $invoice) {
 
 **Note**: Instead of using Invoice objects, you can also pass each invoice element in dictionary format
 
-### Get an Issuing Invoice
+### Get an IssuingInvoice
 
 After its creation, information on an invoice may be retrieved by its id. 
 Its status indicates whether it's been paid.
@@ -664,20 +902,24 @@ $invoice = IssuingInvoice::get("5155165527080960");
 print_r($invoice);
 ```
 
-### Query Issuing Invoices
+### Query IssuingInvoices
 
 You can get a list of created invoices given some filters.
 
 ```php
 use StarkInfra\IssuingInvoice;
 
-$invoices = IssuingInvoice::query();
+$invoices = IssuingInvoice::query(
+    "after" => "2020-01-01",
+    "before" => "2020-03-01"
+);
 
 foreach ($invoices as $invoice) {
     print_r($invoice);
+}
 ```
 
-### Query Issuing Invoice logs
+### Query IssuingInvoice logs
 
 Logs are pretty important to understand the life cycle of an invoice.
 
@@ -688,11 +930,25 @@ $logs = IssuingInvoice\Log::query(["limit" => 150]);
 
 foreach ($logs as $log) {
     print_r($log);
+}
 ```
 
-### Create Issuing Withdrawals
+### Get an IssuingInvoice log
 
-You can create withdrawals to send back cash to your Banking account by using the Withdrawal resource
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\IssuingInvoice;
+
+$log = IssuingInvoice\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create IssuingWithdrawals
+
+You can create withdrawals to send cash back from your Issuing balance to your Banking balance
+by using the Withdrawal resource.
 
 ```php
 use StarkInfra\IssuingWithdrawal;
@@ -712,7 +968,7 @@ foreach ($withdrawals as $withdrawal) {
 
 **Note**: Instead of using Withdrawal objects, you can also pass each withdrawal element in dictionary format
 
-### Get an Issuing Withdrawal
+### Get an IssuingWithdrawal
 
 After its creation, information on a withdrawal may be retrieved by its id.
 
@@ -724,23 +980,36 @@ $withdrawal = IssuingWithdrawal::get("5155165527080960");
 print_r($withdrawal);
 ```
 
-### Query Issuing Withdrawals
+### Query IssuingWithdrawals
 
-You can get a list of created invoices given some filters.
+You can get a list of created withdrawals given some filters.
 
 ```php
 use StarkInfra\IssuingWithdrawal;
 
-$withdrawals = IssuingWithdrawal::query();
+$withdrawals = IssuingWithdrawal::query(
+    "after" => "2020-01-01",
+    "before" => "2020-03-01"
+);
 
 foreach ($withdrawals as $withdrawal) {
     print_r($withdrawal);
 }
 ```
 
-**Note**: the Organization user can only update a workspace with the Workspace ID set.
+### Get your IssuingBalance
 
-### Query Issuing Transactions
+To know how much money you have available to run authorizations, run:
+
+```php
+use StarkInfra\IssuingBalance;
+
+$balance = IssuingBalance::get();
+
+print_r($balance);
+```
+
+### Query IssuingTransactions
 
 To understand your balance changes (issuing statement), you can query
 transactions. Note that our system creates transactions for you when
@@ -759,7 +1028,7 @@ foreach ($transactions as $transaction) {
 }
 ```
 
-### Get an Issuing Transaction
+### Get an IssuingTransaction
 
 You can get a specific transaction by its id:
 
@@ -769,18 +1038,6 @@ use StarkInfra\IssuingTransaction;
 $transaction = IssuingTransaction::get("5155165527080960");
 
 print_r($transaction);
-```
-
-### Get Issuing Balance
-
-To know how much money you have in your workspace, run:
-
-```php
-use StarkInfra\IssuingBalance;
-
-$balance = IssuingBalance::get();
-
-print_r($balance);
 ```
 
 ### Issuing Enums
@@ -839,8 +1096,9 @@ foreach ($methods as $method) {
 
 ## Pix
 
-## Create PixRequests
-You can create Pix Requests to charge a user:
+### Create PixRequests
+
+You can create a Pix request to transfer money from one of your users to anyone else:
 
 ```php
 use StarkInfra\PixRequest;
@@ -886,7 +1144,7 @@ foreach($requests as $request){
 }
 ```
 
-**Note**: Instead of using Pix Request objects, you can also pass each transaction element in dictionary format
+**Note**: Instead of using Pix Request objects, you can also pass each element in dictionary format
 
 ## Query PixRequests
 
@@ -896,7 +1154,6 @@ You can query multiple Pix Requests according to filters.
 use StarkInfra\PixRequest;
 
 $requests = PixRequest::query([
-    "fields" => ['amount', 'senderName'],
     "limit" => 10,
     "after" => "2020-04-01",
     "before" => "2020-04-30",
@@ -920,6 +1177,40 @@ use StarkInfra\PixRequest;
 $request = PixRequest::get("5155966664310784");
 
 print_r($request);
+```
+
+### Process inbound PixRequest authorizations
+
+It's easy to process authorization requests that arrived at your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 1 second, the authorization will be denied.
+
+```php
+use StarkInfra\PixRequest;
+
+$request = listen();  # this is your handler to listen for authorization requests
+
+$request = PixRequest::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+
+# after parsing you should analyse the authorization request and then respond
+
+# To approve:
+sendResponse(  # you should also implement this method to respond the read request
+    PixRequest::response([
+        "status" => "approved",
+    ]);
+);
+
+# To deny:
+sendResponse(  # you should also implement this method to respond the read request
+    PixRequest::response([
+        "status" => "denied",
+        "reason" => "invalidAccountNumber",
+    ]);
+);
 ```
 
 ## Query PixRequest logs
@@ -952,43 +1243,9 @@ $log = PixRequest\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Process PixRequest authorization requests
-
-It's easy to process authorization requests that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
-
-```php
-use StarkInfra\PixRequest;
-
-$request = listen();  # this is your handler to listen for authorization requests
-
-$request = PixRequest::parse(
-    $request->content, 
-    $request->headers["Digital-Signature"]
-);
-
-# after parsing you should analyse the authorization request and then respond
-
-# To approve:
-sendResponse(  # you should also implement this method to respond the read request
-    PixRequest::response([
-        "status" => "approved",
-    ]);
-);
-
-# To deny:
-sendResponse(  # you should also implement this method to respond the read request
-    PixRequest::response([
-        "status" => "denied",
-        "reason" => "invalidAccountNumber",
-    ]);
-);
-```
-
 ## Create PixReversals
 
-You can reverse a Pix Request by whole or by a fraction of its amount using a Pix Reversal.
+You can reverse a PixRequest either partially or totally using a PixReversal.
 
 ```php
 use StarkInfra\PixReversal;
@@ -1047,41 +1304,11 @@ $reversal = PixReversal::get("5155966664310784");
 print_r($reversal);
 ```
 
-## Query PixReversal logs
+### Process inbound PixReversal authorizations
 
-You can query Pix Reversal logs to better understand Pix Reversal life cycles.
-
-```php
-use StarkInfra\PixReversal;
-
-$logs = PixReversal\Log::query([
-    "limit" => 10,
-    "after" => "2020-04-01",
-    "before" => "2020-04-30",
-]);
-
-foreach($logs as $log){
-    print_r($log->id);
-}
-```
-
-## Get a PixReversal log
-
-You can also get a specific log by its id.
-
-```php
-use StarkInfra\PixReversal;
-
-$log = PixReversal\Log::get("5155165527080960");
-
-print_r($log);
-```
-
-## Process PixReversal authorization reversals
-
-It's easy to process authorization reversals that arrived in your handler. Remember to pass the
-signature header so the SDK can make sure it's StarkInfra that sent you
-the event.
+It's easy to process authorization requests that arrived at your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 1 second, the authorization will be denied.
 
 ```php
 use StarkInfra\PixReversal;
@@ -1112,9 +1339,39 @@ sendResponse(
 
 ```
 
+## Query PixReversal logs
+
+You can query Pix Reversal logs to better understand Pix Reversal life cycles.
+
+```php
+use StarkInfra\PixReversal;
+
+$logs = PixReversal\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+## Get a PixReversal log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixReversal;
+
+$log = PixReversal\Log::get("5155165527080960");
+
+print_r($log);
+```
+
 ## Get your PixBalance
 
-To know how much money you have in your workspace, run:
+To see how much money you have in your account, run:
 
 ```php
 use StarkInfra\PixBalance;
@@ -1124,9 +1381,10 @@ $balance = PixBalance::get();
 print_r($balance);
 ```
 
-## Create PixStatement
+## Create a PixStatement
 
-Statements are only available for direct participants. To create a statement of all the transactions that happened on your workspace during a specific day, run:
+Statements are generated directly by the Central Bank and are only available for direct participants.
+To create a statement of all the transactions that happened on your account during a specific day, run:
 
 ```php
 use StarkInfra\PixStatement;
@@ -1246,7 +1504,7 @@ print_r($key);
 
 ```
 
-### Patch a PixKey
+### Update a PixKey
 
 Update the account information linked to a Pix Key.
 
@@ -1274,7 +1532,6 @@ use StarkInfra\PixKey;
 $key = PixKey::cancel("5915632394567680");
 
 print_r($key);
-                       
 ```
 
 ### Query PixKey logs
@@ -1334,7 +1591,7 @@ print_r($claim)
 
 ### Query PixClaims
 
-You can query multiple Pix Claims according to filters.
+You can query multiple Pix claims according to filters.
 
 ```php
 use StarkInfra\PixClaim;
@@ -1369,7 +1626,7 @@ $claim = PixClaim::get("5155165527080960");
 print_r($claim);
 ```
 
-### Patch a PixClaim
+### Update a PixClaim
 
 A Pix Claim can be confirmed or canceled by patching its status.
 A received Pix Claim must be confirmed by the donor to be completed.
@@ -1496,7 +1753,7 @@ $infraction = PixInfraction::get("5155165527080960");
 print_r($infraction);
 ```
 
-### Patch a PixInfraction
+### Update a PixInfraction
 
 A received Pix Infraction can be confirmed or declined by patching its status.
 After a Pix Infraction is patched, its status changes to closed.
@@ -1578,7 +1835,7 @@ for $chargeback in $chargebacks{
 }    
 ```
 
-### Query PixChargeback
+### Query PixChargebacks
 
 You can query multiple Pix Chargebacks according to filters.
 
@@ -1610,7 +1867,7 @@ $chargeback = PixChargeback::get("5155165527080960");
 print_r($chargeback);
 ```
 
-### Patch a PixChargeback
+### Update a PixChargeback
 
 A received Pix Chargeback can be approved or denied by patching its status.
 After a Pix Chargeback is patched, its status changes to closed.
@@ -1671,9 +1928,9 @@ $log = PixChargeback\Log::get("5155165527080960");
 print_r($log);
 ```
 
-### Query PixDomain
+### Query PixDomains
 
-You can query for certificates of registered SPI participants able to issue DynamicBrcodes.
+Here you can list all Pix Domains registered at the Brazilian Central Bank. The Pix Domain object displays the domain name and the QR Code domain certificates of registered Pix participants able to issue dynamic QR Codes.
 
 ```php
 use StarkInfra\PixDomain;
@@ -1743,9 +2000,13 @@ print_r($brcode);
 
 ### Create DynamicBrcodes
 
-BR codes store information represented by Pix QR Codes, which are used to send or receive Pix transactions in a convenient way.
-DynamicBrcodes represent charges with information that can change at any time, since all 
-data needed for the payment is requested dynamically to your registered URL.
+BR codes store information represented by Pix QR Codes, which are used to send 
+or receive Pix transactions in a convenient way.
+DynamicBrcodes represent charges with information that can change at any time,
+since all data needed for the payment is requested dynamically to an URL stored
+in the BR Code. Stark Infra will receive the GET request and forward it to your
+registered endpoint with a GET request containing the UUID of the BR code for
+identification.
 
 ```php
 use StarkInfra\DynamicBrcode;
@@ -1797,8 +2058,7 @@ print_r($brcode);
 
 ### Verify a DynamicBrcode Read
 
-When a DynamicBrcode is read by your user, a GET request will be made to the URL stored in the DynamicBrcode to 
-retrieve additional information needed to complete the transaction.
+When a DynamicBrcode is read by your user, a GET request will be made to the URL stored in the DynamicBrcode to retrieve additional information needed to complete the transaction.
 Use this method to verify the authenticity of a GET request received at your registered endpoint.
 If the provided digital signature does not check out with the Stark public key, a
 StarkInfra\Exception\InvalidSignatureException will be raised.
@@ -1814,12 +2074,13 @@ $uuid = DynamicBrcode::verify(
 );
 ```
 
-### Respond to a Due DynamicBrcode Read
+### Answer to a Due DynamicBrcode Read
 
-When a due DynamicBrcode is read by your user, a GET request will be made to your 
-registered URL to retrieve additional information needed to complete the transaction.
+When a Due DynamicBrcode is read by your user, a GET request containing 
+the BR code UUID will be made to your registered URL to retrieve additional 
+information needed to complete the transaction.
 
-The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
+The GET request must be answered within 5 seconds, with a HTTP status code 200, and 
 in the following format.
 
 ```php
@@ -1853,13 +2114,13 @@ sendResponse(  # you should also implement this method to respond the read reque
 );
 ```
 
-### Repond to an Instant DynamicBrcode read
+### Answer to an Instant DynamicBrcode read
 
 When an instant DynamicBrcode is read by your user, a GET request containing the 
 BR code's UUID will be made to your registered URL to retrieve additional information 
 needed to complete the transaction.
 
-The GET request must be answered within 5 seconds, with an HTTP status code 200, and 
+The GET request must be answered within 5 seconds, with a HTTP status code 200, and 
 in the following format.
 
 ```php
@@ -1890,6 +2151,7 @@ sendResponse(  # you should also implement this method to respond the read reque
 ```
 
 ## Create BrcodePreviews
+
 You can create BrcodePreviews to preview BR Codes before paying them.
 
 ```php
@@ -1905,10 +2167,28 @@ foreach ($previews as $preview) {
 }
 ```
 
-## Credit Note
+## Lending
 
-## Create credit notes 
-You can create a Credit Note to generate a CCB contract:
+If you want to establish a lending operation, you can use Stark Infra to
+create a CCB contract. This will enable your business to lend money without
+requiring a banking license, as long as you use a Credit Fund 
+or Securitization company.
+
+The required steps to initiate the operation are:
+ 1. Have funds in your Credit Fund or Securitization account
+ 2. Request the creation of an [Identity Check](#create-individualidentities)
+for the credit receiver (make sure you have their documents and express authorization)
+ 3. (Optional) Create a [Credit Simulation](#create-creditpreviews) 
+with the desired installment plan to display information for the credit receiver
+ 4. Create a [Credit Note](#create-creditnotes)
+with the desired installment plan
+
+## Create CreditNotes 
+
+For lending operations, you can create a CreditNote to generate a CCB contract.
+
+Note that you must have recently created an identity check for that same Tax ID before
+being able to create a credit operation for them.
 
 ```php
 use StarkInfra\CreditNote;
@@ -1968,7 +2248,7 @@ foreach($notes as $note){
 
 **Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
 
-## Query credit notes
+## Query CreditNotes
 
 You can query multiple Credit Notes according to filters.
 
@@ -1987,7 +2267,7 @@ foreach($notes as $note){
 }
 ```
 
-## Get a credit note
+## Get a CreditNote
 
 After its creation, information on a Credit Note may be retrieved by its id.
 
@@ -1999,7 +2279,7 @@ $note = CreditNote::get("5155966664310784");
 print_r($note);
 ```
 
-## Cancel a credit note
+## Cancel a CreditNote
 
 You can cancel a Credit Note if it has not been signed yet.
 
@@ -2011,7 +2291,7 @@ $note = CreditNote::cancel("5155966664310784");
 print_r($note);
 ```
 
-## Query credit note logs
+## Query CreditNote logs
 
 You can query Credit Note logs to better understand credit note life cycles.
 
@@ -2025,7 +2305,7 @@ foreach($logs as $log){
 }
 ```
 
-## Get credit note log
+## Get a CreditNote log
 
 You can also get a specific log by its id.
 
@@ -2037,11 +2317,9 @@ $log = Log::get("5155966664310784");
 print_r($log);
 ```
 
-## Credit Preview
-You can preview different types of credits before creating them (Currently we only have CreditNote previews):
+### Create CreditPreviews
 
-### Create CreditNotePreviews
-You can preview Credit Note before the creation of the CCB contracts:
+You can preview a credit operation before creating them (Currently we only have CreditNote / CCB previews):
 
 ```php
 use StarkInfra\CreditPreview;
@@ -2140,31 +2418,346 @@ foreach($previews as $preview){
 
 **Note**: Instead of using CreditPreview objects, you can also pass each element in dictionary format
 
+### Create CreditHolmes
+
+Before you request a credit operation, you may want to check previous credit operations
+the credit receiver has taken.
+
+For that, open up a CreditHolmes investigation to receive information on all debts and credit
+operations registered for that individual or company inside the Central Bank's SCR.
+
+```php
+use StarkInfra\CreditHolmes;
+
+$holmes = CreditHolmes::create([
+    new CreditHolmes([
+        "taxId" => "012.345.678-90",
+        "competence" => "2022-09"
+    ]),
+    new CreditHolmes([
+        "taxId" => "012.345.678-90",
+        "competence" => "2022-08"
+    ]),
+    new CreditHolmes([
+        "taxId" => "012.345.678-90",
+        "competence" => "2022-07"
+    ]);
+]);
+
+foreach($holmes as $sherlock){
+    print_r($sherlock);
+}
+```
+
+### Query CreditHolmes
+
+You can query multiple CreditHolmes according to filters.
+
+```php
+use StarkInfra\CreditHolmes;
+
+$holmes = CreditHolmes::query([
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+]);
+
+foreach($holmes as $sherlock){
+    print_r($sherlock);
+}
+```
+
+### Get a CreditHolmes
+
+After its creation, information on a CreditHolmes may be retrieved by its id.
+
+```php
+use StarkInfra\CreditHolmes;
+
+$logs = CreditHolmes::get("5155165527080960");
+
+print_r($log);
+```
+
+### Query CreditHolmes logs
+
+You can query CreditHolmes logs to better understand their life cycles. 
+
+```php
+use StarkInfra\CreditHolmes\Log;
+
+$logs = Log::query([
+    "limit" => 10,
+    "ids" => ["5729405850615808"],
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "types" => ["created"]
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a CreditHolmes log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\CreditHolmes\Log;
+
+$logs = CreditHolmes\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+## Identity
+
+Several operations, especially credit ones, require that the identity
+of a person or business is validated beforehand.
+
+Identities are validated according to the following sequence:
+1. The Identity resource is created for a specific Tax ID
+2. Documents are attached to the Identity resource
+3. The Identity resource is updated to indicate that all documents have been attached
+4. The Identity is sent for validation and returns a webhook notification to reflect
+the success or failure of the operation
+
+### Create IndividualIdentities
+
+You can create an IndividualIdentity to validate a document of a natural person
+
+```php
+use StarkInfra\IndividualIdentity;
+
+$identities = IndividualIdentity::create([
+    new IndividualIdentity([
+        "name" => "Walter White",
+        "taxId" => "012.345.678-90",
+        "tags" =>["breaking", "bad"]
+    ]);
+]);
+
+foreach($identities as $identity){
+    print_r($identity);
+}
+```
+
+**Note**: Instead of using IndividualIdentity objects, you can also pass each element in dictionary format
+
+### Query IndividualIdentity
+
+You can query multiple individual identities according to filters.
+
+```php
+use StarkInfra\IndividualIdentity;
+
+$identities = IndividualIdentity::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" =>["breaking", "bad"]
+]);
+
+foreach($identities as $identity){
+    print_r($identity);
+}
+```
+
+### Get an IndividualIdentity
+
+After its creation, information on an individual identity may be retrieved by its id.
+
+```php
+use StarkInfra\IndividualIdentity;
+
+$identity = IndividualIdentity::get("5155165527080960");
+
+print_r($identity);
+```
+
+### Update an IndividualIdentity
+
+You can update a specific identity status to "processing" for send it to validation.
+
+```php
+use StarkInfra\IndividualIdentity;
+
+$identity = IndividualIdentity::update(
+    "5155165527080960",
+    "processing"
+)
+
+print_r($identity)
+```
+
+**Note**: Before sending your individual identity to validation by patching its status, you must send all the required documents using the create method of the CreditDocument resource. Note that you must reference the individual identity in the create method of the CreditDocument resource by its id.
+
+
+### Cancel an IndividualIdentity
+
+You can cancel an individual identity before updating its status to processing.
+
+```php
+use StarkInfra\IndividualIdentity;
+
+$identity = IndividualIdentity::cancel("5155165527080960");
+
+print_r($identity);
+```
+
+### Query IndividualIdentity logs
+
+You can query individual identity logs to better understand individual identity life cycles. 
+
+```php
+use StarkInfra\IndividualIdentity\Log;
+
+$logs = IndividualIdentity\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get an IndividualIdentity log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\IndividualIdentity\Log;
+
+$log = IndividualIdentity\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create IndividualDocuments
+
+You can create an individual document to attach images of documents to a specific individual Identity.
+You must reference the desired individual identity by its id.
+
+```php
+$documents = IndividualDocument::create([
+    new IndividualDocument([
+        "type" => "identity-front",
+        "content" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+        "identityId" => "5155165527080960",
+        "tags" => ["breaking", "bad"]
+    ]),
+    new IndividualDocument([
+        "type" => "identity-back",
+        "content" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+        "identityId" => "5155165527080960",
+        "tags" => ["breaking", "bad"]
+    ]),
+    new IndividualDocument([
+        "type" => "selfie",
+        "content" => "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAASABIAAD...",
+        "identityId" => "5155165527080960",
+        "tags" => ["breaking", "bad"]
+    ]);
+]);
+
+foreach($documents as $document){
+    print_r($document);
+}
+```
+
+**Note**: Instead of using IndividualDocument objects, you can also pass each element in dictionary format
+
+### Query IndividualDocuments
+
+You can query multiple individual documents according to filters.
+
+```php
+use StarkInfra\IndividualDocument;
+
+$logs = IndividualDocument::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" => ["breaking", "bad"]
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get an IndividualDocument
+
+After its creation, information on an individual document may be retrieved by its id.
+
+```php
+use StarkInfra\IndividualDocument;
+
+$document = IndividualDocument::get("5155165527080960");
+
+print_r($document);
+```
+  
+### Query IndividualDocument logs
+
+You can query individual document logs to better understand individual document life cycles. 
+
+```php
+use StarkInfra\IndividualDocument\Log;
+
+$logs = IndividualDocument\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get an IndividualDocument log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\IndividualDocument\Log;
+
+$log = IndividualDocument\Log::get("5155165527080960");
+
+print_r($log);
+```
+
 ## Webhook
 
-## Create a webhook subscription
-To create a Webhook subscription and be notified whenever an event occurs, run:
+## Create a webhook
+
+To create a Webhook and be notified whenever an event occurs, run:
 
 ```php
 use StarkInfra\Webhook;
 
-$webhooks = Webhook::create([
-    new Webhook([
+$webhook = Webhook::create(
+    new Webhook(
         "url" => "https://webhook.site/",
         "subscriptions" =>[
             "credit-note"
             "issuing-card", "issuing-invoice", "issuing-purchase",
             "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"
         ]
-    ]);
-]);
+    );
+);
 
-foreach($webhooks as $webhook){
-    print_r($webhook);
-}
+print_r($webhook);
 ```
 
 ## Query webhooks
+
 To search for registered Webhooks, run:
 
 ```php
@@ -2178,32 +2771,33 @@ foreach($webhooks as $webhook){
 ```
 
 ## Get a webhook
+
 You can get a specific Webhook by its id.
 
 ```php
 use StarkInfra\Webhook;
 
-$webhooks = Webhook::get("1082736198236817");
+$webhook = Webhook::get("1082736198236817");
 
 print_r($webhook);
 ```
 
 ## Delete a webhook
+
 You can also delete a specific Webhook by its id.
 
 ```php
 use StarkInfra\Webhook;
 
-$webhooks = Webhook::delete("1082736198236817");
+$webhook = Webhook::delete("1082736198236817");
 
 print_r($webhook);
 ```
 
 ## Process Webhook events
 
-It's easy to process events delivered to your Webhook endpoint. Remember to pass the
-signature header so the SDK can make sure it was really StarkInfra that sent you
-the event.
+It's easy to process events delivered to your Webhook endpoint.
+Remember to pass the signature header so the SDK can make sure it was StarkInfra that sent you the event.
 
 ```php
 use StarkInfra\Event;
@@ -2279,12 +2873,12 @@ print_r($event);
 
 This can be used in case you've lost events.
 With this function, you can manually set events retrieved from the API as
-"delivered" to help future event queries with `isDelivered=false`.
+"delivered" to help future event queries with `"isDelivered" => false`.
 
 ```php
 use StarkInfra\Event;
 
-$event = Event::update("1298371982371929",  true);
+$event = Event::update("1298371982371929", true);
 
 print_r($event);
 ```

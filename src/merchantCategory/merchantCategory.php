@@ -9,6 +9,12 @@ use StarkCore\Utils\SubResource;
 
 class MerchantCategory extends SubResource
 {
+
+    public $code;
+    public $type;
+    public $name;
+    public $number;
+
     /**
     # MerchantCategory object
 

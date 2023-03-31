@@ -7,14 +7,20 @@ use StarkCore\Utils\SubResource;
 
 class Description extends SubResource
 {
+
+    public $key;
+    public $value;
+
     /**
     # CreditNote\Invoice\Description object
     
-    Used to define a description in the Invoice.
+    Invoice description information.
     
     ## Parameters (required):
-        - key [string]: key describing a part of the invoice value. ex: "Taxes"
-        - value [string]: value to which the key refers to. ex: "120"
+        - key [string]: Description for the value. ex: "Taxes"
+
+    ## Parameters (optional):
+        - value [string, default null]: amount related to the described key. ex: "R$100,00"
     */
     function __construct(array $params)
     {

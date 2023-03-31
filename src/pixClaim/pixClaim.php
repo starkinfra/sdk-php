@@ -10,11 +10,29 @@ use StarkCore\Utils\StarkDate;
 
 class PixClaim extends Resource
 {
+
+    public $accountCreated;
+    public $accountNumber;
+    public $accountType;
+    public $branchCode;
+    public $name;
+    public $taxId;
+    public $keyId;
+    public $tags;
+    public $status;
+    public $type;
+    public $keyType;
+    public $flow;
+    public $claimerBankCode;
+    public $claimedBankCode;
+    public $created;
+    public $updated;
+
     /**
     # PixClaim object
 
-    A Pix Claim is a request to transfer a Pix Key from an account hosted at another
-    Pix participant to an account under your bank code. Pix Claims must always be requested by the claimer.    
+    PixClaims intend to transfer a PixKey from one account to another.
+
     When you initialize a PixClaim, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the created object.
@@ -27,6 +45,8 @@ class PixClaim extends Resource
         - name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
         - taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
         - keyId [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+
+    ## Parameters (optional):
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
     
     ## Attributes (return-only):
@@ -38,7 +58,7 @@ class PixClaim extends Resource
         - claimerBankCode [string]: bankCode of the Pix participant that created the PixClaim. ex: "20018183".
         - claimedBankCode [string]: bankCode of the account donating the PixKey. ex: "20018183".
         - created [DateTime]: created datetime for the PixClaim.
-        - updated [DateTime]: update datetime for the PixClaim.
+        - updated [DateTime]: latest update datetime for the PixClaim.
     */
 
     function __construct(array $params)
@@ -68,8 +88,8 @@ class PixClaim extends Resource
     /**
     # Create PixClaim objects
     
-    Create a Pix Claim to request the transfer of a Pix Key from an account
-    hosted at another Pix participant to an account under your bank code.
+    Create a PixClaim to request the transfer of a PixKey to an account
+    hosted at other Pix participants in the Stark Infra API.
     
     ## Parameters (required):
         - claim [PixClaim object]: PixClaim object to be created in the API.
@@ -186,25 +206,6 @@ class PixClaim extends Resource
     {
         $params["status"] = $status;
         return Rest::patchId($user, PixClaim::resource(), $id, $params);
-    }
-
-    /**
-    # Cancel a PixClaim entity
-    
-    Cancel a PixClaim entity previously created in the Stark Infra API
-    
-    ## Parameters (required):
-        - id [string]: object unique id. ex: "5656565656565656"
-    
-    ## Parameters (optional):
-        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
-    
-    ## Return:
-        - canceled PixClaim object
-     */
-    public static function cancel($id, $user = null)
-    {
-        return Rest::deleteId($user, PixClaim::resource(), $id);
     }
 
     private static function resource()

@@ -11,6 +11,13 @@ use StarkCore\Utils\StarkDate;
 
 class Event extends Resource
 {
+
+    public $isDelivered;
+    public $subscription;
+    public $created;
+    public $log;
+    public $workspaceId;
+
     /**
     # Webhook Event object
 
@@ -18,22 +25,23 @@ class Event extends Resource
     Events cannot be created, but may be retrieved from the Stark Infra API to
     list all generated updates on entities.
 
-    ## Attributes:
+    ## Attributes (return-only):
         - id [string]: unique id returned when the event is created. ex: "5656565656565656"
         - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
-        - created [DateTime]: creation datetime for the notification event.
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
         - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"
+        - workspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
+        - created [DateTime]: creation datetime for the notification event.
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
+        $this->log = Event::buildLog($this->subscription, Checks::checkParam($params, "log"));
         $this->isDelivered = Checks::checkParam($params, "isDelivered");
         $this->subscription = Checks::checkParam($params, "subscription");
-        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
-        $this->log = Event::buildLog($this->subscription, Checks::checkParam($params, "log"));
         $this->workspaceId = Checks::checkParam($params, "workspaceId");
+        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 
         Checks::checkParams($params);
     }
@@ -224,7 +232,7 @@ class Event extends Resource
     /**
     # Retrieve notification Events
 
-    Receive a enumerator of Event objects previously created in the Stark Infra API
+    Receive an enumerator of Event objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
@@ -267,9 +275,9 @@ class Event extends Resource
     }
 
     /**
-    # Delete notification Events
+    # Delete a Webhook Event entity
 
-    Delete a single Event entity previously created in the Stark Infra API
+    Delete a notification Event entity previously created in the Stark Infra API by its ID
 
     ## Parameters (required):
         - id [string]: Event unique id. ex: "5656565656565656"
@@ -321,7 +329,7 @@ class Event extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - Event object with updated attributes
+        - Parsed Event object
      */
     public static function parse($content, $signature, $user = null)
     {

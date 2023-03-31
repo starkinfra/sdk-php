@@ -11,6 +11,40 @@ use StarkCore\Utils\StarkDate;
 
 class IssuingPurchase extends Resource
 {
+
+    public $holderName;
+    public $productId;
+    public $cardId;
+    public $cardEnding;
+    public $purpose;
+    public $amount;
+    public $tax;
+    public $issuerAmount;
+    public $issuerCurrencyCode;
+    public $issuerCurrencySymbol;
+    public $merchantAmount;
+    public $merchantCurrencyCode;
+    public $merchantCurrencySymbol;
+    public $merchantCategoryCode;
+    public $merchantCountryCode;
+    public $acquirerId;
+    public $merchantId;
+    public $merchantName;
+    public $merchantFee;
+    public $walletId;
+    public $methodCode;
+    public $score;
+    public $endToEndId;
+    public $tags;
+    public $zipCode;
+    public $issuingTransactionIds;
+    public $status;
+    public $updated;
+    public $created;
+    public $isPartialAllowed;
+    public $cardTags;
+    public $holderTags;
+
     /**
     # IssuingPurchase object
 
@@ -19,6 +53,7 @@ class IssuingPurchase extends Resource
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingPurchase is created. ex: "5656565656565656"
         - holderName [string]: card holder name. ex: "Tony Stark"
+        - productId [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
         - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
         - cardEnding [string]: last 4 digits of the card number. ex: "1234"
         - purpose [string]: purchase purpose. ex: "purchase"
@@ -59,6 +94,7 @@ class IssuingPurchase extends Resource
         parent::__construct($params);
 
         $this->holderName = Checks::checkParam($params, "holderName");
+        $this->productId = Checks::checkParam($params, "productId");
         $this->cardId = Checks::checkParam($params, "cardId");
         $this->cardEnding = Checks::checkParam($params, "cardEnding");
         $this->purpose = Checks::checkParam($params, "purpose");
@@ -118,15 +154,14 @@ class IssuingPurchase extends Resource
     Receive an enumerator of IssuingPurchase objects previously created in the Stark Infra API
 
     ## Parameters (optional):
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - endToEndIds [array of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
         - holderIds [array of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
         - cardIds [array of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
         - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - ids [array of strings, default [], default null]: purchase IDs
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -140,23 +175,22 @@ class IssuingPurchase extends Resource
     }
 
     /**
-    # Retrieve paged Purchases
+    # Retrieve paged IssuingPurchases
 
-    Receive a list of up to 100 Purchase objects previously created in the Stark Infra API and the cursor to the next page.
+    Receive a list of up to 100 IssuingPurchases objects previously created in the Stark Infra API and the cursor to the next page.
     Use this function instead of query if you want to manually page your requests.
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - endToEndIds [array of strings, default []]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
         - holderIds [array of strings, default []]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
         - cardIds [array of strings, default []]: card  IDs. ex: ["5656565656565656", "4545454545454545"]
-        - status [string, default null]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
-        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - ids [array of strings, default [], default null]: purchase IDs
-        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
+        - status [array of strings, default []]: filter for status of retrieved objects. ex: "approved", "canceled", "denied", "confirmed" or "voided"
+        - ids [array of strings, default []]: purchase IDs
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
         - list of IssuingPurchase objects with updated attributes
@@ -170,12 +204,13 @@ class IssuingPurchase extends Resource
     }
 
     /**
-    # Create a IssuingPurchase object from a content string
+    # Create a single verified IssuingPurchase authorization request from a content string
 
-    Create a single IssuingPurchase object from a content string received from a POST 
-    request to your registered URL.
-    If the provided digital signature does not check out with the Stark public key, a
-    StarkInfra\Exception\InvalidSignatureException will be raised.
+    Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
+    Authorization requests are posted to your registered endpoint whenever IssuingPurchases are received.
+    They present IssuingPurchase data that must be analyzed and answered with approval or declination.
+    If the provided digital signature does not check out with the StarkInfra public key, a stark.exception.InvalidSignatureException will be raised.
+    If the authorization request is not answered within 2 seconds or is not answered with a HTTP status code 200 the IssuingPurchase will go through the pre-configured stand-in validation.
 
     ## Parameters (required):
         - content [string]: response content from request received at user endpoint (not parsed)
@@ -193,18 +228,20 @@ class IssuingPurchase extends Resource
     }
 
     /** 
-    # Helps you respond to an IssuingPurchase authorization request.
+    # Helps you respond IssuingPurchase requests
 
     ## Parameters (required):
         - status [string]: sub-issuer response to the authorization. ex: "approved" or "denied"
     
+    ## Parameters (conditionally required):
+        - reason [string, default null]: denial reason. Options: "other", "blocked", "lostCard", "stolenCard", "invalidPin", "invalidCard", "cardExpired", "issuerError", "concurrency", "standInDenial", "subIssuerError", "invalidPurpose", "invalidZipCode", "invalidWalletId", "inconsistentCard", "settlementFailed", "cardRuleMismatch", "invalidExpiration", "prepaidInstallment", "holderRuleMismatch", "insufficientBalance", "tooManyTransactions", "invalidSecurityCode", "invalidPaymentMethod", "confirmationDeadline", "withdrawalAmountLimit", "insufficientCardLimit", "insufficientHolderLimit"
+
     ## Parameters (optional):
         - amount [integer, default null]: amount in cents that was authorized. ex: 1234 (= R$ 12.34)
-        - reason [string, default null]: denial reason. Options: "other", "blocked", "lostCard", "stolenCard", "invalidPin", "invalidCard", "cardExpired", "issuerError", "concurrency", "standInDenial", "subIssuerError", "invalidPurpose", "invalidZipCode", "invalidWalletId", "inconsistentCard", "settlementFailed", "cardRuleMismatch", "invalidExpiration", "prepaidInstallment", "holderRuleMismatch", "insufficientBalance", "tooManyTransactions", "invalidSecurityCode", "invalidPaymentMethod", "confirmationDeadline", "withdrawalAmountLimit", "insufficientCardLimit", "insufficientHolderLimit"
         - tags [array of strings, default null]: tags to filter retrieved object. ex: ["tony", "stark"]
 
     ## Return:
-        - Dumped JSON string that must be returned to us on the IssuingPurchase authorization response
+        - Dumped JSON string that must be returned to us on the IssuingPurchase request
     */
     public static function response($params)
     {

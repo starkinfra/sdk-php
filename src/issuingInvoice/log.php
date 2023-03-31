@@ -11,6 +11,11 @@ use StarkInfra\IssuingInvoice;
 
 class Log extends Resource
 {
+
+    public $type;
+    public $invoice;
+    public $created;
+
     /**
     # IssuingInvoice\Log object
 
@@ -21,17 +26,17 @@ class Log extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
-        - invoice [Invoice]: IssuingInvoice entity to which the log refers to.
-        - type [string]: type of the IssuingInvoice event which triggered the log creation. ex: "created", "paid", "canceled" or "overdue"
+        - invoice [IssuingInvoice object]: IssuingInvoice entity to which the log refers to.
+        - type [string]: type of the IssuingInvoice event which triggered the log creation. ex: "created", "credited", "expired", "overdue", "paid"
         - created [DateTime]: creation datetime for the log. 
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
-        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this->type = Checks::checkParam($params, "type");
         $this->invoice = Checks::checkParam($params, "invoice");
+        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 
         Checks::checkParams($params);
     }
@@ -65,7 +70,7 @@ class Log extends Resource
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - types [array of strings, default null]: filter for log event types. ex: "created", "paid", "canceled" or "overdue"
+        - types [array of strings, default null]: filter for log event types. ex: "created", "credited", "expired", "overdue", "paid"
         - ids [array of strings, default null]: array of IssuingInvoice ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -89,8 +94,8 @@ class Log extends Resource
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [Date or string, default null] date filter for objects created only before specified date.  ex: "2020-04-03"
-        - types [array of strings, default null]: filter for log event types. ex: "created", "paid", "canceled" or "overdue"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - types [array of strings, default null]: filter for log event types. ex: "created", "credited", "expired", "overdue", "paid"
         - ids [array of strings, default null]: array of IssuingInvoice ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     

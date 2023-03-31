@@ -8,6 +8,28 @@ use StarkCore\Utils\Resource;
 
 class BrcodePreview extends Resource
 {
+
+    public $accountNumber;
+    public $accountType;
+    public $amount;
+    public $amountType;
+    public $bankCode;
+    public $branchCode;
+    public $cashAmount;
+    public $cashierBankCode;
+    public $cashierType;
+    public $discountAmount;
+    public $fineAmount;
+    public $interestAmount;
+    public $keyId;
+    public $name;
+    public $nominalAmount;
+    public $reconciliationId;
+    public $reductionAmount;
+    public $scheduled;
+    public $status;
+    public $taxId;
+
     /**
     # BrcodePreview object
 
@@ -20,7 +42,7 @@ class BrcodePreview extends Resource
         - accountNumber [string]: Payment receiver account number. ex: "1234567"
         - accountType [string]: Payment receiver account type. ex: "checking"
         - amount [integer]: Value in cents that this payment is expecting to receive. If 0, any value is accepted. ex: 123 (= R$1,23)
-        - amountType [string]: amount type of the BR Code. If the amount type is "custom" the BR Code's amount can be changed by the sender at the moment of payment. Options: "fixed" or "custom"
+        - amountType [string]: Amount type of the BR Code. If the amount type is "custom" the BR Code's amount can be changed by the sender at the moment of payment. Options: "fixed" or "custom"
         - bankCode [string]: Payment receiver bank code. ex: "20018183"
         - branchCode [string]: Payment receiver branch code. ex: "0001"
         - cashAmount [integer]: Amount to be withdrawn from the cashier in cents. ex: 1000 (= R$ 10.00)
@@ -34,7 +56,7 @@ class BrcodePreview extends Resource
         - nominalAmount [integer]: Brcode emission amount, without fines, fees and discounts. ex: 1234 (= R$ 12.34)
         - reconciliationId [string]: Reconciliation ID linked to this payment. If the brcode is dynamic, the reconciliationId will have from 26 to 35 alphanumeric characters, ex: "cd65c78aeb6543eaaa0170f68bd741ee". If the brcode is static, the reconciliationId will have up to 25 alphanumeric characters "ah27s53agj6493hjds6836v49"
         - reductionAmount [integer]: Reduction value to discount from nominalAmount. ex: 1000
-        - scheduled [DateTime]: Payment datetime execution. 
+        - scheduled [DateTime]: Date of payment execution.
         - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
         - taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      */

@@ -8,10 +8,18 @@ use StarkCore\Utils\Resource;
 
 class IssuingProduct extends Resource
 {
+
+    public $network;
+    public $fundingType;
+    public $holderType;
+    public $code;
+    public $created;
+
     /**
     # IssuingProduct object
 
     The IssuingProduct object displays information of available card products registered to your Workspace.
+    They represent a group of cards that begin with the same numbers (id) and offer the same product to end customers.
 
     ## Attributes (return-only):
         - id [string]: unique card product number (BIN) registered within the card network. ex: "53810200"
@@ -37,7 +45,7 @@ class IssuingProduct extends Resource
     /**
     # Retrieve IssuingProducts
 
-    Receive a generator of available IssuingProduct objects registered to your workspace.
+    Receive an enumerator of IssuingProduct objects previously registered in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35

@@ -8,18 +8,22 @@ use StarkInfra\Utils\Rest;
 
 class Webhook extends Resource
 {
+
+    public $url;
+    public $subscriptions;
+
     /**
     # Webhook subscription object
     
-    A Webhook is used to subscribe to notification events on a user-selected endpoint.
+    A Webhook is used to subscribe to notification events on an user-selected endpoint.
     Currently, available services for subscription are credit-note, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-infraction, pix-chargeback
     
     ## Parameters (required):
         - url [string]: Url that will be notified when an event occurs.
         - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"]
     
-    ## Attributes:
-        - id [string, default null]: unique id returned when the webhook is created. ex: "5656565656565656"
+    ## Attributes (return-only):
+        - id [string]: unique id returned when the webhook is created. ex: "5656565656565656"
     */
     function __construct(array $params)
     {
@@ -37,8 +41,7 @@ class Webhook extends Resource
     Send a single Webhook subscription for creation in the Stark Infra API
     
     ## Parameters (required):
-        - url [string]: url to which notification events will be sent to. ex: "https://webhook.site/60e9c18e-4b5c-4369-bda1-ab5fcd8e1b29"
-        - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"]
+        - webhooks [Webhook object]: Webhook object to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if starkinfra.user was set before function call
@@ -46,9 +49,9 @@ class Webhook extends Resource
     ## Return:
         - Webhook object with updated attributes
     */
-    public static function create($webhooks, $user = null)
+    public static function create($webhook, $user = null)
     {
-        return Rest::postSingle($user, Webhook::resource(), $webhooks);
+        return Rest::postSingle($user, Webhook::resource(), $webhook);
     }
 
     /**

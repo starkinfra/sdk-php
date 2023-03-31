@@ -8,18 +8,31 @@ use StarkCore\Utils\SubResource;
 
 class PixDirector extends SubResource
 {
+
+    public $email;
+    public $name;
+    public $password;
+    public $phone;
+    public $taxId;
+    public $teamEmail;
+    public $teamPhones;
+    public $status;
+
     /**
     # PixDirector object
 
-    Pix Directors are used for registering Pix participants` emergency contact information at the Brazilian Central Bank.
-    This process is mandatory for all direct Pix participants.
+    Mandatory data that must be registered within the Central Bank for emergency contact purposes.
+    
+    When you initialize a PixDirector, the entity will not be automatically
+    created in the Stark Infra API. The 'create' function sends the objects
+    to the Stark Infra API and returns the list of created objects.
     
     ## Parameters (required):
-        - email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
         - name [string]: name of the PixDirector. ex: "Edward Stark".
-        - password [string]: password of the PixDirector. ex: "12345678"
-        - phone [string]: phone of the PixDirector. ex: "+551198989898"
         - taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
+        - phone [string]: phone of the PixDirector. ex: "+551198989898"
+        - email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
+        - password [string]: password of the PixDirector. ex: "12345678"
         - teamEmail [string]: team email. ex: "pix.team@company.com"
         - teamPhones [array of strings]: list of phones of the team. ex: ["+5511988889999", "+5511988889998"]
     
@@ -28,11 +41,11 @@ class PixDirector extends SubResource
     */
     function __construct(array $params)
     {
-        $this-> email = Checks::checkParam($params, "email");
         $this-> name = Checks::checkParam($params, "name");
-        $this-> password = Checks::checkParam($params, "password");
-        $this-> phone = Checks::checkParam($params, "phone");
         $this-> taxId = Checks::checkParam($params, "taxId");
+        $this-> phone = Checks::checkParam($params, "phone");
+        $this-> email = Checks::checkParam($params, "email");
+        $this-> password = Checks::checkParam($params, "password");
         $this-> teamEmail = Checks::checkParam($params, "teamEmail");
         $this-> teamPhones = Checks::checkParam($params, "teamPhones");
         $this-> status = Checks::checkParam($params, "status");

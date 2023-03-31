@@ -7,8 +7,12 @@ use StarkCore\Utils\SubResource;
 
 class Certificate extends SubResource
 {
+
+    public $content;
+
     /**
     # PixDomain\Certificate object
+    
     The Certificate object displays the certificate information from a specific domain.
     
     ## Attributes (return-only):

@@ -7,14 +7,18 @@ use StarkCore\Utils\SubResource;
 
 class Discount extends SubResource
 {
+
+    public $percentage;
+    public $due;
+
     /**
     # CreditNote\Invoice\Discount object
     
-    Used to define a discount in the Invoice.
+    Invoice discount information.
     
     ## Parameters (required):
-        - percentage [integer]: discount percentage that will be applied. ex: 2.5
-        - due [string]: Date after when the discount will be overdue in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
+        - percentage [float]: percentage of discount applied until specified due date. ex: 2.5
+        - due [string]: due datetime for the discount in UTC ISO format. ex: "2020-11-25T17:59:26.249976+00:00"
     */
     function __construct(array $params)
     {

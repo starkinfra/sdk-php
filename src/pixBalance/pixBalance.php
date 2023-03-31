@@ -8,6 +8,11 @@ use StarkCore\Utils\Resource;
 
 class PixBalance extends Resource
 {
+
+    public $amount;
+    public $currency;
+    public $updated;
+
     /**
     # PixBalance object
 
@@ -42,7 +47,7 @@ class PixBalance extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
-        - Balance object with updated attributes
+        - PixBalance object with updated attributes
      */
     public static function get($user = null)
     {

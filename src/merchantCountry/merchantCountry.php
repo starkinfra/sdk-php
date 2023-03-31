@@ -9,6 +9,12 @@ use StarkCore\Utils\SubResource;
 
 class MerchantCountry extends SubResource
 {
+
+    public $code;
+    public $name;
+    public $number;
+    public $shortCode;
+
     /**
     # MerchantCountry object
 
@@ -35,7 +41,7 @@ class MerchantCountry extends SubResource
     /**
     # Retrieve MerchantCategories
 
-    Receive an enumerator of MerchantCountry objects available in the Stark Infra API
+    Receive an enumerator of MerchantCountry objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - search [string, default null]: keyword to search for code, type, name or number. ex: "Brazil"

@@ -9,10 +9,21 @@ use StarkCore\Utils\StarkDate;
 
 class IssuingWithdrawal extends Resource
 {
+
+    public $amount;
+    public $externalId;
+    public $description;
+    public $tags;
+    public $transactionId;
+    public $issuingTransactionId;
+    public $created;
+    public $updated;
+
     /**
     # IssuingWithdrawal object
 
-    Displays the IssuingWithdrawal objects created to your Workspace.
+    The IssuingWithdrawal objects created in your Workspace return cash from your Issuing balance to your
+    Banking balance.
 
     ## Parameters (required):
         - amount [integer]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
@@ -20,7 +31,7 @@ class IssuingWithdrawal extends Resource
         - description [string]: IssuingWithdrawal description. ex: "sending money back"
 
     ## Parameters (optional):
-        - tags [array of strings, default null]: array of strings for tagging
+        - tags [array of strings, default null]: array of strings for tagging. ex: ["tony", "stark"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingWithdrawal is created. ex: "5656565656565656"
@@ -51,7 +62,7 @@ class IssuingWithdrawal extends Resource
     Send an IssuingWithdrawal object for creation in the Stark Infra API
 
     ## Parameters (required):
-        - withdrawal [IssuingWithdrawal object]: list of IssuingWithdrawal objects to be created in the API
+        - withdrawal [IssuingWithdrawal object]: IssuingWithdrawal objects to be created in the API
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -84,16 +95,16 @@ class IssuingWithdrawal extends Resource
     }
 
     /**
-    # Retrieve IssuingWithdrawal
+    # Retrieve IssuingWithdrawals
 
     Receive an enumerator of IssuingWithdrawal objects previously created in the Stark Infra API
 
     ## Parameters (optional):
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
-        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
+        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -114,9 +125,9 @@ class IssuingWithdrawal extends Resource
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
-        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
+        - externalIds [array of strings, default []]: external IDs. ex: ["5656565656565656", "4545454545454545"]
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     

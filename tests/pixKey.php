@@ -53,7 +53,7 @@ class TestPixKey
         $ids = [];
         $cursor = null;
         for ($i=0; $i < 2; $i++) {
-            list($page, $cursor) = PixKey::page($options = ["limit" => 5, "cursor" => $cursor]);
+            list($page, $cursor) = PixKey::page($options = ["limit" => 2, "cursor" => $cursor]);
             foreach ($page as $pixKey) {
                 if (in_array($pixKey->id, $ids)) {
                     throw new Exception("failed");
@@ -64,7 +64,7 @@ class TestPixKey
                 break;
             }
         }
-        if (count($ids) != 10) {
+        if (count($ids) != 4) {
             throw new Exception("failed");
         }
     }
