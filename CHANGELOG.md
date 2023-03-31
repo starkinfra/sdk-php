@@ -13,6 +13,27 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- CreditHolmes resource
+- CreditHolmes.Log resource
+- IndividualDocument resource
+- IndividualDocument.Log resource
+- IndividualIdentity resource
+- IndividualIdentity.Log resource
+- IssuingDesign resource
+- IssuingEmbossingRequest resource
+- IssuingEmbossingRequest.Log resource
+- IssuingRestock resource
+- IssuingRestock.Log resource
+- IssuingStock resource
+- IssuingStock.Log resource
+- pin parameter to update method in IssuingCard resource
+- productId attribute to IssuingPurchase resource
+- issuingTransactionId attribute to IssuingPurchase.Log
+### Changed
+- binId attribute to productId in IssuingCard resource
+### Removed
+- CreditNote.Signer sub-resource to CreditSigner sub-resource
 
 ## [0.5.2] - 2022-10-27
 ### Fixed

@@ -9,10 +9,34 @@ use StarkCore\Utils\StarkDate;
 
 class IssuingCard extends Resource
 {
+
+    public $holderName;
+    public $holderTaxId;
+    public $holderExternalId;
+    public $displayName;
+    public $rules;
+    public $productId;
+    public $tags;
+    public $streetLine1;
+    public $streetLine2;
+    public $district;
+    public $city;
+    public $stateCode;
+    public $zipCode;
+    public $holderId;
+    public $type;
+    public $status;
+    public $number;
+    public $securityCode;
+    public $expiration;
+    public $created;
+    public $updated;
+
     /**
     # IssuingCard object
 
-    The IssuingCard object displays the informations of Cards created to your Workspace.
+    The IssuingCard object displays the information of the cards created in your Workspace.
+    Sensitive information will only be returned when the "expand" parameter is used, to avoid security concerns.
 
     ## Parameters (required):
         - holderName [string]: card holder name. ex: "Tony Stark"
@@ -22,7 +46,7 @@ class IssuingCard extends Resource
     ## Parameters (optional):
         - displayName [string, default null]: card displayed name. ex: "ANTHONY STARK"
         - rules [array of IssuingRule, default []]: [EXPANDABLE] array of card spending rules.
-        - binId [string, default null]: BIN ID to which the card is bound. ex: "53810200"
+        - productId [string, default null]: card product ID to which the card is bound. ex: "53810200"
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
         - streetLine1 [string, default sub-issuer street line 1]: card holder main address. ex: "Av. Paulista, 200"
         - streetLine2 [string, default sub-issuer street line 2]: card holder address complement. ex: "Apto. 123"
@@ -51,7 +75,7 @@ class IssuingCard extends Resource
         $this->holderExternalId = Checks::checkParam($params, "holderExternalId");
         $this->displayName = Checks::checkParam($params, "displayName");
         $this->rules = IssuingRule::parseRules(Checks::checkParam($params, "rules"));
-        $this->binId = Checks::checkParam($params, "binId");
+        $this->productId = Checks::checkParam($params, "productId");
         $this->tags = Checks::checkParam($params, "tags");
         $this->streetLine1 = Checks::checkParam($params, "streetLine1");
         $this->streetLine2 = Checks::checkParam($params, "streetLine2");
@@ -101,14 +125,14 @@ class IssuingCard extends Resource
     Receive an enumerator of IssuingCard objects previously created in the Stark Infra API
 
     ## Parameters (optional):
+        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - types [string, default null]: card type. ex: "virtual"
         - holderIds [array of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
-        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - expand [array of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -130,14 +154,14 @@ class IssuingCard extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
+        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
+        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"  
+        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - types [string, default null]: card type. ex: "virtual"
         - holderIds [array of strings]: card holder IDs. ex: ["5656565656565656", "4545454545454545"]
-        - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"  
-        - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - expand [array of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
@@ -184,6 +208,7 @@ class IssuingCard extends Resource
 
     ## Parameters (optional):
         - status [string]: You may block the IssuingCard by passing 'blocked' in the status
+        - pin [string, default null]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
         - displayName [string, default null]: card displayed name
         - rules [array of dictionaries, default null]: array of dictionaries with "amount": int, "currencyCode": string, "id": string, "interval": string, "name": string pairs.
         - tags [array of strings]: array of strings for tagging

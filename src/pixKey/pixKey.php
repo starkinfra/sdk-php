@@ -9,6 +9,22 @@ use StarkCore\Utils\StarkDate;
 
 class PixKey extends Resource
 {
+
+    public $accountCreated;
+    public $accountNumber;
+    public $accountType;
+    public $branchCode;
+    public $name;
+    public $taxId;
+    public $tags;
+    public $owned;
+    public $ownerType;
+    public $status;
+    public $bankCode;
+    public $bankName;
+    public $type;
+    public $created;
+
     /**
     # PixKey object
 
@@ -66,7 +82,7 @@ class PixKey extends Resource
 
     Create a PixKey linked to a specific account in the Stark Infra API
     
-    ## Parameters (optional):
+    ## Parameters (required):
         - key [PixKey object]: PixKey object to be created in the API.
     
     ## Parameters (optional):
@@ -130,7 +146,7 @@ class PixKey extends Resource
     }
 
     /**
-    # Retrieve PixKeys
+    # Retrieve paged PixKeys
 
     Receive an enumerator of PixKey objects previously created in the Stark Infra API
     
@@ -165,14 +181,14 @@ class PixKey extends Resource
     ## Parameters (required):
         - id [string]: PixKey id. ex: '5656565656565656'
         - reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
+
+    ## Parameters (optional):
         - params [dictionary of optional parameters]:
             - accountCreated [Date, DateTime or String]: opening Date or DateTime for the account to be linked. ex: "2020-03-10 10:30:00.000"
             - accountNumber [string, default null]: number of the account to be linked. ex: "76543".
             - accountType [string, default null]: type of the account to be linked. Options: "checking", "savings", "salary" or "payment".
             - branchCode [string, default null]: branch code of the account to be linked. ex: 1234".
             - name [string, default null]: holder's name of the account to be linked. ex: "Jamie Lannister".
-
-    ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
 
     ## Return:

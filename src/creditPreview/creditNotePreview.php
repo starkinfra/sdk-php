@@ -8,12 +8,29 @@ use StarkInfra\CreditNote\Invoice;
 
 class CreditNotePreview extends SubResource
 {
+
+    public $type;
+    public $nominalAmount;
+    public $scheduled;
+    public $taxId;
+    public $invoices;
+    public $nominalInterest;
+    public $initialDue;
+    public $count;
+    public $rebateAmount;
+    public $amount;
+    public $initialAmount;
+    public $interest;
+    public $taxAmount;
+    public $interval;
+
     /**
     # CreditNotePreview object
 
-    A CreditNotePreview is used to preview a CCB contract between the borrower 
-    and lender with a specific table type.
-    When you initialize a CreditNotePreview, the entity will not be automatically sent to the Stark Infra API.
+    A CreditNotePreview is used to preview a CCB contract between the borrower and lender with a specific table type.
+    When you initialize a CreditNotePreview, the entity will be automatically sent to the Stark Infra API.
+    The 'create' function sends the objects
+    to the Stark Infra API and returns the list of preview data.
 
     ## Parameters (required):
         - type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"

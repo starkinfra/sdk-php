@@ -9,6 +9,21 @@ use StarkCore\Utils\StarkDate;
 
 class PixInfraction extends Resource
 {
+
+    public $referenceId;
+    public $type;
+    public $description;
+    public $tags;
+    public $creditedBankCode;
+    public $flow;
+    public $analysis;
+    public $debitedBankCode;
+    public $reportedBy;
+    public $result;
+    public $status;
+    public $created;
+    public $updated;
+
     /**
     # PixInfraction object
 
@@ -36,7 +51,7 @@ class PixInfraction extends Resource
         - result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
         - status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixInfraction. 
-        - updated [DateTime]: update datetime for the PixInfraction. 
+        - updated [DateTime]: latest update datetime for the PixInfraction. 
     */
     function __construct(array $params)
     {
@@ -62,16 +77,16 @@ class PixInfraction extends Resource
     /**
     # Create PixInfraction objects
 
-    Create a PixInfraction in the Stark Infra API
+    Create PixInfraction objects in the Stark Infra API
     
     ## Parameters (optional):
-        - infraction [PixInfraction object]: PixInfraction object to be created in the API.
+        - infractions [array of PixInfraction objects]: array of PixInfraction objects to be created in the API.
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
-        - list of PixInfraction objects with updated attributes
+        - array of PixInfraction objects with updated attributes
     */
     public static function create($infractions, $user=null)
     {
@@ -82,7 +97,7 @@ class PixInfraction extends Resource
     # Retrieve a PixInfraction object
 
     Retrieve the PixInfraction object linked to your Workspace in the Stark Infra API using its id.
-   
+
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656".
     
@@ -166,6 +181,7 @@ class PixInfraction extends Resource
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
             - analysis [string, default null]: analysis that led to the result.
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - PixInfraction with updated attributes

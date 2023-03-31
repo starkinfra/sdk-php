@@ -11,6 +11,37 @@ use StarkInfra\CreditNote\Invoice;
 
 class CreditNote extends Resource
 {
+
+    public $templateId;
+    public $name;
+    public $taxId;
+    public $nominalAmount;
+    public $scheduled;
+    public $invoices;
+    public $payment;
+    public $signers;
+    public $externalId;
+    public $streetLine1;
+    public $streetLine2;
+    public $district;
+    public $city;
+    public $stateCode;
+    public $zipCode;
+    public $paymentType;
+    public $rebateAmount;
+    public $tags;
+    public $expiration;
+    public $amount;
+    public $documentId;
+    public $status;
+    public $transactionsIds;
+    public $workspaceId;
+    public $taxAmount;
+    public $nominalInterest;
+    public $interest;
+    public $created;
+    public $updated;
+
     /**
     # CreditNote object
 
@@ -140,7 +171,7 @@ class CreditNote extends Resource
     }
 
     /**
-    # Create Credit Note
+    # Create CreditNotes
 
     Send an array of Credit Note objects for creation in the Stark Infra API
 
@@ -161,7 +192,7 @@ class CreditNote extends Resource
     /**
     # Retrieve a specific Credit Note
 
-    Receive a single Credit Note object previously created in the Stark Infra API by passing its id
+    Receive a single CreditNote object previously created in the Stark Infra API by passing its id
 
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
@@ -178,7 +209,7 @@ class CreditNote extends Resource
     }
 
     /**
-    # Retrieve Credit Notes
+    # Retrieve CreditNotes
 
     Receive an enumerator of CreditNote objects previously created in the Stark Infra API.
     Use this function instead of page if you want to stream the objects without worrying about cursors and pagination.
@@ -232,9 +263,9 @@ class CreditNote extends Resource
     }
 
     /**
-    # Cancel a Credit Note entity
+    # Cancel a CreditNote entity
 
-    Cancel a Credit Note entity previously created in the Stark Infra API
+    Cancel a CreditNote entity previously created in the Stark Infra API
 
     ## Parameters (required):
         - id [string]: Credit Note unique id. ex: "5656565656565656"
@@ -243,7 +274,7 @@ class CreditNote extends Resource
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:
-        - canceled Credit Note object
+        - canceled CreditNote object
      */
     public static function cancel($id, $user = null)
     {

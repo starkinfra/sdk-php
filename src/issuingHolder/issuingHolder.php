@@ -9,10 +9,20 @@ use StarkCore\Utils\StarkDate;
 
 class IssuingHolder extends Resource
 {
+
+    public $name;
+    public $taxId;
+    public $externalId;
+    public $rules;
+    public $tags;
+    public $status;
+    public $created;
+    public $updated;
+
     /**
     # IssuingHolder object
 
-    The IssuingHolder object displays the informations of Cards created to your Workspace.
+    The IssuingHolder describes a card holder that may group several cards.
 
     ## Parameters (required):
         - name [string]: card holder name. ex: "Tony Stark"
@@ -25,7 +35,7 @@ class IssuingHolder extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingHolder is created. ex: "5656565656565656"
-        - status [string]: current IssuingHolder status. ex: "canceled" or "active"
+        - status [string]: current IssuingHolder status. ex: "active", "blocked", "canceled"
         - created [DateTime]: creation datetime for the IssuingHolder. 
         - updated [DateTime]: latest update datetime for the IssuingHolder. 
      */
@@ -67,7 +77,7 @@ class IssuingHolder extends Resource
     }
 
     /**
-    # Retrieve a specific Holder
+    # Retrieve a specific IssuingHolder
 
     Receive a single IssuingHolder object previously created in the Stark Infra API by its id
 
@@ -98,8 +108,8 @@ class IssuingHolder extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. 
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
-        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - expand [array of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -142,7 +152,7 @@ class IssuingHolder extends Resource
     /**
     # Update IssuingHolder entity
 
-    Update IssuingHolder by passing id.
+    Update an IssuingHolder by passing id, if it hasn't been paid yet.
 
     ## Parameters (required):
         - id [array of strings]: IssuingHolder unique ids. ex: "5656565656565656"

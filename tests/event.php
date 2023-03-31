@@ -35,7 +35,6 @@ class TestEvent
     public function queryAttempts()
     {
         $events = iterator_to_array(Event::query(["limit" => 5, "isDelivered" => false]));
-
         foreach ($events as $event) {
             $attempts = iterator_to_array(Attempt::query(["eventIds" => $event->id, "limit" => 1]));
             if (count($attempts) == 0)

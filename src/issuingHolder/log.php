@@ -11,6 +11,11 @@ use StarkInfra\IssuingHolder;
 
 class Log extends Resource
 {
+
+    public $holder;
+    public $type;
+    public $created;
+
     /**
     # IssuingHolder\Log object
 
@@ -19,10 +24,10 @@ class Log extends Resource
     user, but it can be retrieved to check additional information
     on the IssuingHolder.
 
-    ## Attributes (return-only)::
+    ## Attributes (return-only):
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
         - holder [IssuingHolder]: IssuingHolder entity to which the log refers to.
-        - type [string]: type of the IssuingHolder event which triggered the log creation. ex: "created", "paid", "canceled" or "overdue"
+        - type [string]: type of the IssuingHolder event which triggered the log creation. ex: "blocked", "canceled", "created", "unblocked", "updated"
         - created [DateTime]: creation datetime for the log. 
      */
     function __construct(array $params)
@@ -66,6 +71,7 @@ class Log extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter for log event types. ex: "created", "paid", "canceled" or "overdue"
         - holderIds [array of strings, default null]: array of IssuingHolder ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -91,6 +97,7 @@ class Log extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - types [array of strings, default null]: filter for log event types. ex: "created", "paid", "canceled" or "overdue"
         - holderIds [array of strings, default null]: array of IssuingHolder ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
     ## Return:

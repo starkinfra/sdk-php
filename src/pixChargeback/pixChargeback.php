@@ -9,12 +9,30 @@ use StarkCore\Utils\StarkDate;
 
 class PixChargeback extends Resource
 {
+
+    public $amount;
+    public $referenceId;
+    public $reason;
+    public $description;
+    public $tags;
+    public $analysis;
+    public $senderBankCode;
+    public $receiverBankCode;
+    public $rejectionReason;
+    public $reversalReferenceId;
+    public $result;
+    public $flow;
+    public $status;
+    public $created;
+    public $updated;
+
     /**
     # PixChargeback object
 
     A PixChargeback can be created when fraud is detected on a transaction or a system malfunction
     results in an erroneous transaction.
     It notifies another participant of your request to reverse the payment they have received.
+
     When you initialize a PixChargeback, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the created object.
@@ -39,7 +57,7 @@ class PixChargeback extends Resource
         - flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixChargeback. 
-        - updated [DateTime]: update datetime for the PixChargeback. 
+        - updated [DateTime]: latest update datetime for the PixChargeback. 
      */
     function __construct(array $params)
     {

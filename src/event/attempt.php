@@ -8,6 +8,13 @@ use StarkCore\Utils\Resource;
 
 class Attempt extends Resource
 {
+
+    public $code;
+    public $message;
+    public $webhookId;
+    public $eventId;
+    public $created;
+
     /**
     # Event/Attempt object
     
@@ -57,7 +64,7 @@ class Attempt extends Resource
     /**
     # Retrieve Event/Attempts
 
-    Receive a generator of Event/Attempt objects previously created in the Stark Infra API
+    Receive an enumerator of Event/Attempt objects previously created in the Stark Infra API
     
     ## Parameters (optional):
     - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35

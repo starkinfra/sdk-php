@@ -9,6 +9,10 @@ use StarkCore\Utils\SubResource;
 
 class CreditPreview extends SubResource
 {
+
+    public $credit;
+    public $type;
+
     /**
     # CreditPreview object
 
@@ -35,7 +39,7 @@ class CreditPreview extends SubResource
     Send a list of CreditPreview objects for processing in the Stark Infra API
 
     ## Parameters (required):
-        - previews [array of CreditPreview objects]: CreditPreview objects to be created in the API.
+        - previews [array of CreditPreview objects]: array of CreditPreview objects to be created in the API.
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call

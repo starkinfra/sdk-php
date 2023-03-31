@@ -7,6 +7,11 @@ use StarkCore\Utils\Resource;
 
 class CreditSigner extends Resource
 {
+
+    public $name;
+    public $contact;
+    public $method;
+
     /**
     # CreditSigner object
 

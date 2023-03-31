@@ -8,22 +8,34 @@ use StarkCore\Utils\Resource;
 
 class IssuingRule extends Resource
 {
+
+    public $name;
+    public $interval;
+    public $amount;
+    public $currencyCode;
+    public $counterAmount;
+    public $currencyName;
+    public $currencySymbol;
+    public $categories;
+    public $countries;
+    public $methods;
+
     /**
     # IssuingRule object
 
-    Displays the IssuingRule objects created to your Workspace.
+    The IssuingRule object displays the spending rules of IssuingCards and IssuingHolders created in your Workspace.
 
     ## Parameters (required):
         - name [string]: rule name. ex: "Travel" or "Food"
-        - amount [string]: amount to be used in informed interval. ex: 200000 (= R$ 2000.00)
+        - amount [string]: maximum amount that can be spent in the informed interval. ex: 200000 (= R$ 2000.00)
         
-        ## Attributes (return-only):
+    ## Parameters (optional):
         - id [string, default null]: unique id returned when Rule is created. ex: "5656565656565656"
         - interval [string, default "lifetime"]: interval to reset the counters of the rule. ex: "instant", "day", "week", "month", "year" or "lifetime"
         - currencyCode [string, default "BRL"]: code of the currency used by the rule. ex: "BRL" or "USD"
-        - categories [array of strings, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
-        - countries [array of strings, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
-        - methods [array of strings, default []]: methods accepted by the rule. ex: ["contactless", "token"]
+        - categories [array of MerchantCategories objects, default []]: merchant categories accepted by the rule. ex: ["eatingPlacesRestaurants", "travelAgenciesTourOperators"]
+        - countries [array of MerchantCountries objects, default []]: countries accepted by the rule. ex: ["BRA", "USA"]
+        - methods [array of CardMethods objects, default []]: card purchase methods accepted by the rule. ex: ["contactless", "token"]
 
     ## Attributes (expanded return-only):
         - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)

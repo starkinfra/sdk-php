@@ -9,6 +9,11 @@ use StarkCore\Utils\SubResource;
 
 class CardMethod extends SubResource
 {
+
+    public $code;
+    public $name;
+    public $number;
+
     /**
     # CardMethod object
 
@@ -36,7 +41,7 @@ class CardMethod extends SubResource
     Receive an enumerator of CardMethod objects available in the Stark Infra API
 
     ## Parameters (optional):
-        - search [string, default null]: keyword to search for code, type, name or number. ex: "token"
+        - search [string, default null]: keyword to search for code, name, number or shortCode. ex: "token"
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:

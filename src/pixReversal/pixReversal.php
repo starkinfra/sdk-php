@@ -11,8 +11,24 @@ use StarkCore\Utils\StarkDate;
 
 class PixReversal extends Resource
 {
+
+    public $amount;
+    public $endToEndId;
+    public $externalId;
+    public $reason;
+    public $tags;
+    public $returnId;
+    public $fee;
+    public $status;
+    public $flow;
+    public $created;
+    public $updated;
+
     /**
     # PixReversal object
+
+    PixReversals are instant payments used to revert PixRequests. You can only
+    revert inbound PixRequests.
 
     When you initialize a PixReversal, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
@@ -31,7 +47,7 @@ class PixReversal extends Resource
         - id [string]: unique id returned when the PixReversal is created. ex: "5656565656565656".
         - returnId [string]: central bank's unique reversal transaction ID. ex: "D20018183202202030109X3OoBHG74wo".
         - fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
-        - status [string]: current PixReversal status. ex: "registered" or "paid"
+        - status [string]: current PixReversal status. ex: "created", "processing", "success", "failed"
         - flow [string]: direction of money flow. ex: "in" or "out"
         - created [DateTime]: creation datetime for the PixReversal. 
         - updated [DateTime]: latest update datetime for the PixReversal. 
@@ -62,6 +78,7 @@ class PixReversal extends Resource
 
     ## Parameters (required):
         - reversals [array of PixReversal objects]: array of PixReversal objects to be created in the API.
+    
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -98,15 +115,14 @@ class PixReversal extends Resource
     Receive an enumerator of PixReversal objects previously created in the Stark Infra API
 
     ## Parameters (optional):
-        - fields [array of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
-        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - returnIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
         - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -127,15 +143,14 @@ class PixReversal extends Resource
 
     ## Parameters (optional):
         - cursor [string, default null]: cursor returned on the previous page function call
-        - fields [array of strings, default null]: parameters to be retrieved from PixReversal objects. ex: ["amount", "id"]
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
         - status [string, default null]: filter for status of retrieved objects. ex: "paid" or "registered"
-        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - returnIds [array of strings, default null]: central bank's unique transaction IDs. ex: ["E79457883202101262140HHX553UPqeq", "E79457883202101262140HHX553UPxzx"]
         - externalIds [array of strings, default null]: url safe strings that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversals that repeats amount and receiver information on the same date. ex: ["my-internal-id-123456", "my-internal-id-654321"]
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -150,12 +165,12 @@ class PixReversal extends Resource
     }
 
     /**
-    # Parse PixReversals
+    # Create a single verified PixReversal object from a content string
 
-    Create a single PixReversal object from a content string received from a POST 
-    request to your registered URL.
-    If the provided digital signature does not check out with the Stark public key, a
-    stark.error.InvalidSignatureError will be raised.
+    Create a single PixReversal object from a content string received from a handler listening at the reversal url.
+
+    If the provided digital signature does not check out with the StarkInfra public key, a
+    StarkInfra\Error\InvalidSignatureError will be raised.
 
     ## Parameters (required):
         - content [string]: response content from request received at user endpoint (not parsed)
@@ -179,11 +194,7 @@ class PixReversal extends Resource
     }
 
     /**
-    # PixReversal authorization response
-
-    Helps you respond to a PixReversal authorization request.
-    Authorization requests will be posted at your registered endpoint whenever 
-    inbound PixReversals are received.
+    # Helps you respond to a PixReversal authorization
 
     ## Parameters (required):
         - status [string]: response to the authorization request. ex: "approved" or "denied"
@@ -192,7 +203,7 @@ class PixReversal extends Resource
         - reason [string, default null]: denial reason. Required if the status is "denied". Options: "invalidAccountNumber", "blockedAccount", "accountClosed", "invalidAccountType", "invalidTransactionType", "taxIdMismatch", "invalidTaxId", "orderRejected", "reversalTimeExpired", "settlementFailed"
 
     ## Return:
-        - Dumped JSON string that must be returned to us on the PixReversal authorization response
+        - Dumped JSON string that must be returned to us
      */
     public static function response($params)
     {
