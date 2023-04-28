@@ -26,6 +26,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Holders](#create-issuingholders): Manage card holders
         - [Cards](#create-issuingcards): Create virtual and/or physical cards
         - [Design](#query-issuingdesigns): View your current card or package designs
+        - [EmbossingKit](#query-issuingembossingkits): View your current embossing kits
         - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
         - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
@@ -735,8 +736,7 @@ use StarkInfra\IssuingEmbossingRequest;
 
 $requests = IssuingEmbossingRequest::create([
     new IssuingEmbossingRequest([
-        "cardDesignId" => "5648359658356736", 
-        "envelopeDesignId" => "5747368922185728", 
+        "kitId" => "5648359658356736", 
         "cardId" => "5714424132272128", 
         "displayName1" => "Antonio Stark", 
         "shippingCity" => "Sao Paulo",
