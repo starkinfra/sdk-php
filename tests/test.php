@@ -38,6 +38,7 @@ include_once("issuingBalance.php");
 include_once("issuingCard.php");
 include_once("issuingCardLog.php");
 include_once("issuingDesign.php");
+include_once("issuingEmbossingKit.php");
 include_once("issuingEmbossingRequest.php");
 include_once("issuingEmbossingRequestLog.php");
 include_once("issuingHolder.php");

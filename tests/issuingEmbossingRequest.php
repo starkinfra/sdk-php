@@ -3,7 +3,9 @@
 namespace Test\IssuingEmbossingRequest;
 use \Exception;
 use StarkInfra\IssuingCard;
+use StarkInfra\IssuingEmbossingKit;
 use StarkInfra\IssuingHolder;
+use StarkInfra\IssuingProduct;
 use StarkInfra\IssuingEmbossingRequest;
 
 
@@ -55,8 +57,20 @@ class TestIssuingEmbossingRequest
 
     public function exampleEmbossingRequest()
     {
+        $productId = "";
 
-        $holder = iterator_to_array(IssuingHolder::query(["limit" => 1]))[0];
+        foreach (IssuingProduct::query() as $product) {
+            if($product->holderType == "individual")
+                $productId = $product->id;
+        }
+
+        $holder = IssuingHolder::create([
+            new IssuingHolder([
+                "name" => "Holder Test",
+                "taxId" => "012.345.678-90",
+                "externalId" => strval(random_int(1, 999999))
+            ])
+        ])[0];
 
         $cards = [];
         $cardToCreate = new IssuingCard([
@@ -64,16 +78,18 @@ class TestIssuingEmbossingRequest
             "holderTaxId" => $holder->taxId,
             "holderExternalId" => $holder->externalId,
             "type" => "physical",
+            "productId" => $productId,
         ]);
         array_push($cards, $cardToCreate);
 
         $card = IssuingCard::create($cards)[0];
 
+        $kitId = iterator_to_array(IssuingEmbossingKit::query(["limit" => 1]))[0]->id;
+
         $params = [
             "cardId" => $card->id, 
-            "cardDesignId" => "5653820038184960", 
+            "kitId" => $kitId,
             "displayName1" => "teste", 
-            "envelopeDesignId" => "5674429136764928", 
             "shippingCity" => "Sao Paulo", 
             "shippingCountryCode" => "BRA", 
             "shippingDistrict" => "Bela Vista", 
@@ -83,7 +99,7 @@ class TestIssuingEmbossingRequest
             "shippingStreetLine2" => "teste", 
             "shippingTrackingNumber" => "teste", 
             "shippingZipCode" => "12345-678",
-            "embosserId" => "5634161670881280"
+            "embosserId" => "5746980898734080"
         ];
         return new IssuingEmbossingRequest($params);
     }

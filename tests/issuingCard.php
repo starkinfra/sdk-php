@@ -4,7 +4,8 @@ namespace Test\IssuingCard;
 use \Exception;
 use Test\Utils\Rule;
 use StarkInfra\IssuingCard;
-
+use StarkInfra\IssuingHolder;
+use StarkInfra\IssuingProduct;
 
 class TestIssuingCard
 {
@@ -85,12 +86,31 @@ class TestIssuingCard
 
     public static function generateExampleCardsJson($n=1)
     {
+
+        $productId = "";
+
+        foreach (IssuingProduct::query() as $product) {
+            if($product->holderType == "individual")
+                $productId = $product->id;
+        }
+
+        $holder = IssuingHolder::create([
+            new IssuingHolder([
+                "name" => "Holder Test",
+                "taxId" => "012.345.678-90",
+                "externalId" => strval(random_int(1, 999999)),
+                "tags" => ["Traveler Employee"],
+                "rules" => Rule::generateExampleRulesJson()
+            ])
+        ])[0];
+
         $cards = [];
         foreach (range(1, $n) as $index) {
             $card = new IssuingCard([
-                "holderName" => "Jamie Lannister",
-                "holderTaxId" => "20.018.183/0001-80",
-                "holderExternalId" => strval(rand(0, 9999999999999)),
+                "holderName" => $holder->name,
+                "holderTaxId" => $holder->taxId,
+                "holderExternalId" => $holder->externalId,
+                "productId" => $productId,
                 "rules" => Rule::generateExampleRulesJson()
             ]);
             array_push($cards, $card);

@@ -11,8 +11,7 @@ class IssuingEmbossingRequest extends Resource
 {
 
     public $cardId;
-    public $cardDesignId;
-    public $envelopeDesignId;
+    public $kitId;
     public $displayName1;
     public $shippingCity;
     public $shippingCountryCode;
@@ -40,8 +39,7 @@ class IssuingEmbossingRequest extends Resource
 
     ## Parameters (required):
         - cardId [string]: Id of the IssuingCard to be embossed. ex "5656565656565656"
-        - cardDesignId [string]: Card IssuingDesign id. ex "5656565656565656"
-        - envelopeDesignId [string]: Envelope IssuingDesign id. ex "5656565656565656"
+        - kitId [string]: card embossing kit id. ex "5656565656565656"
         - displayName1 [string]: Card displayed name. ex: "ANTHONY STARK"
         - shippingCity [string]: Shipping city. ex: "NEW YORK"
         - shippingCountryCode [string]: Shipping country code. ex: "US"
@@ -72,8 +70,7 @@ class IssuingEmbossingRequest extends Resource
         parent::__construct($params);
 
         $this->cardId = Checks::checkParam($params, "cardId");
-        $this->cardDesignId = Checks::checkParam($params, "cardDesignId");
-        $this->envelopeDesignId = Checks::checkParam($params, "envelopeDesignId");
+        $this->kitId = Checks::checkParam($params, "kitId");
         $this->displayName1 = Checks::checkParam($params, "displayName1");
         $this->shippingCity = Checks::checkParam($params, "shippingCity");
         $this->shippingCountryCode = Checks::checkParam($params, "shippingCountryCode");

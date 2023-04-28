@@ -2,6 +2,7 @@
 
 namespace StarkInfra;
 use StarkInfra\Utils\Rest;
+use StarkCore\Utils\API;
 use StarkCore\Utils\Checks;
 use StarkCore\Utils\Resource;
 
@@ -39,6 +40,27 @@ class IssuingDesign extends Resource
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 
         Checks::checkParams($params);
+    }
+
+    public static function parseDesigns($designs) {
+        if ($designs == null) {
+            return null;
+        }
+        $parsedDesigns = [];
+        foreach($designs as $design) {
+            if($design instanceof IssuingDesign) {
+                array_push($parsedDesigns, $design);
+                continue;
+            }
+            $parsedDesign = function ($array) {
+                $designMaker = function ($array) {
+                    return new IssuingDesign($array);
+                };
+                return API::fromApiJson($designMaker, $array);
+            };
+            array_push($parsedDesigns, $parsedDesign($design));
+        }    
+        return $parsedDesigns;
     }
 
     /**
