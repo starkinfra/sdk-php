@@ -16,6 +16,9 @@ class TestStaticBrcode
         if (is_null($brcode->uuid)) {
             throw new Exception("failed");
         }
+        if (is_null($brcode->cashierBankCode)) {
+            throw new Exception("failed");
+        }
     }
 
     public function queryAndGet()
@@ -100,6 +103,7 @@ class TestStaticBrcode
             "keyId" => ['AryaStark', 'JamieLannister', 'NedStark'][$rand] . "@hotmail.com" ,
             "city" => ['Sao Paulo', 'Rio de Janeiro'][rand(0, 1)],
             "amount" => [10000, 20000, 500000][rand(0, 2)],
+            "cashierBankCode" => "20018183",
             "reconciliationId" => strval(mt_rand(0, 999999999999)),
         ];
         return new StaticBrcode($params);

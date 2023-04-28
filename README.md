@@ -574,6 +574,35 @@ $design = IssuingDesign::get("5155165527080960");
 print_r($design);
 ```
 
+### Query IssuingEmbossingKits
+
+You can get a list of created embossing kits given some filters.
+
+```php
+use StarkInfra\IssuingEmbossingKit;
+
+$kits = IssuingEmbossingKit::query([
+    "after" => "2022-11-01",
+    "before" => "2022-12-01"
+]);
+
+foreach ($kits as $kit) {
+    print_r($kit);
+}
+```
+
+### Get an IssuingEmbossingKit
+
+After its creation, information on an embossing kit may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingEmbossingKit;
+
+$kit = IssuingEmbossingKit::get("5155165527080960");
+
+print_r($kit);
+```
+
 ### Query IssuingStocks
 
 You can get a list of available stocks given some filters.
