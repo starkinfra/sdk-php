@@ -1,6 +1,6 @@
 {
     "name": "starkinfra/sdk",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "type": "library",
     "description": "SDK to facilitate PHP integrations with the Stark Infra API",
     "homepage": "https://github.com/starkinfra/sdk-php",
