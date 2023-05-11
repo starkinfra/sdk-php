@@ -2187,8 +2187,14 @@ You can create BrcodePreviews to preview BR Codes before paying them.
 use StarkInfra\BrcodePreview;
 
 $previews = BrcodePreview::create([
-    new BrcodePreview(["id" => "00020126420014br.gov.bcb.pix0120nedstark@hotmail.com52040000530398654075000.005802BR5909Ned Stark6014Rio de Janeiro621605126674869738606304FF71"]),
-    new BrcodePreview(["id" => "00020126430014br.gov.bcb.pix0121aryastark@hotmail.com5204000053039865406100.005802BR5910Arya Stark6014Rio de Janeiro6216051262678188104863042BA4"])
+    new BrcodePreview([
+        "id" => "00020126420014br.gov.bcb.pix0120nedstark@hotmail.com52040000530398654075000.005802BR5909Ned Stark6014Rio de Janeiro621605126674869738606304FF71",
+        "payerId" => "123.456.780-01"
+    ]),
+    new BrcodePreview([
+        "id" => "00020126430014br.gov.bcb.pix0121aryastark@hotmail.com5204000053039865406100.005802BR5910Arya Stark6014Rio de Janeiro6216051262678188104863042BA4",
+        "payerId" => "123.456.780-01"
+    ])
 ]);
 
 foreach ($previews as $preview) {

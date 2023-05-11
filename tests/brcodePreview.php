@@ -23,10 +23,10 @@ class TestBrcodePreview
         }
 
         $previews = BrcodePreview::create([
-            new BrcodePreview(["id" => $brcodeIdList[0]]),
-            new BrcodePreview(["id" => $brcodeIdList[1]]),
-            new BrcodePreview(["id" => $brcodeIdList[2]]),
-            new BrcodePreview(["id" => $brcodeIdList[3]])
+            new BrcodePreview(["id" => $brcodeIdList[0], "payerId" => "20.018.183/0001-80"]),
+            new BrcodePreview(["id" => $brcodeIdList[1], "payerId" => "20.018.183/0001-80"]),
+            new BrcodePreview(["id" => $brcodeIdList[2], "payerId" => "20.018.183/0001-80"]),
+            new BrcodePreview(["id" => $brcodeIdList[3], "payerId" => "20.018.183/0001-80"]),
         ]);
 
         if (count($previews) != 4) {

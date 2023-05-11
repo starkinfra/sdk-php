@@ -51,33 +51,33 @@ class CreditNote extends Resource
     to the Stark Infra API and returns the list of created objects.
 
     ## Parameters (required):
-        - templateId [string]: ID of the contract template on which the credit note will be based. ex: templateId="0123456789101112"
-        - name [string]: credit receiver's full name. ex: name="Edward Stark"
+        - templateId [string]: ID of the contract template on which the credit note will be based. ex: "0123456789101112"
+        - name [string]: credit receiver's full name. ex: "Edward Stark"
         - taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
-        - nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
         - scheduled [Date or string]: date of transfer execution. ex: "2020-03-10"
-        - invoices [array of Invoice objects or dictionaries]: list of Invoices to be created and sent to the credit receiver. ex: invoices=[Invoice(), Invoice()]
-        - payment [Transfer object or dictionary]: payment to be created and sent to the credit receiver. ex: payment=CreditNote\Transfer()
-        - signers [array of CreditSigner objects or dictionaries]: signers contain the name and email of the signer and the method of delivery. ex: signers=[{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
-        - externalId [string]: url safe string that must be unique among all your CreditNotes. ex: externalId="my-internal-id-123456"
+        - invoices [array of Invoice objects or dictionaries]: list of Invoices to be created and sent to the credit receiver. ex: [Invoice(), Invoice()]
+        - payment [Transfer object or dictionary]: payment to be created and sent to the credit receiver. ex: CreditNote\Transfer()
+        - signers [array of CreditSigner objects or dictionaries]: signers contain the name and email of the signer and the method of delivery. ex: [{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+        - externalId [string]: url safe string that must be unique among all your CreditNotes. ex: "my-internal-id-123456"
         - streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
         - streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
         - district [string]: credit receiver address district / neighbourhood. ex: "Bela Vista"
         - city [string]: credit receiver address city. ex: "Rio de Janeiro"
         - stateCode [string]: credit receiver address state. ex: "GO"
         - zipCode [string]: credit receiver address zip code. ex: "01311-200"
-
+        
     ## Parameters (conditionally required):
         - paymentType [string]: payment type, inferred from the payment parameter if it is not a dictionary. ex: "transfer"
+        - nominalAmount [integer]: CreditNote value in cents. The nominal_amount parameter is required when amount is not sent. ex: 1234 (= R$ 12.34)
+        - amount [integer]: Amount in cents transferred to the credit receiver, before deductions. The amount parameter is required when nominal_amount is not sent. ex: 1234 (= R$ 12.34)
         
     ## Parameters (optional):
-        - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
-        - tags [array of strings, default []]: list of strings for reference when searching for CreditNotes. ex: tags=["employees", "monthly"]
+        - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
+        - tags [array of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
         - expiration [DateTinterval or integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration date.
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
-        - amount [integer]: CreditNote value in cents. ex: 1234 (= R$ 12.34)
         - documentId [string]: ID of the signed document to execute this CreditNote. ex: "4545454545454545"
         - status [string]: current status of the CreditNote. ex: "created"
         - transactionIds [array of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]

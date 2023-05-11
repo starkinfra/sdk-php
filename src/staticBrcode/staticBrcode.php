@@ -15,6 +15,7 @@ class StaticBrcode extends Resource
     public $city;
     public $amount;
     public $cashierBankCode;
+    public $description;
     public $reconciliationId;
     public $tags;
     public $uuid;
@@ -39,6 +40,7 @@ class StaticBrcode extends Resource
     ## Parameters (optional):
         - amount [integer, default 0]: positive integer that represents the amount in cents of the resulting Pix transaction. If the amount is zero, the sender can choose any amount in the moment of payment. ex: 1234 (= R$ 12.34)
         - cashierBankCode [string, default ""] Cashier's bank code. ex: "20018183".
+        - description [string, default ""] Optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
         - reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. ex: "123"
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
@@ -57,7 +59,8 @@ class StaticBrcode extends Resource
         $this-> keyId = Checks::checkParam($params, "keyId");
         $this-> city = Checks::checkParam($params, "city");
         $this-> amount = Checks::checkParam($params, "amount");
-        $this->cashierBankCode = Checks::checkParam($params, "cashierBankCode");
+        $this-> cashierBankCode = Checks::checkParam($params, "cashierBankCode");
+        $this-> description = Checks::checkParam($params, "description");
         $this-> reconciliationId = Checks::checkParam($params, "reconciliationId");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> uuid = Checks::checkParam($params, "uuid");

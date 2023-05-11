@@ -9,6 +9,8 @@ use StarkCore\Utils\Resource;
 class BrcodePreview extends Resource
 {
 
+    public $payerId;
+    public $endToEndId;
     public $accountNumber;
     public $accountType;
     public $amount;
@@ -37,6 +39,10 @@ class BrcodePreview extends Resource
 
     ## Parameters (required):
         - id [string]: BR Code string for the Pix payment. This is also de information directly encoded in a QR Code. ex: "00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A"
+        - payerId [string]: Tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80"
+        
+    ## Parameters (optional):
+        - endToEndId [string, default ""]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
 
     ## Attributes (return-only):
         - accountNumber [string]: Payment receiver account number. ex: "1234567"
@@ -64,6 +70,8 @@ class BrcodePreview extends Resource
     {
         parent::__construct($params);
 
+        $this->payerId = Checks::checkParam($params, "payerId");
+        $this->endToEndId = Checks::checkParam($params, "endToEndId");
         $this->accountNumber = Checks::checkParam($params, "accountNumber");
         $this->accountType = Checks::checkParam($params, "accountType");
         $this->amount = Checks::checkParam($params, "amount");
