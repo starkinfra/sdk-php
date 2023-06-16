@@ -30,6 +30,7 @@ class IssuingPurchase extends Resource
     public $acquirerId;
     public $merchantId;
     public $merchantName;
+    public $metadata;
     public $merchantFee;
     public $walletId;
     public $methodCode;
@@ -70,6 +71,7 @@ class IssuingPurchase extends Resource
         - acquirerId [string]: acquirer ID. ex: "5656565656565656"
         - merchantId [string]: merchant ID. ex: "5656565656565656"
         - merchantName [string]: merchant name. ex: "Google Cloud Platform"
+        - metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: [authorizationId => 'OjZAqj']
         - merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
         - walletId [string]: virtual wallet ID. ex: "5656565656565656"
         - methodCode [string]: method code. Options: "chip", "token", "server", "manual" or "contactless"
@@ -111,6 +113,7 @@ class IssuingPurchase extends Resource
         $this->acquirerId = Checks::checkParam($params, "acquirerId");
         $this->merchantId = Checks::checkParam($params, "merchantId");
         $this->merchantName = Checks::checkParam($params, "merchantName");
+        $this->metadata = Checks::checkParam($params, "metadata");
         $this->merchantFee = Checks::checkParam($params, "merchantFee");
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->methodCode = Checks::checkParam($params, "methodCode");
