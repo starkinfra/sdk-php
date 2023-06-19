@@ -17,7 +17,12 @@ class TestIssuingPurchase
         $purchases = IssuingPurchase::query(["limit" => 10]);
 
         foreach ($purchases as $purchase) {
+
             if (is_null($purchase->id)) {
+                throw new Exception("failed");
+            }
+
+            if (!is_array($purchase->metadata)) {
                 throw new Exception("failed");
             }
 
@@ -25,6 +30,10 @@ class TestIssuingPurchase
             $purchase = IssuingPurchase::get($purchase->id);
 
             if (!is_string($purchase->id)) {
+                throw new Exception("failed");
+            }
+
+            if (!is_array($purchase->metadata)) {
                 throw new Exception("failed");
             }
         }        
