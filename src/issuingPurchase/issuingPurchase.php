@@ -26,24 +26,27 @@ class IssuingPurchase extends Resource
     public $merchantCurrencyCode;
     public $merchantCurrencySymbol;
     public $merchantCategoryCode;
+    public $merchantCategoryType;
     public $merchantCountryCode;
     public $acquirerId;
     public $merchantId;
     public $merchantName;
-    public $metadata;
     public $merchantFee;
     public $walletId;
     public $methodCode;
     public $score;
     public $endToEndId;
     public $tags;
-    public $zipCode;
     public $issuingTransactionIds;
     public $status;
-    public $updated;
+    public $description;
+    public $metadata;
+    public $zipCode;
     public $created;
+    public $updated;
     public $isPartialAllowed;
     public $cardTags;
+    public $holderId;
     public $holderTags;
 
     /**
@@ -67,28 +70,31 @@ class IssuingPurchase extends Resource
         - merchantCurrencyCode [string]: merchant currency code. ex: "USD"
         - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
         - merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
+        - merchantCategoryType [string]: merchant category type. ex: "food"
         - merchantCountryCode [string]: merchant country code. ex: "USA"
         - acquirerId [string]: acquirer ID. ex: "5656565656565656"
         - merchantId [string]: merchant ID. ex: "5656565656565656"
         - merchantName [string]: merchant name. ex: "Google Cloud Platform"
-        - metadata [Dictionary object]: object used to store additional information about the IssuingPurchase object. ex: [authorizationId => 'OjZAqj']
         - merchantFee [integer]: fee charged by the merchant to cover specific costs, such as ATM withdrawal logistics, etc. ex: 200 (= R$ 2.00)
         - walletId [string]: virtual wallet ID. ex: "5656565656565656"
         - methodCode [string]: method code. Options: "chip", "token", "server", "manual" or "contactless"
         - score [float]: internal score calculated for the authenticity of the purchase. null in case of insufficient data. ex: 7.6
         - endToEndId [string]: Unique id used to identify the transaction through all of its life cycle, even before the purchase is denied or accepted and gets its usual id. ex: "679cd385-642b-49d0-96b7-89491e1249a5"
         - tags [array of string]: array of strings for tagging returned by the sub-issuer during the authorization. ex: ["travel", "food"]
-        - zipCode [string]: zip code of the merchant location. ex: "02101234"
-
+        
     ## Attributes (IssuingPurchase only):
         - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
         - status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed", "voided"
-        - updated [DateTime]: latest update datetime for the IssuingPurchase.
+        - description [string]:  IssuingPurchase description. ex: "Office Supplies"
+        - metadata [dictionary object]: dictionary object used to store additional information about the Transfer object. ex: [authorizationId => "OjZAqj"]
+        - zipCode [string]: zip code of the merchant location. ex: "02101234"
         - created [DateTime]: creation datetime for the IssuingPurchase.
+        - updated [DateTime]: latest update datetime for the IssuingPurchase.
         
     ## Attributes (authorization request only):
         - isPartialAllowed [bool]: true if the the merchant allows partial purchases. ex: False
         - cardTags [array of strings]: tags of the IssuingCard responsible for this purchase. ex: ["travel", "food"]
+        - holderId [string]: card holder ID. ex: "5656565656565656"
         - holderTags [array of strings]: tags of the IssuingHolder responsible for this purchase. ex: ["technology", "john snow"]
     */
     function __construct(array $params)
@@ -109,24 +115,27 @@ class IssuingPurchase extends Resource
         $this->merchantCurrencyCode = Checks::checkParam($params, "merchantCurrencyCode");
         $this->merchantCurrencySymbol = Checks::checkParam($params, "merchantCurrencySymbol");
         $this->merchantCategoryCode = Checks::checkParam($params, "merchantCategoryCode");
+        $this->merchantCategoryType = Checks::checkParam($params, "merchantCategoryType");
         $this->merchantCountryCode = Checks::checkParam($params, "merchantCountryCode");
         $this->acquirerId = Checks::checkParam($params, "acquirerId");
         $this->merchantId = Checks::checkParam($params, "merchantId");
         $this->merchantName = Checks::checkParam($params, "merchantName");
-        $this->metadata = Checks::checkParam($params, "metadata");
         $this->merchantFee = Checks::checkParam($params, "merchantFee");
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->methodCode = Checks::checkParam($params, "methodCode");
         $this->score = Checks::checkParam($params, "score");
         $this->endToEndId = Checks::checkParam($params, "endToEndId");
         $this->tags = Checks::checkParam($params, "tags");
-        $this->zipCode = Checks::checkParam($params, "zipCode");
         $this->issuingTransactionIds = Checks::checkParam($params, "issuingTransactionIds");
         $this->status = Checks::checkParam($params, "status");
-        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
+        $this->description = Checks::checkParam($params, "description");
+        $this->metadata = Checks::checkParam($params, "metadata");
+        $this->zipCode = Checks::checkParam($params, "zipCode");
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this->isPartialAllowed = Checks::checkParam($params, "isPartialAllowed");
         $this->cardTags = Checks::checkParam($params, "cardTags");
+        $this->holderId = Checks::checkParam($params, "holderId");
         $this->holderTags = Checks::checkParam($params, "holderTags");
         
         Checks::checkParams($params);
