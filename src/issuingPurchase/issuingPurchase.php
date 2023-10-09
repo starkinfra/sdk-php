@@ -86,7 +86,7 @@ class IssuingPurchase extends Resource
         - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
         - status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed", "voided"
         - description [string]:  IssuingPurchase description. ex: "Office Supplies"
-        - metadata [dictionary object]: dictionary object used to store additional information about the Transfer object. ex: [authorizationId => "OjZAqj"]
+        - metadata [dictionary object]: dictionary object used to store additional information about the IssuingPurchase object. ex: [authorizationId => "OjZAqj"]
         - zipCode [string]: zip code of the merchant location. ex: "02101234"
         - created [DateTime]: creation datetime for the IssuingPurchase.
         - updated [DateTime]: latest update datetime for the IssuingPurchase.
