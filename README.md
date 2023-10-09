@@ -2134,6 +2134,7 @@ sendResponse(  # you should also implement this method to respond the read reque
         "reconciliationId" => $invoice->reconciliationId,
         "amount" => $invoice->amount,
         "senderName" => $invoice->senderName,
+        "senderTaxId" => $invoice->senderTaxId,
         "receiverName" => $invoice->receiverName,
         "receiverStreetLine" => $invoice->receiverStreetLine,
         "receiverCity" => $invoice->receiverCity,
