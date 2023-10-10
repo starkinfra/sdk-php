@@ -257,6 +257,7 @@ class DynamicBrcode extends Resource
         - senderName [string]: sender's full name. ex: "Anthony Edward Stark"
         - senderTaxId [string]: sender's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "01.001.001/0001-01"
         - receiverName [string]: receiver's full name. ex: "Jamie Lannister"
+        - receiverTaxId [string]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
         - receiverStreetLine [string]: receiver's main address. ex: "Av. Paulista, 200"
         - receiverCity [string]: receiver's address city name. ex: "Sao Paulo"
         - receiverStateCode [string]: receiver's address state code. ex: "SP"
@@ -264,7 +265,6 @@ class DynamicBrcode extends Resource
         
         ## Parameters (optional):
         - expiration [DateInterval or integer, default 86400 (1 day)]: time in seconds counted from the creation datetime until the DynamicBrcode expires. After expiration, the BR Code cannot be paid anymore.
-        - receiverTaxId [string, default null]: receiver's CPF (11 digits formatted or unformatted) or CNPJ (14 digits formatted or unformatted). ex: "012.345.678-90"
         - fine [float, default 2.0]: Percentage charged if the sender pays after the due datetime.
         - interest [float, default 1.0]: Interest percentage charged if the sender pays after the due datetime.
         - discounts [array of dictionaries, default null]: array of dictionaries with "percentage":float and "due":date.datetime or string pairs.
@@ -287,11 +287,11 @@ class DynamicBrcode extends Resource
             "senderName" => Checks::checkParam($params, "senderName"),
             "senderTaxId" => Checks::checkParam($params, "senderTaxId"),
             "receiverName" => Checks::checkParam($params, "receiverName"),
+            "receiverTaxId" => Checks::checkParam($params, "receiverTaxId"),
             "receiverStreetLine" => Checks::checkParam($params, "receiverStreetLine"),
             "receiverCity" => Checks::checkParam($params, "receiverCity"),
             "receiverStateCode" => Checks::checkParam($params, "receiverStateCode"),
             "receiverZipCode" => Checks::checkParam($params, "receiverZipCode"),
-            "receiverTaxId" => Checks::checkParam($params, "receiverTaxId"),
             "fine" => Checks::checkParam($params, "fine"),
             "interest" => Checks::checkParam($params, "interest"),
             "discounts" => Checks::checkParam($params, "discounts"),
