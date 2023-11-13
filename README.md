@@ -45,6 +45,8 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixClaim](#create-a-pixclaim): Claim a Pix Key
         - [PixDirector](#create-a-pixdirector): Create a Pix Director
         - [PixInfraction](#create-pixinfractions): Create Pix Infraction reports
+        - [PixFraud](#create-a-pixfraud): Create a Pix Fraud
+        - [PixUser](#get-a-pixuser): Get fraud statistics of a user
         - [PixChargeback](#create-pixchargebacks): Create Pix Chargeback requests
         - [PixDomain](#query-pixdomains): View registered SPI participants certificates
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
@@ -1637,7 +1639,7 @@ $claims = PixClaim::query([
     "keyId" => "+5511989898989"
 ]);
 
-foreach $claim in $claims{
+foreach ($claims as $claim){
     print_r($claim);
 }
 
@@ -1689,7 +1691,7 @@ $logs = PixClaim\Log::query([
     "claimIds" => ["5719405850615809"]
 ]);
 
-foreach $log in $logs{
+foreach ($logs as $log){
     print_r($log)
 };
 ```
@@ -1745,7 +1747,7 @@ $infractions = PixInfraction::create([
     ]);
 ]);
 
-foreach $infraction in $infractions{
+foreach ($infractions as $infraction){
     print_r($infraction);
 }
 ```
@@ -1765,7 +1767,7 @@ $infractions = PixInfraction::query([
     "ids" => ["5155165527080960"],
 ]);
 
-for $infraction in $infractions{
+foreach ($infractions as $infraction){
     print_r($infraction);
 }
 ```
@@ -1826,7 +1828,7 @@ $logs = PixInfraction\Log::query([
     "infractionIds" => ["5155165527080960"]
 ]);
 
-for $log in $logs{
+foreach ($logs as $log){
     print_r($log)
 }
 ```
@@ -1841,6 +1843,82 @@ use StarkInfra\PixInfraction;
 $log = PixInfraction\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+### Create a PixFraud 
+
+Pix Frauds can be created by either participant or automatically when a Pix Infraction is accepted.
+
+```php
+use StarkInfra\PixFraud;
+
+$frauds = PixFraud::create([
+    new PixFraud([
+        "externalId" => "my_external_id_1234",
+        "type" => "mule",
+        "taxId" => "01234567890",
+    ]);
+]);
+
+foreach ($frauds as $fraud){
+    print_r($fraud);
+}
+```
+
+### Query PixFrauds
+
+You can query multiple Pix Frauds according to filters.
+
+```php
+use StarkInfra\PixFraud;
+
+$frauds = PixFraud::query([
+    "limit" => 1,
+    "after" => "2022-01-01",
+    "before" => "2022-01-12",
+    "status" => "delivered",
+    "ids" => ["6638842090094592", "4023146587080960"],
+]);
+
+foreach ($frauds as $fraud){
+    print_r($fraud);
+}
+```
+
+### Get a PixFraud
+
+After its creation, information on a Pix Fraud may be retrieved by its id.
+
+```php
+use StarkInfra\PixInfraction;
+
+$infraction = PixInfraction::get("5155165527080960");
+
+print_r($infraction);
+```
+
+### Cancel a PixFraud
+
+Cancel a specific Pix Fraud using its id.
+
+```php
+use StarkInfra\PixFraud;
+
+$fraud = PixFraud::cancel("5155165527080960");
+
+print_r($fraud);
+```
+
+### Get a PixUser
+
+You can get a specific fraud statistics of a user with his taxId.
+
+```php
+use StarkInfra\PixUser;
+
+$user = PixUser::get("01234567890");
+
+print_r($user);
 ```
 
 ### Create PixChargebacks
@@ -1859,7 +1937,7 @@ $chargebacks = PixChargeback::create([
     ]);
 ]);
 
-for $chargeback in $chargebacks{
+foreach ($chargebacks as $chargeback){
     print($chargeback);
 }    
 ```
@@ -1879,7 +1957,7 @@ $chargebacks = PixChargeback::query([
     "ids" => ["5155165527080960"]
 ]);
 
-for $chargeback in $chargebacks{
+foreach ($chargebacks as $chargeback){
     print($chargeback);
 }    
 ```
@@ -1940,7 +2018,7 @@ $logs = PixChargeback\Log::query([
     "chargebackIds" => ["5155165527080960"]
 ]);
 
-for $log in $logs{
+foreach ($logs as $log){
     print_r($log);
 }
 ```
@@ -1966,7 +2044,7 @@ use StarkInfra\PixDomain;
 
 $domains = PixDomain::query();
 
-for $domain in $domains{
+foreach ($domains as $domain){
     print($domain);
 }
 ```
@@ -1991,7 +2069,7 @@ $brcodes = StaticBrcode::create([
     ]);
 ]);
 
-for $brcode in $brcodes{
+foreach ($brcodes as $brcode){
     print($brcode);
 }
 ```
@@ -2010,7 +2088,7 @@ $brcodes = StaticBrcode::query([
     "uuids" => ["5ddde28043a245c2848b08cf315effa2"],
 ]);
 
-for $brcode in $brcodes{
+foreach ($brcodes as $brcode){
     print_r($brcode);
 }
 ```
@@ -2049,7 +2127,7 @@ $brcodes = DynamicBrcode::create([
     ]);
 ]);
 
-for $brcode in $brcodes{
+foreach ($brcodes as $brcode){
     print($brcode);
 }
 ```
@@ -2068,7 +2146,7 @@ $brcodes = DynamicBrcode::query([
     "uuids" => ["5ddde28043a245c2848b08cf315effa2"],
 ]);
 
-for $brcode in $brcodes{
+foreach ($brcodes as $brcode){
     print_r($brcode);
 }
 ```

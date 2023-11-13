@@ -7,7 +7,6 @@ include_once("tests/utils/rule.php");
 
 $projectId = $_SERVER["SANDBOX_INFRA_ID"]; # "9999999999999999",
 $privateKey = $_SERVER["SANDBOX_INFRA_PRIVATE_KEY"]; # "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEEIBEcEJZLk/DyuXVsEjz0w4vrE7plPXhQxODvcG1Jc0WToAcGBSuBBAAK\noUQDQgAE6t4OGx1XYktOzH/7HV6FBukxq0Xs2As6oeN6re1Ttso2fwrh5BJXDq75\nmSYHeclthCRgU8zl6H1lFQ4BKZ5RCQ==\n-----END EC PRIVATE KEY-----"
-
 if (is_null($projectId) || is_null($privateKey)) {
     throw new \Exception("missing test credentials");
 }
@@ -66,6 +65,8 @@ include_once("pixDirector.php");
 include_once("pixDomain.php");
 include_once("pixInfraction.php"); 
 include_once("pixInfractionLog.php");
+include_once("pixFraud.php"); 
+include_once("pixUser.php"); 
 include_once("pixKey.php");
 include_once("pixKeyLog.php");
 include_once("pixRequest.php");
