@@ -14,9 +14,13 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- PixUser resource
+- PixFraud resource
+- method, fraudType and fraudId parameters to PixInfraction resource
 - merchantCategoryType, description and holderId attributes to IssuingPurchase resource
 ### Changed
 - senderTaxId and receiverTaxId parameters to DynamicBrcode resource
+- type parameter to PixInfraction resource
 
 ## [0.9.0] - 2023-06-19
 ### Added

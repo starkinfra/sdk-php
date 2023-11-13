@@ -12,8 +12,11 @@ class PixInfraction extends Resource
 
     public $referenceId;
     public $type;
+    public $method;
     public $description;
     public $tags;
+    public $fraudType;
+    public $fraudId;
     public $creditedBankCode;
     public $flow;
     public $analysis;
@@ -35,14 +38,17 @@ class PixInfraction extends Resource
     
     ## Parameters (required):
         - referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
-        - type [string]: type of Pix infraction. Options: "fraud", "reversal", "reversalChargeback"
+        - type [string]: type of Pix infraction. Options: "reversal", "reversalChargeback"
+        - method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other"
 
     ## Parameters (optional):
         - description [string, default null]: description for any details that can help with the infraction investigation.
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
+        - fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
+        - fraudId [string]: id of the Pix Fraud. ex: "5741774970552320"
         - creditedBankCode [string]: bankCode of the credited Pix participant in the reported transaction. ex: "20018183"
         - debitedBankCode [string]: bankCode of the debited Pix participant in the reported transaction. ex: "20018183"
         - flow [string]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
@@ -59,8 +65,11 @@ class PixInfraction extends Resource
 
         $this-> referenceId = Checks::checkParam($params, "referenceId");
         $this-> type = Checks::checkParam($params, "type");
+        $this-> method=Checks::checkParam($params, "method");
         $this-> description = Checks::checkParam($params, "description");
         $this-> tags = Checks::checkParam($params, "tags");
+        $this-> fraudType = Checks::checkParam($params, "fraudType");
+        $this-> fraudId = Checks::checkParam($params, "fraudId");
         $this-> creditedBankCode = Checks::checkParam($params, "creditedBankCode");
         $this-> flow = Checks::checkParam($params, "flow");
         $this-> analysis = Checks::checkParam($params, "analysis");
@@ -123,7 +132,7 @@ class PixInfraction extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
+        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "reversal", "reversalChargeback"
         - flow [string, default null]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
         - tags [array of strings, default null]: array of strings for tagging. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -152,7 +161,7 @@ class PixInfraction extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "delivered", "closed", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "fraud", "reversal", "reversalChargeback"
+        - type [array of strings, default null]: filter for the type of retrieved PixInfraction. Options: "reversal", "reversalChargeback"
         - flow [string, default null]: direction of the PixInfraction flow. Options: "out" if you created the PixInfraction, "in" if you received the PixInfraction.
         - tags [array of strings, default null]: array of strings for tagging. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -177,18 +186,20 @@ class PixInfraction extends Resource
     ## Parameters (required):
         - id [string]: PixInfraction id. ex: '5656565656565656'
         - result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
+        - fraudType [string]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
     
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
-            - analysis [string, default null]: analysis that led to the result.
+        - analysis [string, default null]: analysis that led to the result.
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:
         - PixInfraction with updated attributes
     */
-    public static function update($id, $result, $params = [], $user=null)
+    public static function update($id, $result, $fraudType, $params = [], $user=null)
     {
         $params["result"] = $result;
+        $params["fraudType"] = $fraudType;
         return Rest::patchId($user, PixInfraction::resource(), $id, $params);
     }
 

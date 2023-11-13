@@ -102,7 +102,7 @@ class TestPixInfraction
             if ($infraction->status != "delivered") {
                 throw new Exception("failed");
             }    
-            $updatedInfraction = PixInfraction::update($infraction->id, "disagreed");
+            $updatedInfraction = PixInfraction::update($infraction->id, "disagreed", "mule");
             if ($updatedInfraction->result != "disagreed") {
                 throw new Exception("failed");
             }    
@@ -113,7 +113,8 @@ class TestPixInfraction
     {
         $params = [
             "referenceId" => EndToEndId::create(20018183),
-            "type" => "fraud"
+            "type" => "reversal",
+            "method" => "scam"
         ];
         return new PixInfraction($params);
     }
