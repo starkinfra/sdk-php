@@ -30,6 +30,10 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
         - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
+        - [TokenRequest](#create-an-issuingtokenrequest): Generate the payload to create the token
+        - [Token](#process-token-authorizations): Authorize and manage your tokens
+        - [TokenActivation](#process-token-activations): Get notified on how to inform the activation code to the holder 
+        - [TokenDesign](#get-an-issuingtokendesign): View your current token card arts
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
@@ -811,6 +815,207 @@ $log = IssuingEmbossingRequest\Log::get("5155165527080960");
 print_r($log);
 ```
 
+### Create an IssuingTokenRequest
+
+You can create a request that provides the required data you must send to the wallet app.
+
+```php
+use StarkInfra\IssuingTokenRequest;
+
+$requests = IssuingTokenRequest::create([
+    new IssuingTokenRequest([
+        "cardId" => "5189831499972623", 
+        "walletId" => "google", 
+        "methodCode" => "app"
+    ])
+]);
+
+foreach ($requests as $request) {
+    print_r($request);
+}
+```
+
+### Process Token authorizations
+
+It's easy to process token authorizations delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's StarkInfra that sent you the event.
+If you do not approve or decline the authorization within 2 seconds, the authorization will be denied.
+
+```php
+use StarkInfra\IssuingToken;
+
+$request = listen();  # this is your handler to listen for authorization requests
+
+$token = IssuingToken::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+
+# after parsing you should analyse the authorization request and then respond
+
+# To approve:
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingToken::response([
+        "status" => "approved",
+        "activation_methods" =>[
+            {
+                "type" => "app",
+                "value" => "com.subissuer.android"
+            },
+            {
+                "type" => "text",
+                "value" => "** *****-5678"
+            }
+        ],
+        "designId" => "4584031664472031",
+        "tags" => ["token", "user/1234"]
+    ]);
+);
+
+# To deny:
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingToken::response([
+        "status" => "denied",
+        "reason" => "other",
+    ]);
+);
+```
+
+### Process Token activations
+
+It's easy to process token activation notifications delivered to your endpoint.
+Remember to pass the signature header so the SDK can make sure it's Stark Infra that sent you the event.
+
+
+```php
+use StarkInfra\IssuingToken;
+
+$request = listen();  # this is the method you made to get the events posted to your tokenAuthorizationUrl endpoint
+
+$token = IssuingToken::parse(
+    $request->content, 
+    $request->headers["Digital-Signature"]
+);
+```
+
+After that, you may generate the activation code and send it to the cardholder.
+The cardholder enters the received code in the wallet app. We'll receive and send it to
+tokenAuthorizationUrl for your validation. Completing the provisioning process. 
+
+```php
+use StarkInfra\IssuingToken;
+
+$request = listen();  # this is the method you made to get the events posted to your tokenAuthorizationUrl endpoint
+
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingToken::response([
+        "status" => "approved",
+        "tags" => ["token", "user/1234"]
+    ]);
+);
+
+# To deny:
+sendResponse(  # you should also implement this method to respond the read request
+    IssuingToken::response([
+        "status" => "denied",
+        "reason" => "other",
+        "tags" => ["token", "user/1234"]
+    ]);
+);
+```
+
+### Get an IssuingToken
+
+You can get a single token by its id.
+
+```php
+use StarkInfra\IssuingToken;
+
+$token = IssuingToken::get("5749080709922816");
+    
+print_r($token);
+```
+
+### Query IssuingTokens
+
+You can get a list of created tokens given some filters.
+
+```php
+use StarkInfra\IssuingToken;
+
+$tokens = IssuingToken::query(["limit" => 10]);
+
+foreach ($tokens as $token) {
+    print_r($token);
+}
+```
+ 
+### Update an IssuingToken
+
+You can update a specific token by its id.
+
+```php
+use StarkInfra\IssuingToken;
+
+$token = IssuingToken::update(
+    "5155165527080960",
+    "status" => "blocked"
+);
+
+print_r($token);
+```
+
+### Cancel an IssuingToken
+
+You can also cancel a token by its id.
+
+```php
+use StarkInfra\IssuingToken;
+
+$token = IssuingToken::cancel("5155165527080960");
+
+print_r($token);
+```
+
+### Get an IssuingTokenDesign
+
+You can get a single design by its id.
+
+```php
+use StarkInfra\IssuingTokenDesign;
+
+$design = IssuingTokenDesign::get("5749080709922816");
+    
+print_r($design);
+```
+
+### Query IssuingTokenDesigns 
+
+You can get a list of available designs given some filters.
+
+```php
+use StarkInfra\IssuingTokenDesign;
+
+$designs = IssuingTokenDesign::query(["limit" => 5]);
+
+foreach ($designs as $design) {
+    print_r($design);
+}
+```
+## Get an IssuingTokenDesign PDF
+
+A design PDF can be retrieved by its id. 
+
+```php
+use StarkInfra\IssuingTokenDesign;
+
+$pdf = IssuingTokenDesign::pdf("5155165527080960");
+
+$fp = fopen('design.zip', 'w');
+fwrite($fp, $pdf);
+fclose($fp);
+```
+
 ## Process Purchase Authorizations
 
 It's easy to process purchase authorizations delivered to your endpoint.
@@ -1542,7 +1747,7 @@ Update the account information linked to a Pix Key.
 ```php
 use StarkInfra\PixKey;
 
-$key PixKey::update(
+$key = PixKey::update(
     "6203417408045056",
     "reconciliation"
     [
