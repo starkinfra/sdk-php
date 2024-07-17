@@ -3229,6 +3229,129 @@ $attempt = Attempt::get("1616161616161616");
 print_r($attempt);
 ```
 
+# request
+
+This resource allows you to send HTTP requests to StarkInfra routes.
+
+## GET
+
+You can perform a GET request to any StarkInfra route.
+
+It's possible to get a single resource using its id in the path.
+
+```php
+use StarkInfra\Request;
+
+$request = Request::get("pix-request/5155165527080960");
+
+print_r($request);
+```
+
+You can also get the specific resource log,
+
+```php
+use StarkInfra\Request;
+
+$request = Request::get("pix-request/log/5155165527080960");
+
+print_r($request);
+```
+
+This same method will be used to list all created items for the requested resource.
+
+```php
+use StarkInfra\Request;
+
+$query = [
+    "limit" => 10,
+    "status" => "created"
+]
+$request = Request::get(
+    "pix-request/log/5155165527080960",
+    $query
+    );
+
+print_r($request);
+```
+
+To list logs, you will use the same logic as for getting a single log.
+
+```php
+use StarkInfra\Request;
+
+$query = [
+    "limit" => 10,
+    "status" => "created"
+]
+$request = Request::get(
+    "pix-request/log/5155165527080960",
+    $query
+    );
+
+print_r($request);
+```
+
+## POST
+
+You can perform a POST request to any StarkInfra route.
+
+This will create an object for each item sent in your request
+
+**Note**: It's not possible to create multiple resources simultaneously. You need to send separate requests if you want to create multiple resources, such as invoices and boletos.
+
+```php
+use StarkInfra\Request;
+$ext = "this-is-my-unique-external-id";
+$body = [
+    "holders" => [
+        [
+            "name" => "Holder Test",
+            "taxId" => "012.345.678-90",
+            "externalId" => $ext,
+            "tags" => ["Traveler Employee"],
+        ]
+    ]
+];
+$request = Request::post(
+    "suing-holder",
+    $body
+);
+
+print_r($request)
+```
+
+## PATCH
+
+You can perform a PATCH request to any StarkInfra route.
+
+It's possible to update a single item of a StarkInfra resource.
+```php
+use StarkInfra\Request;
+
+$path = "issuing-holder/5155165527080960";
+$request = Request::patch(
+    $path, 
+    ["tags" => ["arya", "stark"]]
+)->content;
+$content = json_decode($request, true);
+print_r($content)
+```
+
+## DELETE
+
+You can perform a DELETE request to any StarkInfra route.
+
+It's possible to delete a single item of a StarkInfra resource.
+```php
+use StarkInfra\Request;
+
+$path = "issuing-holder/5155165527080960";
+$request = Request::delete($path)->content;
+$result = json_decode($request, true);
+
+print_r($result);
+```
+
 # Handling errors
 
 The SDK may raise one of four types of errors: __InputErrors__, __InternalServerError__, __UnknownError__, __InvalidSignatureError__

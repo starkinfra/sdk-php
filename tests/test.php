@@ -81,5 +81,6 @@ include_once("pixReversalLog.php");
 include_once("pixStatement.php");
 include_once("staticBrcode.php");
 include_once("webhook.php");
+include_once("request.php");
 
 echo "\n\nAll tests concluded\n\n";
