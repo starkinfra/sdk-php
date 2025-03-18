@@ -114,7 +114,9 @@ class TestPixInfraction
         $params = [
             "referenceId" => EndToEndId::create(20018183),
             "type" => "reversal",
-            "method" => "scam"
+            "method" => "scam",
+            "operatorEmail" => "ned.stark@company.com",
+            "operatorPhone" => "+5511999999999"
         ];
         return new PixInfraction($params);
     }

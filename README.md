@@ -1949,6 +1949,9 @@ $infractions = PixInfraction::create([
     new PixInfraction([
         "referenceId" => "E20018183202201201450u34sDGd19lz",
         "type" => "fraud",
+        "method" => "scam",
+        "operatorEmail" => "fraud@company.com",
+        "operatorPhone" => "+5511989898989",
     ]);
 ]);
 

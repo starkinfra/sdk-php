@@ -179,7 +179,7 @@ class PixKey extends Resource
     Update a PixKey parameters by passing id.
 
     ## Parameters (required):
-        - id [string]: PixKey id. ex: '5656565656565656'
+        - id [string]: PixKey id. Allowed types are: CPF, CNPJ, phone number or email. ex: '5656565656565656'
         - reason [string]: reason why the PixKey is being patched. Options: "branchTransfer", "reconciliation" or "userRequested".
 
     ## Parameters (optional):
@@ -206,7 +206,7 @@ class PixKey extends Resource
     Cancel a PixKey entity previously created in the Stark Infra API
     
     ## Parameters (required):
-        - id [string]: object unique id. ex: "5656565656565656"
+        - id [string]: object unique id. Allowed types are: CPF, CNPJ, phone number or email. ex: "5656565656565656"
     
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call

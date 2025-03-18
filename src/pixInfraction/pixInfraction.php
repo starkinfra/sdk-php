@@ -26,6 +26,8 @@ class PixInfraction extends Resource
     public $status;
     public $created;
     public $updated;
+    public $operatorEmail;
+    public $operatorPhone;
 
     /**
     # PixInfraction object
@@ -45,6 +47,8 @@ class PixInfraction extends Resource
         - description [string, default null]: description for any details that can help with the infraction investigation.
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
         - fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
+        - operatorEmail [string, default null]: contact email of the operator responsible for the PixInfraction.
+        - operatorPhone [string, default null]: contact phone number of the operator responsible for the PixInfraction.
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
@@ -69,6 +73,8 @@ class PixInfraction extends Resource
         $this-> description = Checks::checkParam($params, "description");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> fraudType = Checks::checkParam($params, "fraudType");
+        $this-> operatorEmail = Checks::checkParam($params, "operatorEmail");
+        $this-> operatorPhone = Checks::checkParam($params, "operatorPhone");
         $this-> fraudId = Checks::checkParam($params, "fraudId");
         $this-> creditedBankCode = Checks::checkParam($params, "creditedBankCode");
         $this-> flow = Checks::checkParam($params, "flow");

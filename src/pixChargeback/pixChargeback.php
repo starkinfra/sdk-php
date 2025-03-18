@@ -42,8 +42,10 @@ class PixChargeback extends Resource
         - referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
         - reason [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
 
+    ## Parameters (conditionally required)::
+        - description [string, default null]: description for the PixChargeback. Required if reason is "flaw".
+
     ## Parameters (optional):
-        - description [string, default null]: description for the PixChargeback.
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):
@@ -51,7 +53,7 @@ class PixChargeback extends Resource
         - analysis [string]: analysis that led to the result.   
         - senderBankCode [string]: bankCode of the Pix participant that created the PixChargeback. ex: "20018183"
         - receiverBankCode [string]: bankCode of the Pix participant that received the PixChargeback. ex: "20018183"
-        - rejectionReason [string]: reason for the rejection of the Pix chargeback. Options: "noBalance", "accountClosed", "unableToReverse"
+        - rejectionReason [string]: reason for the rejection of the Pix chargeback. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse"
         - reversalReferenceId [string]: returnId or endToEndId of the chargeback transaction. ex: "D20018183202202030109X3OoBHG74wo".
         - result [string]: result after the analysis of the PixChargeback by the receiving party. Options: "rejected", "accepted", "partiallyAccepted"
         - flow [string]: direction of the Pix Chargeback. Options: "in" for received chargebacks, "out" for chargebacks you requested
@@ -186,12 +188,12 @@ class PixChargeback extends Resource
     
     ## Parameters (conditionally required):
         - params [dictionary of parameters]:
-            - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "unableToReverse",
+            - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse",
             - reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
     
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
-            - analysis [string, default null]: description of the analysis that led to the result.
+            - analysis [string, default null]: description of the analysis that led to the result. Required if rejectionReason is "invalidRequest".
     
     ## Return:
         - PixChargeback with updated attributes
@@ -201,7 +203,7 @@ class PixChargeback extends Resource
         $params["result"] = $result;
         return Rest::patchId($user, PixChargeback::resource(), $id, $params);
     }
-    
+
     /**
     # Cancel a PixChargeback entity
     
