@@ -14,6 +14,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+## [0.13.0] - 2025-03-26
 ### Added
 - operatorEmail and operatorPhone to PixInfraction resource
 
