@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- status param check in construction function
 
 ## [0.13.0] - 2025-03-26
 ### Added

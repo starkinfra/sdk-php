@@ -55,6 +55,7 @@ class PixFraud extends Resource
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> bacenId = Checks::checkParam($params, "bacenId");
         $this-> keyId = Checks::checkParam($params, "keyId");
+        $this-> status = Checks::checkParam($params, "status");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
