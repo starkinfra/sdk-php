@@ -9,7 +9,7 @@ class TestPixFraud
 {
     public function create()
     {
-        $infraction = PixFraud::create([PixFraud::example()])[0];
+        $infraction = PixFraud::create([TestPixFraud::example()])[0];
         
         if (is_null($infraction->id)){
             throw new Exception("failed");
@@ -69,7 +69,7 @@ class TestPixFraud
     public static function example()
     {
         $params = [
-            "externalId" => "my_external_id_123",
+            "externalId" => strval(random_int(1, 999999)),
             "type" => "mule",
             "taxId" => "01234567890",
         ];
