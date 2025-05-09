@@ -40,7 +40,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
-        - [SimmulatePurchaseAuthorization](#simulate-card-purchase): Process purchase authorizations in the sandbox environment
+        - [SimulatePurchaseAuthorization](#simulate-card-purchase): Process purchase authorizations in the sandbox environment
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
         - [PixReversals](#create-pixreversals): Reverse Pix transactions
