@@ -8,7 +8,7 @@ use StarkCore\Utils\StarkHost;
 class Rest
 {
     private const apiVersion = "v2";
-    private const sdkVersion = "0.13.1";
+    private const sdkVersion = "0.13.2";
     private const host = StarkHost::infra;
 
     public static function getPage($user, $resource, array $query = [])
@@ -80,6 +80,23 @@ class Rest
             $resource,
             $id,
             $subresource,
+            Settings::getLanguage(),
+            Settings::getTimeout(),
+            $options
+        );
+    }
+
+    public static function postSubResource($user, $resource, $id, $subresource, $entity, $options = null)
+    {
+        return \StarkCore\Utils\Rest::postSubResource(
+            self::getSdkVersion(),
+            self::getHost(),
+            self::getApiVersion(),
+            Settings::getUser($user),
+            $resource,
+            $id,
+            $subresource,
+            $entity,
             Settings::getLanguage(),
             Settings::getTimeout(),
             $options

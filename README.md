@@ -40,6 +40,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
+        - [SimmulatePurchaseAuthorization](#simulate-card-purchase): Process purchase authorizations in the sandbox environment
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
         - [PixReversals](#create-pixreversals): Reverse Pix transactions
@@ -80,6 +81,8 @@ This library supports the following PHP versions:
 * PHP 7.4
 * PHP 8.0
 * PHP 8.1
+* PHP 8.2
+* PHP 8.3
 
 ## Stark Infra API documentation
 
@@ -1328,6 +1331,51 @@ $methods = CardMethod::query([
 foreach ($methods as $method) {
     print_r($method);
 }
+```
+
+### SimulatePurchaseAuthorization
+
+#### Simulate a test purchase
+
+You can simulate a purchase authorization to test your integration.
+
+```php
+use StarkInfra\SimulatePurchaseAuthorization;
+
+// Opção 1: Passando os parâmetros diretamente para o método purchase
+$authorization = SimulatePurchaseAuthorization::purchase([
+    "cardNumber" => "1122334455667788",
+    "cardExpiration" => "2025-07",
+    "securityCode" => 123,
+    "amount" => 2500,
+    "merchantName" => "Test Merchant 1",
+    "merchantCategoryCode" => "hotelsMotelsAndResorts",
+    "merchantCountryCode" => "BRA",
+    "merchantCurrencyCode" => "BRL",
+    "methodCode" => "contactless",
+    "walletId" => "apple",
+    "status" => "approved",
+    "partial" => false
+]);
+
+// Opção 2: Criando um objeto SimulatePurchaseAuthorization primeiro
+$params = new SimulatePurchaseAuthorization([
+    "cardNumber" => "1122334455667788",
+    "cardExpiration" => "2025-07",
+    "securityCode" => 123,
+    "amount" => 2500,
+    "merchantName" => "Test Merchant 1",
+    "merchantCategoryCode" => "hotelsMotelsAndResorts",
+    "merchantCountryCode" => "BRA",
+    "merchantCurrencyCode" => "BRL",
+    "methodCode" => "contactless",
+    "walletId" => "apple",
+    "status" => "",
+    "partial" => false
+]);
+$authorization = SimulatePurchaseAuthorization::purchase($params);
+
+print_r($authorization);
 ```
 
 ## Pix
@@ -3326,8 +3374,6 @@ print_r($request)
 ## PATCH
 
 You can perform a PATCH request to any StarkInfra route.
-
-It's possible to update a single item of a StarkInfra resource.
 ```php
 use StarkInfra\Request;
 
