@@ -27,6 +27,7 @@ include_once("creditHolmesLog.php");
 include_once("creditNote.php");
 include_once("creditNoteLog.php");
 include_once("creditPreview.php");
+include_once("SimulatePurchaseAuthorization.php");
 include_once("dynamicBrcode.php");
 include_once("event.php");
 include_once("individualDocument.php");
