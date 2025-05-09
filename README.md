@@ -40,7 +40,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
         - [Enums](#issuing-enums): Query enums related to the issuing purchases, such as merchant categories, countries and card purchase methods
-        - [SimulatePurchaseAuthorization](#simulate-card-purchase): Process purchase authorizations in the sandbox environment
+        - [SimulatePurchaseAuthorization](#simulate-card-authorization): Process purchase authorizations in the sandbox environment
     - [Pix](#pix)
         - [PixRequests](#create-pixrequests): Create Pix transactions
         - [PixReversals](#create-pixreversals): Reverse Pix transactions
@@ -1332,17 +1332,16 @@ foreach ($methods as $method) {
     print_r($method);
 }
 ```
+## Simulate Card Authorization
 
-### SimulatePurchaseAuthorization
-
-#### Simulate a test purchase
+### Simulate a test purchase authorization in the sandbox environment
 
 You can simulate a purchase authorization to test your integration.
 
 ```php
 use StarkInfra\SimulatePurchaseAuthorization;
 
-// Opção 1: Passando os parâmetros diretamente para o método purchase
+// Option 1: using purchase method
 $authorization = SimulatePurchaseAuthorization::purchase([
     "cardNumber" => "1122334455667788",
     "cardExpiration" => "2025-07",
