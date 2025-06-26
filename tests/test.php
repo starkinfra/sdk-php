@@ -3,6 +3,7 @@
 namespace Test;
 require_once('vendor/autoload.php');
 include_once("tests/utils/rule.php");
+include_once("tests/utils/dynamicBrcode.php");
 
 
 $projectId = $_SERVER["SANDBOX_INFRA_ID"]; # "9999999999999999",

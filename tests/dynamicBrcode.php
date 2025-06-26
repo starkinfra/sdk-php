@@ -6,6 +6,7 @@ use \Exception;
 use \DateInterval;
 use \DateTimeZone;
 use StarkInfra\DynamicBrcode;
+use Test\Utils\UtilsDynamicBrcode;
 use StarkCore\Error\InvalidSignatureError;
 
 
@@ -15,11 +16,67 @@ class TestDynamicBrcode
     const VALID_SIGNATURE = "MEYCIQC+Ks0M54DPLEbHIi0JrMiWbBFMRETe/U2vy3gTiid3rAIhANMmOaxT03nx2bsdo+vg6EMhWGzdphh90uBH9PY2gJdd";
     const INVALID_SIGNATURE = "MEYCIVC+Ks0M54DPLEbHIi0JrMiWbBFMRETe/U2vy3gTiid3rAIhANMmOaxT03nx2bsdo+vg6EMhWGzdphh90uBH9PY2gJdd";
         
-    public function create()
+    public function createInstantBrcode()
     {
-        $brcode = DynamicBrcode::create([TestDynamicBrcode::brcodeExample()])[0];
+        $type = "instant";
+        $createdBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
 
-        if (is_null($brcode->uuid)) {
+        if ($createdBrcode->type !== $type) {
+            throw new Exception("failed");
+        }
+        if (is_null($createdBrcode->uuid)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createDueBrcode()
+    {
+        $type = "due";
+        $createdBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+
+        if ($createdBrcode->type !== $type) {
+            throw new Exception("failed");
+        }
+        if (is_null($createdBrcode->uuid)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createSubscriptionBrcode()
+    {
+        $type = "subscription";
+        $createdBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        
+        if ($createdBrcode->type !== $type) {
+            throw new Exception("failed");
+        }
+        if (is_null($createdBrcode->uuid)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createSubscriptionAndInstantBrcode()
+    {
+        $type = "subscriptionAndInstant";
+        $createdBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+
+        if ($createdBrcode->type !== $type) {
+            throw new Exception("failed");
+        }
+        if (is_null($createdBrcode->uuid)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createDueAndOrSubscriptionBrcode()
+    {
+        $type = "dueAndOrSubscription";
+        $createdBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        
+        if ($createdBrcode->type !== "dueAndOrSubscription") {
+            throw new Exception("failed");
+        }
+        if (is_null($createdBrcode->uuid)) {
             throw new Exception("failed");
         }
     }
@@ -141,14 +198,16 @@ class TestDynamicBrcode
         }
     }
 
-    public static function brcodeExample()
+    public static function createDynamicBrcodeByType($type)
     {
-        return new DynamicBrcode([
-            "name" => ['Arya Stark', 'Jamie Lannister', 'Ned Stark'][rand(0, 2)],
-            "city" => ['Sao Paulo', 'Rio de Janeiro'][rand(0, 1)],
-            "externalId" => strval(mt_rand(0, 99999999999999999)),
-            "type" => ['instant', 'due'][rand(0, 1)],
-        ]);
+        return DynamicBrcode::create([
+            new DynamicBrcode([
+                "name" => ['Arya Stark', 'Jamie Lannister', 'Ned Stark'][rand(0, 2)],
+                "city" => ['Sao Paulo', 'Rio de Janeiro'][rand(0, 1)],
+                "externalId" => strval(mt_rand(0, 99999999999999999)),
+                "type" => $type
+            ]
+        )])[0];
     }
 
     public static function dueReadExample()
@@ -203,12 +262,28 @@ echo "\n\nDynamicBrcode:";
 
 $test = new TestDynamicBrcode();
 
-echo "\n\t- create";
-$test->create();
-echo " - OK";
-
 echo "\n\t- query and get";
 $test->queryAndGet();
+echo " - OK";
+
+echo "\n\t- test create instant Brcode";
+$test->createInstantBrcode();
+echo " - OK";
+
+echo "\n\t- test create due Brcode";
+$test->createDueBrcode();
+echo " - OK";
+
+echo "\n\t- test create subscription Brcode";
+$test->createSubscriptionBrcode();
+echo " - OK";
+
+echo "\n\t- test create subscriptionAndInstant Brcode";
+$test->createSubscriptionAndInstantBrcode();
+echo " - OK";
+
+echo "\n\t- test create dueAndOrSubscription Brcode";
+$test->createDueAndOrSubscriptionBrcode();
 echo " - OK";
 
 echo "\n\t- query";

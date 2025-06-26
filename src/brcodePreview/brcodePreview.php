@@ -4,6 +4,7 @@ namespace StarkInfra;
 use StarkInfra\Utils\Rest;
 use StarkCore\Utils\Checks;
 use StarkCore\Utils\Resource;
+use StarkInfra\brcodePreview\Subscription;
 
 
 class BrcodePreview extends Resource
@@ -21,6 +22,7 @@ class BrcodePreview extends Resource
     public $cashierBankCode;
     public $cashierType;
     public $discountAmount;
+    public $due;
     public $fineAmount;
     public $interestAmount;
     public $keyId;
@@ -30,6 +32,7 @@ class BrcodePreview extends Resource
     public $reductionAmount;
     public $scheduled;
     public $status;
+    public $subscription;
     public $taxId;
 
     /**
@@ -55,6 +58,7 @@ class BrcodePreview extends Resource
         - cashierBankCode [string]: Cashier's bank code. ex: "20018183"
         - cashierType [string]: Cashier's type. Options: "merchant", "participant" and "other"
         - discountAmount [integer]: Discount value calculated over nominalAmount. ex: 3000
+        - due [DateTime]: BR Code due date
         - fineAmount [integer]: Fine value calculated over nominalAmount. ex: 20000
         - interestAmount [integer]: Interest value calculated over nominalAmount. ex: 10000
         - keyId [string]: Receiver's PixKey id. ex: "+5511989898989"
@@ -64,6 +68,7 @@ class BrcodePreview extends Resource
         - reductionAmount [integer]: Reduction value to discount from nominalAmount. ex: 1000
         - scheduled [DateTime]: Date of payment execution.
         - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
+        - subscription [Subscription object]: BR code subscription information
         - taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
      */
     function __construct(array $params)
@@ -82,6 +87,7 @@ class BrcodePreview extends Resource
         $this->cashierBankCode = Checks::checkParam($params, "cashierBankCode");
         $this->cashierType = Checks::checkParam($params, "cashierType");
         $this->discountAmount = Checks::checkParam($params, "discountAmount");
+        $this->due = empty($params['due']) ? null : Checks::checkDateTime(Checks::checkParam($params, "due"));
         $this->fineAmount = Checks::checkParam($params, "fineAmount");
         $this->interestAmount = Checks::checkParam($params, "interestAmount");
         $this->keyId = Checks::checkParam($params, "keyId");
@@ -91,6 +97,7 @@ class BrcodePreview extends Resource
         $this->reductionAmount = Checks::checkParam($params, "reductionAmount");
         $this->scheduled = Checks::checkDateTime(Checks::checkParam($params, "scheduled"));
         $this->status = Checks::checkParam($params, "status");
+        $this->subscription = Subscription::parseSubscription(Checks::checkParam($params, "subscription"));
         $this->taxId = Checks::checkParam($params, "taxId");
 
         Checks::checkParams($params);
