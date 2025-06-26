@@ -44,7 +44,7 @@ class DynamicBrcode extends Resource
         - externalId [string]: string that must be unique among all your DynamicBrcodes. Duplicated external ids will cause failures. ex: "my-internal-id-123456"
 
     ## Parameters (optional):
-        - type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due"
+        - type [string, default "instant"]: type of the DynamicBrcode. Options: "instant", "due", "subscription", "subscriptionAndInstant" or "dueAndOrSubscription"
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
 
     ## Attributes (return-only):

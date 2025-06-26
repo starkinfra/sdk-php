@@ -1,10 +1,12 @@
 <?php
 
 namespace Test\BrcodePreview;
+use DateTime;
 use \Exception;
+use \Test\Utils\UtilsDynamicBrcode;
+use StarkInfra\StaticBrcode;
 use StarkInfra\BrcodePreview;
 use StarkInfra\DynamicBrcode;
-use StarkInfra\StaticBrcode;
 
 
 class TestBrcodePreview
@@ -41,6 +43,98 @@ class TestBrcodePreview
             $index++;
         }
     }
+
+    public function createPreviewFromInstantBrcode()
+    {
+        $type = "instant";
+        $createdDynamicBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        $preview = TestBrcodePreview::createBrcodePreviewById($createdDynamicBrcode->id); 
+
+        if ($preview->id != $createdDynamicBrcode->id) {
+            throw new Exception("failed");
+        }
+        if ($preview->due instanceof DateTime) {
+            throw new Exception("failed");
+        }
+        if ($preview->subscription != null) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createPreviewFromDueBrcode()
+    {
+        $type = "due";
+        $createdDynamicBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        $preview = TestBrcodePreview::createBrcodePreviewById($createdDynamicBrcode->id);
+
+        if ($preview->id != $createdDynamicBrcode->id) {
+            throw new Exception("failed");
+        }
+        if (!$preview->due instanceof DateTime) {
+            throw new Exception("failed");
+        }
+        if ($preview->subscription != null) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createPreviewFromSubscriptionBrcode()
+    {
+        $type = "subscription";
+        $createdDynamicBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        $preview = TestBrcodePreview::createBrcodePreviewById($createdDynamicBrcode->id);
+
+        if ($preview->id != $createdDynamicBrcode->id) {
+            throw new Exception("failed");
+        }
+        if ($preview->payerId != "") {
+            throw new Exception("failed");
+        }
+        if ($preview->subscription->type != "qrcode") {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createPreviewFromSubscriptionAndInstantBrcode()
+    {
+        $type = "subscriptionAndInstant";
+        $createdDynamicBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        $preview = TestBrcodePreview::createBrcodePreviewById($createdDynamicBrcode->id);
+
+        if ($preview->id != $createdDynamicBrcode->id) {
+            throw new Exception("failed");
+        }
+        if ($preview->payerId == "") {
+            throw new Exception("failed");
+        }
+        if ($preview->subscription->type != "qrcodeAndPayment") {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createPreviewFromDueAndOrSubscriptionBrcode()
+    {
+        $type = "dueAndOrSubscription";
+        $createdDynamicBrcode = UtilsDynamicBrcode::createDynamicBrcodeByType($type);
+        $preview = TestBrcodePreview::createBrcodePreviewById($createdDynamicBrcode->id);
+
+        if ($preview->id != $createdDynamicBrcode->id) {
+            throw new Exception("failed");
+        }
+        if ($preview->payerId == "") {
+            throw new Exception("failed");
+        }
+        if ($preview->subscription->type != "paymentAndOrQrcode") {
+            throw new Exception("failed");
+        }
+    }
+
+    public static function createBrcodePreviewById($id)
+    {
+        return BrcodePreview::create([
+            new BrcodePreview(["id" => $id, "payerId" => "20.018.183/0001-80"]),
+        ])[0];
+    }
 }
 
 echo "\n\nBrcode Preview:";
@@ -49,4 +143,24 @@ $test = new TestBrcodePreview();
 
 echo "\n\t- create";
 $test->create();
+echo " - OK";
+
+echo "\n\t- create br code preview from instant dynamic brcode";
+$test->createPreviewFromInstantBrcode();
+echo " - OK";
+
+echo "\n\t- create br code preview from due dynamic brcode";
+$test->createPreviewFromDueBrcode();
+echo " - OK";
+
+echo "\n\t- create br code preview from subscription dynamic brcode";
+$test->createPreviewFromSubscriptionBrcode();
+echo " - OK";
+
+echo "\n\t- create br code preview from subscriptionAndInstant dynamic brcode";
+$test->createPreviewFromSubscriptionAndInstantBrcode();
+echo " - OK";
+
+echo "\n\t- create br code preview from dueAndOrSubscription dynamic brcode";
+$test->createPreviewFromDueAndOrSubscriptionBrcode();
 echo " - OK";
