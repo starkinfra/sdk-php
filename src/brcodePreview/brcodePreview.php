@@ -4,7 +4,7 @@ namespace StarkInfra;
 use StarkInfra\Utils\Rest;
 use StarkCore\Utils\Checks;
 use StarkCore\Utils\Resource;
-use StarkInfra\brcodePreview\Subscription;
+use StarkInfra\BrcodePreview\Subscription;
 
 
 class BrcodePreview extends Resource
