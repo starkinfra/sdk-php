@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- subcription import in BrcodePreview resource
 
 ## [0.14.0] - 2025-06-27
 ### Added
