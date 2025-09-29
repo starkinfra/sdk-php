@@ -81,7 +81,15 @@ class TestEvent
             throw new Exception("failed");
         }
 
-        $event = Event::update($event->id, true);
+        if ($event->isDelivered == true) {
+            throw new Exception("failed");
+        }
+
+        $event = Event::update($event->id, ["isDelivered" => true]);
+
+        if ($event->isDelivered == false) {
+            throw new Exception("failed");
+        }
     }
 
     public function getPage()

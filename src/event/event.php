@@ -300,8 +300,8 @@ class Event extends Resource
     If isDelivered is true, the event will no longer be returned on queries with isDelivered=false.
 
     ## Parameters (required):
-        - id [array of strings]: Event unique ids. ex: "5656565656565656"
-        - isDelivered [bool]: If true and event hasn't been delivered already, event will be set as delivered. ex: true
+        - id [string]: Event unique id. ex: "5656565656565656"
+        - options [array]: Options to update the Event. ex: ["isDelivered" => true]
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra/Settings::setUser() was used before function call
@@ -309,9 +309,9 @@ class Event extends Resource
     ## Return:
         - target Event with updated attributes
      */
-    public static function update($id, $isDelivered, $user = null)
+    public static function update($id, $options, $user = null)
     {
-        return Rest::patchId($user, Event::resource(), $id, [$isDelivered]);
+        return Rest::patchId($user, Event::resource(), $id, $options);
     }
 
     /**
