@@ -64,16 +64,16 @@ class SimulatePurchaseAuthorization extends Resource
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->status = Checks::checkParam($params, "status");
         $this->partial = Checks::checkParam($params, "partial");
-        
+
         Checks::checkParams($params);
     }
-    
+
     /**
     # Simulate a SimulatePurchaseAuthorization
-    
+
     Send a SimulatePurchaseAuthorization request to simulate a purchase authorization
     in the sandbox environment.
-    
+
     ## Parameters (required):
         - params [array]: array with purchase authorization parameters
             - id [string]: unique id returned when SimulatePurchaseAuthorization is created. ex: "5656565656565656"
@@ -89,15 +89,30 @@ class SimulatePurchaseAuthorization extends Resource
             - walletId [string, default null]: wallet ID. ex: "apple"
             - status [string, default null]: status of the purchase. Options: "approved", "canceled", "denied", "confirmed", "voided"
             - partial [boolean, default false]: if the purchase is partial.
-    
+
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
-    
+
     ## Return:
         - SimulatePurchaseAuthorization object with simulated purchase data
     */
     public static function purchase($params, $user = null)
     {
-        return Rest::postRaw($user, 'ditto/issuing-purchase', $params,'joker');
+        return Rest::postRaw($user, 'ditto/issuing-purchase', $params, 'joker');
     }
-} 
+
+    public static function cancel($purchaseId, $params = [], $user = null)
+    {
+        return Rest::patchRaw($user, 'ditto/issuing-purchase/' . $purchaseId, $params, 'joker');
+    }
+
+    public static function confirm($purchaseId, $amount, $user = null)
+    {
+        return Rest::patchRaw($user, 'ditto/issuing-purchase/' . $purchaseId, ['amount' => $amount, 'status' => 'confirmed'], 'joker');
+    }
+
+    public static function void($purchaseId, $user = null)
+    {
+        return Rest::patchRaw($user, 'ditto/issuing-purchase/' . $purchaseId, ['amount' => 0, 'status' => 'voided'], 'joker');
+    }
+}
