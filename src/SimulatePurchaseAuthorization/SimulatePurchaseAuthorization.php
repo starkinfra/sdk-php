@@ -120,4 +120,9 @@ class SimulatePurchaseAuthorization extends Resource
     {
         return Rest::patchRaw($user, 'ditto/issuing-purchase/' . $purchaseId, ['amount' => $amount, 'status' => 'reversed'], 'joker');
     }
+
+    public static function customStatus($purchaseId, $amount,$status, $user = null)
+    {
+        return Rest::patchRaw($user, 'ditto/issuing-purchase/' . $purchaseId, ['amount' => $amount, 'status' => $status], 'joker');
+    }
 }
