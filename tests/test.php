@@ -68,6 +68,8 @@ include_once("pixChargebackLog.php");
 include_once("pixClaim.php"); 
 include_once("pixClaimLog.php");
 include_once("pixDirector.php");
+include_once("pixDispute.php");
+include_once("pixDisputeLog.php");
 include_once("pixDomain.php");
 include_once("pixInfraction.php"); 
 include_once("pixInfractionLog.php");

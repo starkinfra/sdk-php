@@ -61,6 +61,7 @@ class Event extends Resource
             "issuing-invoice" => Event::issuingInvoiceLogResource(),
             "issuing-purchase" => Event::issuingPurchaseLogResource(),
             "credit-note" => Event::creditNoteLogResource(),
+            "pix-dispute" => Event::pixDisputeLogResource()
         ];
 
         if (!isset($makerOptions[$subscription])) {
@@ -205,6 +206,20 @@ class Event extends Resource
             $array["note"] = API::fromApiJson($note, $array["note"]);
             $log = function ($array) {
                 return new CreditNote\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixDisputeLogResource()
+    {
+        return function ($array) {
+            $dispute = function ($array) {
+                return new PixDispute($array);
+            };
+            $array["dispute"] = API::fromApiJson($dispute, $array["dispute"]);
+            $log = function ($array) {
+                return new PixDispute\Log($array);
             };
             return API::fromApiJson($log, $array);
         };
