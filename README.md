@@ -56,6 +56,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [StaticBrcode](#create-staticbrcodes): Create static Pix BR codes
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
+        - [PixDispute](#create-pixdisputes): Create Pix Disputes
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -1382,7 +1383,7 @@ foreach($requests as $request){
 
 **Note**: Instead of using Pix Request objects, you can also pass each element in dictionary format
 
-## Query PixRequests
+### Query PixRequests
 
 You can query multiple Pix Requests according to filters.
 
@@ -1403,7 +1404,7 @@ foreach($requests as $request){
 }
 ```
 
-## Get a PixRequest
+### Get a PixRequest
 
 After its creation, information on a Pix Request may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -1449,7 +1450,7 @@ sendResponse(  # you should also implement this method to respond the read reque
 );
 ```
 
-## Query PixRequest logs
+### Query PixRequest logs
 
 You can query Pix Request Logs to better understand Pix Request life cycles.
 
@@ -1467,7 +1468,7 @@ foreach($logs as $log){
 }
 ```
 
-## Get a PixRequest log
+### Get a PixRequest log
 
 You can also get a specific log by its id.
 
@@ -1479,7 +1480,7 @@ $log = PixRequest\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Create PixReversals
+### Create PixReversals
 
 You can reverse a PixRequest either partially or totally using a PixReversal.
 
@@ -1506,7 +1507,7 @@ foreach($reversals as $reversal){
 }
 ```
 
-## Query PixReversals
+### Query PixReversals
 
 You can query multiple Pix Reversals according to filters.
 
@@ -1528,7 +1529,7 @@ foreach($reversals as $reversal){
 }
 ```
 
-## Get a PixReversal
+### Get a PixReversal
 
 After its creation, information on a Pix Reversal may be retrieved by its id. Its status indicates whether it has been paid.
 
@@ -1575,7 +1576,7 @@ sendResponse(
 
 ```
 
-## Query PixReversal logs
+### Query PixReversal logs
 
 You can query Pix Reversal logs to better understand Pix Reversal life cycles.
 
@@ -1593,7 +1594,7 @@ foreach($logs as $log){
 }
 ```
 
-## Get a PixReversal log
+### Get a PixReversal log
 
 You can also get a specific log by its id.
 
@@ -1605,7 +1606,7 @@ $log = PixReversal\Log::get("5155165527080960");
 print_r($log);
 ```
 
-## Get your PixBalance
+### Get your PixBalance
 
 To see how much money you have in your account, run:
 
@@ -1617,7 +1618,7 @@ $balance = PixBalance::get();
 print_r($balance);
 ```
 
-## Create a PixStatement
+### Create a PixStatement
 
 Statements are generated directly by the Central Bank and are only available for direct participants.
 To create a statement of all the transactions that happened on your account during a specific day, run:
@@ -1635,7 +1636,7 @@ $statement = PixStatement::create(
 
 print_r($statement)
 ```
-## Query PixStatements
+### Query PixStatements
 
 You can query multiple Pix Statements according to filters.
 
@@ -1652,7 +1653,7 @@ foreach($statements as $statement){
 }
 ```
 
-## Get a PixStatement
+### Get a PixStatement
 
 Statements are only available for direct participants. To get a Pix Statement by its id:
 
@@ -1664,7 +1665,7 @@ $statement = PixStatement::get("5155966664310784");
 print_r($statement);
 ```
 
-## Get a PixStatement .csv file
+### Get a PixStatement .csv file
 
 To get a .csv file of a Pix Statement using its id, run:
 
@@ -2467,7 +2468,7 @@ sendResponse(  # you should also implement this method to respond the read reque
 );
 ```
 
-## Create BrcodePreviews
+### Create BrcodePreviews
 
 You can create BrcodePreviews to preview BR Codes before paying them.
 
@@ -2488,6 +2489,104 @@ $previews = BrcodePreview::create([
 foreach ($previews as $preview) {
     print_r($preview);
 }
+```
+
+### Create PixDisputes
+
+Pix disputes can be created when a fraud is detected creating a chain of transactions in order to reverse the funds to the origin.
+
+```php
+use StarkInfra\PixDispute;
+
+$disputes = PixDispute::create([
+    new PixDispute([
+        "referenceId" => "E39908427202512262211TVDIz7IY88S",
+        "method" => "scam",
+        "description" => "Client paid for an item and never received it.",
+        "operatorEmail" => "fraud@company.com",
+        "operatorPhone" => "+5511989898989"
+    ])
+]);
+
+foreach($disputes as $dispute){
+    print_r($dispute);
+}
+```
+
+**Note**: Instead of using PixDispute objects, you can also pass each element in dictionary format
+
+### Query PixDisputes
+
+You can query multiple PixDisputes according to filters.
+
+```php
+use StarkInfra\PixDispute;
+
+$disputes = PixDispute::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" => ['iron', 'suit']
+]);
+
+foreach($disputes as $dispute){
+    print_r($dispute);
+}
+```
+
+### Get a PixDispute
+
+After its creation, information on a PixDispute may be retrieved by its id.
+
+```php
+use StarkInfra\PixDispute;
+
+$dispute = PixDispute::get("5155966664310784");
+
+print_r($dispute);
+```
+
+## Cancel a PixDispute
+
+Cancel a specific PixDispute using its id.
+
+```php
+use StarkInfra\PixDispute;
+
+$note = PixDispute::cancel("5155966664310784");
+
+print_r($note);
+```
+
+### Query PixDispute logs
+
+You can query PixDispute Logs to better understand PixDispute life cycles.
+
+```php
+use StarkInfra\PixDispute;
+
+$logs = PixDispute\Log::query([
+    "limit" => 10,
+    "types" => "created",
+    "after" => "2020-04-30",
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+### Get a PixDispute log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixDispute;
+
+$log = PixDispute\Log::get("5155165527080960");
+
+print_r($log);
 ```
 
 ## Lending

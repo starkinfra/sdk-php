@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- PixDispute resource
+- new fields to PixChargeback and PixInfraction resources
 
 ## [0.14.2] - 2025-09-29
 ### Fixed
@@ -20,11 +23,11 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [0.14.1] - 2025-08-04
 ### Fixed
-- subcription import in BrcodePreview resource
+- subscription import in BrcodePreview resource
 
 ## [0.14.0] - 2025-06-27
 ### Added
-- subcription and due attribute to BrcodePreview resource
+- subscription and due attribute to BrcodePreview resource
 
 ## [0.13.1] - 2025-04-17
 ### Added
