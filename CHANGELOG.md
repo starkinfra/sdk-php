@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.15.0] - 2026-01-12
 ### Added
 - PixDispute resource
 - new fields to PixChargeback and PixInfraction resources
