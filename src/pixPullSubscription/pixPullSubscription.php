@@ -156,6 +156,15 @@ class PixPullSubscription extends Resource
 
     Receive an enumerator of PixPullSubscription objects.
 
+    ## Parameters (optional):
+        - limit [integer, default null]: maximum number of objects to be retrieved. ex: 35
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2026-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2026-04-03"
+        - status [string, default null]: filter for status of retrieved objects. ex: "active", "canceled"
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["test"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656"]
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
     ## Return:
         - enumerator of PixPullSubscription objects with updated attributes
      */
@@ -170,6 +179,16 @@ class PixPullSubscription extends Resource
     # Retrieve paged PixPullSubscriptions
 
     Receive a list of up to 100 PixPullSubscription objects and a cursor for the next page.
+
+    ## Parameters (optional):
+        - cursor [string, default null]: cursor returned on the previous page function call
+        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 50
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2026-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2026-04-03"
+        - status [string, default null]: filter for status of retrieved objects. ex: "active", "canceled"
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["test"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656"]
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
 
     ## Return:
         - list of PixPullSubscription objects

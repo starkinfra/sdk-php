@@ -58,7 +58,7 @@ class PixPullRequest extends Resource
 
     ## Attributes (return-only):
         - id [string]
-        - status [string]: Options: "created", "active", "canceled", "failed".
+        - status [string]: Options: "created", "scheduled", "active", "denied", "canceled", "failed".
         - flow [string]: Options: "in", "out".
         - receiverName [string]
         - receiverTaxId [string]
@@ -99,16 +99,63 @@ class PixPullRequest extends Resource
         Checks::checkParams($params);
     }
 
+    /**
+    # Create PixPullRequests
+
+    Send a list of PixPullRequest objects for creation in the Stark Infra API.
+
+    ## Parameters (required):
+        - requests [array of PixPullRequest objects]: PixPullRequest objects to be created.
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - list of PixPullRequest objects with updated attributes
+     */
     public static function create($requests, $user = null)
     {
         return Rest::post($user, PixPullRequest::resource(), $requests);
     }
 
+    /**
+    # Retrieve a specific PixPullRequest
+
+    Receive a single PixPullRequest object by its id.
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - PixPullRequest object with updated attributes
+     */
     public static function get($id, $user = null)
     {
         return Rest::getId($user, PixPullRequest::resource(), $id);
     }
 
+    /**
+    # Retrieve PixPullRequests
+
+    Receive an enumerator of PixPullRequest objects.
+
+    ## Parameters (optional):
+        - limit [integer, default null]: maximum number of objects to be retrieved. ex: 35
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2026-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2026-04-03"
+        - status [string, default null]: filter for status of retrieved objects. ex: "created", "scheduled", "active", "denied", "canceled", "failed"
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["test"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656"]
+        - flow [string, default null]: direction of the request from the sender. ex: "in", "out"
+        - subscriptionIds [array of strings, default null]: filter by the parent PixPullSubscription ids. ex: ["5656565656565656"]
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - enumerator of PixPullRequest objects with updated attributes
+     */
     public static function query($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
@@ -116,6 +163,27 @@ class PixPullRequest extends Resource
         return Rest::getList($user, PixPullRequest::resource(), $options);
     }
 
+    /**
+    # Retrieve paged PixPullRequests
+
+    Receive a list of up to 100 PixPullRequest objects and a cursor for the next page.
+
+    ## Parameters (optional):
+        - cursor [string, default null]: cursor returned on the previous page function call
+        - limit [integer, default 100]: maximum number of objects to be retrieved. ex: 50
+        - after [Date or string, default null]: date filter for objects created only after specified date. ex: "2026-04-03"
+        - before [Date or string, default null]: date filter for objects created only before specified date. ex: "2026-04-03"
+        - status [string, default null]: filter for status of retrieved objects. ex: "created", "scheduled", "active", "denied", "canceled", "failed"
+        - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["test"]
+        - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656"]
+        - flow [string, default null]: direction of the request from the sender. ex: "in", "out"
+        - subscriptionIds [array of strings, default null]: filter by the parent PixPullSubscription ids. ex: ["5656565656565656"]
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - list of PixPullRequest objects with updated attributes
+        - cursor for the next page
+     */
     public static function page($options = [], $user = null)
     {
         $options["after"] = new StarkDate(Checks::checkParam($options, "after"));
@@ -126,8 +194,19 @@ class PixPullRequest extends Resource
     /**
     # Update PixPullRequest
 
-    Change status to "scheduled" or "denied". When denying, `reason` is required:
-    "senderAccountClosed", "senderAccountBlocked", "amountNotAllowed".
+    Change status to "scheduled" or "denied". When denying, `reason` is required.
+
+    ## Parameters (required):
+        - id [string]: PixPullRequest unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - params [array]: associative array of fields to patch. Allowed keys:
+            - status [string]: target status. Options: "scheduled", "denied".
+            - reason [string]: reason for denial. Options: "senderAccountClosed", "senderAccountBlocked", "amountNotAllowed".
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - PixPullRequest object with updated attributes
      */
     public static function update($id, $params = [], $user = null)
     {
@@ -135,9 +214,22 @@ class PixPullRequest extends Resource
     }
 
     /**
-    # Cancel PixPullRequest
+    # Cancel a PixPullRequest
 
-    `reason` is sent as a query parameter on the DELETE request via deleteRaw.
+    Cancel a PixPullRequest by passing the id. `reason` is sent as a query parameter on the
+    DELETE request via `deleteRaw` (the typed `deleteId` relay does not forward query parameters).
+
+    ## Parameters (required):
+        - id [string]: PixPullRequest unique id. ex: "5656565656565656"
+        - reason [string]: cancellation reason.
+            Options as receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested".
+            Options as sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested".
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Not necessary if StarkInfra\Settings::setUser() was used.
+
+    ## Return:
+        - canceled PixPullRequest object
      */
     public static function cancel($id, $reason, $user = null)
     {
