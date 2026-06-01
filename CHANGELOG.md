@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.16.0] - 2026-06-01
 ### Added
 - IndividualAccountRequest and IndividualAccountAttachment resources for the individual account-approval flow
 - Deprecated create pix infraction
