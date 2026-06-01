@@ -99,6 +99,7 @@ class PixInfraction extends Resource
     }
 
     /**
+     * @deprecated Function deprecated since v0.16.0
     # Create PixInfraction objects
 
     Create PixInfraction objects in the Stark Infra API
@@ -114,7 +115,7 @@ class PixInfraction extends Resource
     */
     public static function create($infractions, $user=null)
     {
-        return Rest::post($user, PixInfraction::resource(), $infractions);
+        throw new \Exception("Function deprecated since v0.16.0");
     }
 
     /** 

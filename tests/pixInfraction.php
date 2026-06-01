@@ -10,11 +10,15 @@ class TestPixInfraction
 {
     public function create()
     {
-        $infraction = PixInfraction::create([TestPixInfraction::example()])[0];
-        
-        if (is_null($infraction->id)){
-            throw new Exception("failed");
-        }
+        try {                                                                                                                                                                                                      
+            PixInfraction::create([TestPixInfraction::example()]);                                                                                                                                            
+        } catch (Exception $e) {                                                                                                                                                                              
+            if ($e->getMessage() != "Function deprecated since v0.16.0") {                                                                                                                                    
+                throw new Exception("failed");                                                                                                                                                                
+            }                                                                                                                                                                                                 
+            return;                                                                                                                                                                                           
+        }                                                                                                                                                                                                     
+        throw new Exception("failed");
     }
 
     public function queryAndCancel()
