@@ -85,5 +85,9 @@ include_once("pixStatement.php");
 include_once("staticBrcode.php");
 include_once("webhook.php");
 include_once("request.php");
+include_once("individualAccountRequest.php");
+include_once("individualAccountRequestLog.php");
+include_once("individualAccountAttachment.php");
+include_once("individualAccountAttachmentLog.php");
 
 echo "\n\nAll tests concluded\n\n";

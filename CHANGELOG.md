@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- IndividualAccountRequest and IndividualAccountAttachment resources for the individual account-approval flow
 
 ## [0.15.0] - 2026-01-12
 ### Added

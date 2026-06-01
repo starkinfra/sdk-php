@@ -64,6 +64,8 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Identity](#identity)
         - [IndividualIdentity](#create-individualidentities): Create individual identities
         - [IndividualDocument](#create-individualdocuments): Create individual documents
+        - [IndividualAccountRequest](#create-individualaccountrequests): Open an individual Stark Infra account
+        - [IndividualAccountAttachment](#create-individualaccountattachments): Attach documents to an individual account request
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -3151,6 +3153,218 @@ You can also get a specific log by its id.
 use StarkInfra\IndividualDocument\Log;
 
 $log = IndividualDocument\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create IndividualAccountRequests
+
+You can create an IndividualAccountRequest to open a Stark Infra account for a natural person. The approval flow runs asynchronously.
+
+```php
+use StarkInfra\IndividualAccountRequest;
+
+$requests = IndividualAccountRequest::create([
+    new IndividualAccountRequest([
+        "name" => "Tony Stark",
+        "taxId" => "012.345.678-90",
+        "address" => [
+            "street" => "Rua Pamplona",
+            "number" => "145",
+            "neighborhood" => "Bela Vista",
+            "city" => "Sao Paulo",
+            "state" => "SP",
+            "zipCode" => "05724005"
+        ],
+        "income" => 1000000,
+        "tags" => ["employees", "monthly"]
+    ])
+]);
+
+foreach($requests as $request){
+    print_r($request);
+}
+```
+
+**Note**: Instead of using IndividualAccountRequest objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountRequests
+
+You can query multiple individual account requests according to filters.
+
+```php
+use StarkInfra\IndividualAccountRequest;
+
+$requests = IndividualAccountRequest::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "created",
+    "tags" => ["employees", "monthly"]
+]);
+
+foreach($requests as $request){
+    print_r($request);
+}
+```
+
+### Get an IndividualAccountRequest
+
+After its creation, information on an individual account request may be retrieved by its id.
+
+```php
+use StarkInfra\IndividualAccountRequest;
+
+$request = IndividualAccountRequest::get("5189530608992256");
+
+print_r($request);
+```
+
+### Update an IndividualAccountRequest
+
+You can update a specific individual account request by passing its id and the fields to change.
+
+```php
+use StarkInfra\IndividualAccountRequest;
+
+$request = IndividualAccountRequest::update("5189530608992256", [
+    "status" => "processing"
+]);
+
+print_r($request);
+```
+
+### Query IndividualAccountRequest logs
+
+You can query individual account request logs to better understand individual account request life cycles.
+
+```php
+use StarkInfra\IndividualAccountRequest\Log;
+
+$logs = IndividualAccountRequest\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get an IndividualAccountRequest log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\IndividualAccountRequest\Log;
+
+$log = IndividualAccountRequest\Log::get("5189530608992256");
+
+print_r($log);
+```
+
+### Create IndividualAccountAttachments
+
+You can create an IndividualAccountAttachment to attach supporting documents to an individual account request. You must reference the desired individual account request by its id. Pass the raw file content and its MIME type; the SDK encodes it before sending.
+
+```php
+use StarkInfra\IndividualAccountAttachment;
+
+$attachments = IndividualAccountAttachment::create([
+    new IndividualAccountAttachment([
+        "type" => "identity-front",
+        "content" => file_get_contents("identity-front.png"),
+        "contentType" => "image/png",
+        "accountRequestId" => "5189530608992256",
+        "tags" => ["employees", "monthly"]
+    ]),
+    new IndividualAccountAttachment([
+        "type" => "identity-back",
+        "content" => file_get_contents("identity-back.png"),
+        "contentType" => "image/png",
+        "accountRequestId" => "5189530608992256",
+        "tags" => ["employees", "monthly"]
+    ])
+]);
+
+foreach($attachments as $attachment){
+    print_r($attachment);
+}
+```
+
+**Note**: Instead of using IndividualAccountAttachment objects, you can also pass each element in dictionary format
+
+### Query IndividualAccountAttachments
+
+You can query multiple individual account attachments according to filters.
+
+```php
+use StarkInfra\IndividualAccountAttachment;
+
+$attachments = IndividualAccountAttachment::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "created",
+    "tags" => ["employees", "monthly"]
+]);
+
+foreach($attachments as $attachment){
+    print_r($attachment);
+}
+```
+
+### Get an IndividualAccountAttachment
+
+After its creation, information on an individual account attachment may be retrieved by its id.
+
+```php
+use StarkInfra\IndividualAccountAttachment;
+
+$attachment = IndividualAccountAttachment::get("5189530608992256");
+
+print_r($attachment);
+```
+
+### Cancel an IndividualAccountAttachment
+
+You can cancel an individual account attachment by its id.
+
+```php
+use StarkInfra\IndividualAccountAttachment;
+
+$attachment = IndividualAccountAttachment::cancel("5189530608992256");
+
+print_r($attachment);
+```
+
+### Query IndividualAccountAttachment logs
+
+You can query individual account attachment logs to better understand individual account attachment life cycles.
+
+```php
+use StarkInfra\IndividualAccountAttachment\Log;
+
+$logs = IndividualAccountAttachment\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get an IndividualAccountAttachment log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\IndividualAccountAttachment\Log;
+
+$log = IndividualAccountAttachment\Log::get("5189530608992256");
 
 print_r($log);
 ```
