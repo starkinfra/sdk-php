@@ -25,6 +25,14 @@ class PixChargeback extends Resource
     public $status;
     public $created;
     public $updated;
+    public $bacenId;
+    public $disputeId;
+    public $isMonitoringRequired;
+    public $reversalAccountNumber;
+    public $reversalAccountType;
+    public $reversalBankCode;
+    public $reversalBranchCode;
+    public $reversalTaxId;
 
     /**
     # PixChargeback object
@@ -60,6 +68,14 @@ class PixChargeback extends Resource
         - status [string]: current PixChargeback status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixChargeback. 
         - updated [DateTime]: latest update datetime for the PixChargeback. 
+        - bacenId [string]: unique id returned by the Central Bank for the PixChargeback. ex: "817fc523-9e9d-40ab-9e53-dacb71454a05"
+        - disputeId [string]: id of the dispute associated with the PixChargeback.
+        - isMonitoringRequired [bool]: indicates if monitoring is required for this chargeback.
+        - reversalAccountNumber [string]: account number for the reversal transaction.
+        - reversalAccountType [string]: account type for the reversal transaction.
+        - reversalBankCode [string]: bank code for the reversal transaction.
+        - reversalBranchCode [string]: branch code for the reversal transaction.
+        - reversalTaxId [string]: tax ID for the reversal transaction.
      */
     function __construct(array $params)
     {
@@ -78,6 +94,14 @@ class PixChargeback extends Resource
         $this-> result = Checks::checkParam($params, "result");
         $this-> flow = Checks::checkParam($params, "flow");
         $this-> status = Checks::checkParam($params, "status");
+        $this-> bacenId = Checks::checkParam($params, "bacenId");
+        $this-> disputeId = Checks::checkParam($params, "disputeId");
+        $this-> isMonitoringRequired = Checks::checkParam($params, "isMonitoringRequired");
+        $this-> reversalAccountNumber = Checks::checkParam($params, "reversalAccountNumber");
+        $this-> reversalAccountType = Checks::checkParam($params, "reversalAccountType");
+        $this-> reversalBankCode = Checks::checkParam($params, "reversalBankCode");
+        $this-> reversalBranchCode = Checks::checkParam($params, "reversalBranchCode");
+        $this-> reversalTaxId = Checks::checkParam($params, "reversalTaxId");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         

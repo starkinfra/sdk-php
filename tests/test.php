@@ -3,6 +3,7 @@
 namespace Test;
 require_once('vendor/autoload.php');
 include_once("tests/utils/rule.php");
+include_once("tests/utils/dynamicBrcode.php");
 
 
 $projectId = $_SERVER["SANDBOX_INFRA_ID"]; # "9999999999999999",
@@ -68,6 +69,8 @@ include_once("pixChargebackLog.php");
 include_once("pixClaim.php"); 
 include_once("pixClaimLog.php");
 include_once("pixDirector.php");
+include_once("pixDispute.php");
+include_once("pixDisputeLog.php");
 include_once("pixDomain.php");
 include_once("pixInfraction.php"); 
 include_once("pixInfractionLog.php");
@@ -83,5 +86,9 @@ include_once("pixStatement.php");
 include_once("staticBrcode.php");
 include_once("webhook.php");
 include_once("request.php");
+include_once("individualAccountRequest.php");
+include_once("individualAccountRequestLog.php");
+include_once("individualAccountAttachment.php");
+include_once("individualAccountAttachmentLog.php");
 
 echo "\n\nAll tests concluded\n\n";

@@ -14,6 +14,29 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 
+
+## [0.16.0] - 2026-06-01
+### Added
+- IndividualAccountRequest and IndividualAccountAttachment resources for the individual account-approval flow
+- Deprecated create pix infraction
+
+## [0.15.0] - 2026-01-12
+### Added
+- PixDispute resource
+- new fields to PixChargeback and PixInfraction resources
+
+## [0.14.2] - 2025-09-29
+### Fixed
+- event parse isDelivered parameter
+
+## [0.14.1] - 2025-08-04
+### Fixed
+- subscription import in BrcodePreview resource
+
+## [0.14.0] - 2025-06-27
+### Added
+- subscription and due attribute to BrcodePreview resource
+
 ## [0.13.2] - 2025-05-01
 ### Added
 - SimulatePurchaseAuthorization resource

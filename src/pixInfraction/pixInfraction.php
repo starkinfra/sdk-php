@@ -28,6 +28,9 @@ class PixInfraction extends Resource
     public $updated;
     public $operatorEmail;
     public $operatorPhone;
+    public $amount;
+    public $bacenId;
+    public $disputeId;
 
     /**
     # PixInfraction object
@@ -42,13 +45,13 @@ class PixInfraction extends Resource
         - referenceId [string]: endToEndId or returnId of the transaction being reported. ex: "E20018183202201201450u34sDGd19lz"
         - type [string]: type of Pix infraction. Options: "reversal", "reversalChargeback"
         - method [string]: method of Pix Infraction. Options: "scam", "unauthorized", "coercion", "invasion", "other"
+        - operatorEmail [string]: contact email of the operator responsible for the PixInfraction.
+        - operatorPhone [string]: contact phone number of the operator responsible for the PixInfraction.
 
     ## Parameters (optional):
         - description [string, default null]: description for any details that can help with the infraction investigation.
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
         - fraudType [string, default null]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
-        - operatorEmail [string, default null]: contact email of the operator responsible for the PixInfraction.
-        - operatorPhone [string, default null]: contact phone number of the operator responsible for the PixInfraction.
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixInfraction is created. ex: "5656565656565656"
@@ -61,7 +64,10 @@ class PixInfraction extends Resource
         - result [string]: result after the analysis of the PixInfraction by the receiving party. Options: "agreed", "disagreed"
         - status [string]: current PixInfraction status. Options: "created", "failed", "delivered", "closed", "canceled".
         - created [DateTime]: created datetime for the PixInfraction. 
-        - updated [DateTime]: latest update datetime for the PixInfraction. 
+        - updated [DateTime]: latest update datetime for the PixInfraction.
+        - amount [integer]: amount in cents of the reported transaction.
+        - bacenId [string]: unique id returned by the Central Bank for the PixInfraction. ex: "3b10c3ef-3117-4ab8-815d-d3867ada7560"
+        - disputeId [string]: id of the PixDispute associated with the PixInfraction.
     */
     function __construct(array $params)
     {
@@ -70,11 +76,11 @@ class PixInfraction extends Resource
         $this-> referenceId = Checks::checkParam($params, "referenceId");
         $this-> type = Checks::checkParam($params, "type");
         $this-> method=Checks::checkParam($params, "method");
+        $this-> operatorEmail = Checks::checkParam($params, "operatorEmail");
+        $this-> operatorPhone = Checks::checkParam($params, "operatorPhone");
         $this-> description = Checks::checkParam($params, "description");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> fraudType = Checks::checkParam($params, "fraudType");
-        $this-> operatorEmail = Checks::checkParam($params, "operatorEmail");
-        $this-> operatorPhone = Checks::checkParam($params, "operatorPhone");
         $this-> fraudId = Checks::checkParam($params, "fraudId");
         $this-> creditedBankCode = Checks::checkParam($params, "creditedBankCode");
         $this-> flow = Checks::checkParam($params, "flow");
@@ -82,6 +88,9 @@ class PixInfraction extends Resource
         $this-> debitedBankCode = Checks::checkParam($params, "debitedBankCode");
         $this-> reportedBy = Checks::checkParam($params, "reportedBy");
         $this-> result = Checks::checkParam($params, "result");
+        $this-> amount = Checks::checkParam($params, "amount");
+        $this-> bacenId = Checks::checkParam($params, "bacenId");
+        $this-> disputeId = Checks::checkParam($params, "disputeId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
@@ -90,6 +99,7 @@ class PixInfraction extends Resource
     }
 
     /**
+     * @deprecated Function deprecated since v0.16.0
     # Create PixInfraction objects
 
     Create PixInfraction objects in the Stark Infra API
@@ -105,7 +115,7 @@ class PixInfraction extends Resource
     */
     public static function create($infractions, $user=null)
     {
-        return Rest::post($user, PixInfraction::resource(), $infractions);
+        throw new \Exception("Function deprecated since v0.16.0");
     }
 
     /** 
