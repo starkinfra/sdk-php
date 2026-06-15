@@ -29,6 +29,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [EmbossingKit](#query-issuingembossingkits): View your current embossing kits
         - [Stock](#query-issuingstocks): View your current stock of a certain IssuingDesign linked to an Embosser on the workspace
         - [Restock](#create-issuingrestocks): Create restock orders of a specific IssuingStock object
+        - [StockRule](#create-issuingstockrules): Create notification rules attached to an IssuingStock
         - [EmbossingRequest](#create-issuingembossingrequests): Create embossing requests
         - [TokenRequest](#create-an-issuingtokenrequest): Generate the payload to create the token
         - [Token](#process-token-authorizations): Authorize and manage your tokens
@@ -738,6 +739,85 @@ use StarkInfra\IssuingRestock;
 $log = IssuingRestock\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+### Create IssuingStockRules
+
+You can create notification rules attached to a specific IssuingStock. When the linked stock balance reaches the minimumBalance, the listed recipients are notified.
+
+```php
+use StarkInfra\IssuingStockRule;
+
+$rules = IssuingStockRule::create([
+    new IssuingStockRule([
+        "minimumBalance" => 1000,
+        "stockId" => "5136459887542272",
+        "tags" => ["card", "corporate"],
+        "emails" => ["john.doe@enterprise.com"],
+        "phones" => ["+55 (11) 91234 5678"],
+    ]),
+]);
+
+foreach ($rules as $rule) {
+    print_r($rule);
+}
+```
+
+**Note**: Instead of using IssuingStockRule objects, you can also pass each element in dictionary format
+
+### Query IssuingStockRules
+
+You can query multiple IssuingStockRule objects according to filters.
+
+```php
+use StarkInfra\IssuingStockRule;
+
+$rules = IssuingStockRule::query([
+    "limit" => 1,
+    "status" => ["active"],
+    "stockIds" => ["5136459887542272"],
+    "tags" => ["card", "corporate"],
+]);
+
+foreach ($rules as $rule) {
+    print_r($rule);
+}
+```
+
+### Get an IssuingStockRule
+
+After its creation, information on an IssuingStockRule may be retrieved by its id.
+
+```php
+use StarkInfra\IssuingStockRule;
+
+$rule = IssuingStockRule::get("5664445921492992");
+
+print_r($rule);
+```
+
+### Update an IssuingStockRule
+
+You can update a specific IssuingStockRule by its id.
+
+```php
+use StarkInfra\IssuingStockRule;
+
+$rule = IssuingStockRule::update("5664445921492992", ["minimumBalance" => 20000]);
+
+print_r($rule);
+```
+
+### Cancel an IssuingStockRule
+
+You can also cancel a specific IssuingStockRule by its id.
+
+```php
+use StarkInfra\IssuingStockRule;
+
+$rule = IssuingStockRule::cancel("5664445921492992");
+
+print_r($rule);
 ```
 
 ### Create IssuingEmbossingRequests
