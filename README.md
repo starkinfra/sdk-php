@@ -2204,6 +2204,36 @@ $fraud = PixFraud::cancel("5155165527080960");
 print_r($fraud);
 ```
 
+### Query PixFraud logs
+
+You can query PixFraud Logs to better understand PixFraud life cycles.
+
+```php
+use StarkInfra\PixFraud;
+
+$logs = PixFraud\Log::query([
+    "limit" => 10,
+    "types" => "registered",
+    "after" => "2020-04-30",
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+### Get a PixFraud log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixFraud;
+
+$log = PixFraud\Log::get("5155165527080960");
+
+print_r($log);
+```
+
 ### Get a PixUser
 
 You can get a specific fraud statistics of a user with his taxId.
