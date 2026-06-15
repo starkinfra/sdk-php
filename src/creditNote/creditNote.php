@@ -7,6 +7,7 @@ use StarkCore\Utils\Checks;
 use StarkCore\Utils\Resource;
 use StarkCore\Utils\StarkDate;
 use StarkInfra\CreditNote\Invoice;
+use StarkInfra\CreditNote\Rule;
 
 
 class CreditNote extends Resource
@@ -31,11 +32,13 @@ class CreditNote extends Resource
     public $rebateAmount;
     public $tags;
     public $expiration;
+    public $rules;
     public $amount;
     public $documentId;
     public $status;
     public $transactionsIds;
     public $workspaceId;
+    public $debtorWorkspaceId;
     public $taxAmount;
     public $nominalInterest;
     public $interest;
@@ -75,6 +78,7 @@ class CreditNote extends Resource
         - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: 11234 (= R$ 112.34)
         - tags [array of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
         - expiration [DateTinterval or integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration date.
+        - rules [array of CreditNote\Rule objects, default []]: list of CreditNote\Rule objects for modifying transfer behavior. ex: [CreditNote\Rule(["key" => "invoiceCreationMode", "value" => "scheduled"])]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
@@ -82,6 +86,7 @@ class CreditNote extends Resource
         - status [string]: current status of the CreditNote. ex: "created"
         - transactionIds [array of strings]: ledger transaction ids linked to this CreditNote. ex: ["19827356981273"]
         - workspaceId [string]: ID of the Workspace that generated this CreditNote. ex: "4545454545454545"
+        - debtorWorkspaceId [string]: ID of the debtor's Workspace, when it differs from the Workspace that generated this CreditNote. ex: "4545454545454545"
         - taxAmount [float]: tax amount included in the CreditNote. ex: 100
         - nominalInterest [float]: yearly nominal interest rate of the creditote, in percentage. ex: 11.5
         - interest [float]: yearly effective interest rate of the credit note, in percentage. ex: 12.5
@@ -111,11 +116,13 @@ class CreditNote extends Resource
         $this-> rebateAmount = Checks::checkParam($params, "rebateAmount");
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> expiration = Checks::checkParam($params, "expiration");
+        $this-> rules = CreditNote::parseRules(Checks::checkParam($params, "rules"));
         $this-> amount = Checks::checkParam($params, "amount");
         $this-> documentId = Checks::checkParam($params, "documentId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> transactionsIds = Checks::checkParam($params, "transactionsIds");
         $this-> workspaceId = Checks::checkParam($params, "workspaceId");
+        $this-> debtorWorkspaceId = Checks::checkParam($params, "debtorWorkspaceId");
         $this-> taxAmount = Checks::checkParam($params, "taxAmount");
         $this-> nominalInterest = Checks::checkParam($params, "nominalInterest");
         $this-> interest = Checks::checkParam($params, "interest");
@@ -146,6 +153,27 @@ class CreditNote extends Resource
             array_push($parsedSigners, $parsedSigner($signer));
         }    
         return $parsedSigners;
+    }
+
+    public static function parseRules($rules) {
+        if (is_null($rules)) {
+            return null;
+        }
+        $parsedRules = [];
+        foreach($rules as $rule) {
+            if($rule instanceof Rule) {
+                array_push($parsedRules, $rule);
+                continue;
+            }
+            $parsedRule = function ($array) {
+                $ruleMaker = function ($array) {
+                    return new Rule($array);
+                };
+                return API::fromApiJson($ruleMaker, $array);
+            };
+            array_push($parsedRules, $parsedRule($rule));
+        }
+        return $parsedRules;
     }
 
     private static function parsePayment($payment, $paymentType)

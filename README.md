@@ -3101,6 +3101,7 @@ use StarkInfra\CreditNote;
 use StarkInfra\CreditSigner;
 use StarkInfra\CreditNote\Invoice;
 use StarkInfra\CreditNote\Transfer;
+use StarkInfra\CreditNote\Rule;
 
 $notes = CreditNote::create([
     new CreditNote([
@@ -3130,6 +3131,12 @@ $notes = CreditNote::create([
                 "contact" =>  "jamie.lannister@gmail.com",
                 "method" => "link",
                 "name" => "Jamie Lannister",
+            ])
+        ],
+        "rules" => [
+            new Rule([
+                "key" => "invoiceCreationMode",
+                "value" => "scheduled"
             ])
         ],
         "rebateAmount" => 0,
