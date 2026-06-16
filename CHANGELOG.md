@@ -19,6 +19,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - PixPullRequest resource
 - IssuingStockRule resource
 - PixFraud.Log resource
+- PixKeyHolmes resource
 
 ## [0.16.0] - 2026-06-01
 ### Added

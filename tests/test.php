@@ -80,6 +80,7 @@ include_once("pixInfraction.php");
 include_once("pixInfractionLog.php");
 include_once("pixFraud.php");
 include_once("pixFraudLog.php");
+include_once("pixKeyHolmes.php");
 include_once("pixUser.php");
 include_once("pixKey.php");
 include_once("pixKeyLog.php");

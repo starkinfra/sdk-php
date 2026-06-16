@@ -60,6 +60,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixDispute](#create-pixdisputes): Create Pix Disputes
         - [PixPullSubscription](#create-pixpullsubscriptions): Set up recurring Pix debit authorizations
         - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
+        - [PixKeyHolmes](#create-pixkeyholmes): Investigate the registration status of a Pix Key
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2920,6 +2921,52 @@ use StarkInfra\PixPullRequest;
 
 $log = PixPullRequest\Log::get("5155165527080960");
 print_r($log);
+```
+
+### Create PixKeyHolmes
+
+You can open a PixKeyHolmes to investigate the registration status of a Pix Key in the
+Central Bank's DICT. The case is resolved asynchronously and reports back whether the key
+is registered:
+
+```php
+use StarkInfra\PixKeyHolmes;
+
+$holmes = PixKeyHolmes::create([
+    new PixKeyHolmes([
+        "keyId" => "+5511989898989",
+        "tags" => ["sherlock", "investigation"]
+    ]),
+    new PixKeyHolmes([
+        "keyId" => "valid@sandbox.com"
+    ]),
+]);
+
+foreach($holmes as $sherlock){
+    print_r($sherlock);
+}
+```
+
+**Note**: Instead of using PixKeyHolmes objects, you can also pass each element in dictionary format
+
+### Query PixKeyHolmes
+
+You can query multiple PixKeyHolmes according to filters.
+
+```php
+use StarkInfra\PixKeyHolmes;
+
+$holmes = PixKeyHolmes::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => ["solved"],
+    "tags" => ["sherlock", "investigation"],
+]);
+
+foreach($holmes as $sherlock){
+    print_r($sherlock);
+}
 ```
 
 ## Lending
