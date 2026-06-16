@@ -11,17 +11,14 @@ class TestPixKeyHolmes
     {
         $pixKeyHolmes = PixKeyHolmes::create([TestPixKeyHolmes::exampleHolmes()])[0];
 
-        // [M1] create returns the entity with a server-assigned id
         if (is_null($pixKeyHolmes->id)) {
             throw new Exception("failed");
         }
 
-        // [M1] server-assigned status is present and non-empty (open set: created|solving|solved|failed)
         if (is_null($pixKeyHolmes->status) || $pixKeyHolmes->status === "") {
             throw new Exception("failed");
         }
 
-        // [M6] created and updated are parsed (non-null) on the create response
         if (is_null($pixKeyHolmes->created)) {
             throw new Exception("failed");
         }
@@ -32,14 +29,12 @@ class TestPixKeyHolmes
 
     public function query()
     {
-        // [M2][M3] list with limit; there is NO get to round-trip against
         $pixKeyHolmes = iterator_to_array(PixKeyHolmes::query(["limit" => 1]));
 
         if (count($pixKeyHolmes) != 1) {
             throw new Exception("failed");
         }
 
-        // the listed entity carries a parsed id
         if (is_null($pixKeyHolmes[0]->id)) {
             throw new Exception("failed");
         }
@@ -47,7 +42,6 @@ class TestPixKeyHolmes
 
     public function queryParams()
     {
-        // [M2] every documented query filter serializes through to the wire
         $pixKeyHolmes = iterator_to_array(PixKeyHolmes::query([
             "limit" => 10,
             "after" => "2020-04-01",
@@ -57,7 +51,6 @@ class TestPixKeyHolmes
             "ids" => ["1", "2"],
         ]));
 
-        // absurd filter window => server returns an empty list; passes if params serialize
         if (count($pixKeyHolmes) != 0) {
             throw new Exception("failed");
         }
@@ -65,7 +58,6 @@ class TestPixKeyHolmes
 
     public function getPage()
     {
-        // [M4] pagination walks an opaque cursor, not a numeric page index
         $ids = [];
         $cursor = null;
         for ($i = 0; $i < 2; $i++) {
@@ -87,8 +79,6 @@ class TestPixKeyHolmes
 
     public static function exampleHolmes()
     {
-        // [M5] create accepts ONLY keyId and tags
-        // [M7] tags is optional; supplied here for filtering coverage
         $params = [
             "keyId" => "valid@sandbox.com",
             "tags" => [

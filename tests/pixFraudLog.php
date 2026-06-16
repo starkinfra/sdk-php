@@ -18,14 +18,9 @@ class TestPixFraudLog
         }
 
         foreach ($pixFraudLogs as $log) {
-            // [M11] Log.type is parsed as a free, NON-EMPTY string. Do NOT assert a
-            // closed enum: the live API emits transitional values (e.g. "canceling").
-            // Match the canonical *_log convention (issuingCardLog.php) — verify
-            // parsed/non-empty only.
             if (!is_string($log->type) | strlen($log->type) == 0) {
                 throw new Exception("failed");
             }
-            // [M13] Log.created is parsed to the native DateTime type.
             if (!($log->created instanceof DateTime)) {
                 throw new Exception("failed");
             }
@@ -61,7 +56,6 @@ class TestPixFraudLog
 
     public function fraudIsParsed()
     {
-        // [M10] Log.fraud deserializes the embedded parent into a full PixFraud object.
         $pixFraudLog = iterator_to_array(Log::query(["limit" => 1]))[0];
 
         if (!($pixFraudLog->fraud instanceof PixFraud)) {
@@ -74,10 +68,6 @@ class TestPixFraudLog
 
     public function queryParams()
     {
-        // [M12] Log query/page support limit, after, before, types, fraudIds, ids.
-        // Absurd filters → expect zero matches; the test passes when the filter
-        // parameters serialize correctly to the wire and the server returns an
-        // empty list.
         $pixFraudLogs = iterator_to_array(Log::query([
             "limit" => 10,
             "after" => "2020-04-01",
@@ -94,9 +84,6 @@ class TestPixFraudLog
 
     public function logResolvesUnderParent()
     {
-        // [M14] The parent's exports register the Log so it resolves under the
-        // parent namespace as StarkInfra\PixFraud\Log (PHP equivalent of
-        // pixfraud.log resolving). No network call — pure resolution check.
         if (!class_exists("StarkInfra\\PixFraud\\Log")) {
             throw new Exception("failed");
         }

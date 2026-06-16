@@ -100,5 +100,7 @@ include_once("individualAccountRequest.php");
 include_once("individualAccountRequestLog.php");
 include_once("individualAccountAttachment.php");
 include_once("individualAccountAttachmentLog.php");
+include_once("pixInternalTransactionReport.php");
+include_once("pixInternalTransactionReportLog.php");
 
 echo "\n\nAll tests concluded\n\n";

@@ -61,6 +61,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixPullSubscription](#create-pixpullsubscriptions): Set up recurring Pix debit authorizations
         - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
         - [PixKeyHolmes](#create-pixkeyholmes): Investigate the registration status of a Pix Key
+        - [PixInternalTransactionReport](#create-a-pixinternaltransactionreport): Report internal transactions to the Central Bank
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2967,6 +2968,105 @@ $holmes = PixKeyHolmes::query([
 foreach($holmes as $sherlock){
     print_r($sherlock);
 }
+```
+
+### Create a PixInternalTransactionReport
+
+You can report a transaction that happened internally, outside of the SPI, so it is reflected in the Central Bank's statements:
+
+```php
+use StarkInfra\PixInternalTransactionReport;
+use StarkInfra\Utils\EndToEndId;
+
+$reports = PixInternalTransactionReport::create([
+    new PixInternalTransactionReport([
+        "amount" => 1234,
+        "created" => "2026-06-16T17:23:53.980238+00:00",
+        "endToEndId" => EndToEndId::create("00000665"),
+        "method" => "manual",
+        "referenceType" => "request",
+        "senderAccountNumber" => "76543-8",
+        "senderBranchCode" => "2201",
+        "senderAccountType" => "checking",
+        "senderBankCode" => "00000665",
+        "senderTaxId" => "594.739.480-42",
+        "receiverAccountNumber" => "00000-1",
+        "receiverBranchCode" => "0001",
+        "receiverAccountType" => "checking",
+        "receiverBankCode" => "18236120",
+        "receiverTaxId" => "01234567890",
+        "receiverKeyId" => "+5511989898989",
+    ]),
+]);
+
+foreach($reports as $report){
+    print_r($report);
+}
+```
+
+**Note**: Instead of using PixInternalTransactionReport objects, you can also pass each element in dictionary format
+
+### Query PixInternalTransactionReports
+
+You can query multiple PixInternalTransactionReports according to filters.
+
+```php
+use StarkInfra\PixInternalTransactionReport;
+
+$reports = PixInternalTransactionReport::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => ["success", "failed"],
+    "ids" => ["5656565656565656", "4545454545454545"],
+]);
+
+foreach($reports as $report){
+    print_r($report);
+}
+```
+
+### Get a PixInternalTransactionReport
+
+After its creation, information on a PixInternalTransactionReport may be retrieved by its id.
+
+```php
+use StarkInfra\PixInternalTransactionReport;
+
+$report = PixInternalTransactionReport::get("5155966664310784");
+
+print_r($report);
+```
+
+### Query PixInternalTransactionReport logs
+
+You can query PixInternalTransactionReport Logs to better understand their life cycles.
+
+```php
+use StarkInfra\PixInternalTransactionReport;
+
+$logs = PixInternalTransactionReport\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "types" => ["success", "failed"],
+]);
+
+foreach($logs as $log){
+    print_r($log->id);
+}
+```
+
+### Get a PixInternalTransactionReport log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixInternalTransactionReport;
+
+$log = PixInternalTransactionReport\Log::get("5155165527080960");
+
+print_r($log);
 ```
 
 ## Lending
