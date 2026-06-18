@@ -6,8 +6,8 @@ include_once("tests/utils/rule.php");
 include_once("tests/utils/dynamicBrcode.php");
 
 
-$projectId = $_SERVER["SANDBOX_INFRA_ID"]; # "9999999999999999",
-$privateKey = $_SERVER["SANDBOX_INFRA_PRIVATE_KEY"]; # "-----BEGIN EC PRIVATE KEY-----\nMHQCAQEEIBEcEJZLk/DyuXVsEjz0w4vrE7plPXhQxODvcG1Jc0WToAcGBSuBBAAK\noUQDQgAE6t4OGx1XYktOzH/7HV6FBukxq0Xs2As6oeN6re1Ttso2fwrh5BJXDq75\nmSYHeclthCRgU8zl6H1lFQ4BKZ5RCQ==\n-----END EC PRIVATE KEY-----"
+$projectId = $_SERVER["SANDBOX_INFRA_ID"];
+$privateKey = $_SERVER["SANDBOX_INFRA_PRIVATE_KEY"];
 if (is_null($projectId) || is_null($privateKey)) {
     throw new \Exception("missing test credentials");
 }
@@ -89,5 +89,6 @@ include_once("individualAccountRequest.php");
 include_once("individualAccountRequestLog.php");
 include_once("individualAccountAttachment.php");
 include_once("individualAccountAttachmentLog.php");
+include_once("issuingBillingInvoice.php");
 
 echo "\n\nAll tests concluded\n\n";
