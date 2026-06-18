@@ -16,6 +16,18 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Added
 - CreditNote.pdf and CreditNote.payment methods
 - CreditSigner.resendToken method
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+- limit and maxLimit attributes to IssuingBalance resource
+- isPinDefined attribute to IssuingCard resource
+- customerType attribute to IssuingProduct resource
+- installmentCount, merchantCategoryNumber and confirmed attributes to IssuingPurchase resource
+- schedule and purposes attributes to IssuingRule resource
+- embosserName attribute to IssuingStock resource
+- walletDeviceScore and walletAccountScore attributes to IssuingToken resource
+- group attribute to MerchantCategory resource
+### Changed
+- IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
 - PixPullSubscription::parse method
 
@@ -245,3 +257,4 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingRule resource
 - IssuingTransaction resource
 - IssuingWithdrawal resource
+

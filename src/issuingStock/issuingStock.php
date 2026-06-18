@@ -14,6 +14,7 @@ class IssuingStock extends Resource
     public $balance;
     public $designId;
     public $embosserId;
+    public $embosserName;
     public $updated;
     public $created;
 
@@ -27,6 +28,7 @@ class IssuingStock extends Resource
         - balance [integer]: [EXPANDABLE] current stock balance. ex: 1000
         - designId [string]: IssuingDesign unique id. ex: "5656565656565656"
         - embosserId [string]: Embosser unique id. ex: "5656565656565656"
+        - embosserName [string]: Embosser name. ex: "Stark Embosser"
         - created [DateTime]: creation datetime for the IssuingStock.
         - updated [DateTime]: latest update datetime for the IssuingStock.
      */
@@ -37,6 +39,7 @@ class IssuingStock extends Resource
         $this->balance = Checks::checkParam($params, "balance");
         $this->designId = Checks::checkParam($params, "designId");
         $this->embosserId = Checks::checkParam($params, "embosserId");
+        $this->embosserName = Checks::checkParam($params, "embosserName");
         $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 

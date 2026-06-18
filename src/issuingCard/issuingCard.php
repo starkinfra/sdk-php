@@ -26,6 +26,7 @@ class IssuingCard extends Resource
     public $holderId;
     public $type;
     public $status;
+    public $isPinDefined;
     public $number;
     public $securityCode;
     public $expiration;
@@ -60,6 +61,7 @@ class IssuingCard extends Resource
         - holderId [string]: card holder unique id. ex: "5656565656565656"
         - type [string]: card type. ex: "virtual"
         - status [string]: current IssuingCard status. ex: "canceled" or "active"
+        - isPinDefined [boolean]: indicates whether the card's PIN has been defined. ex: true
         - number [string]: [EXPANDABLE] masked card number. ex: "1234 5678 1234 5678"
         - securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".
         - expiration [string]: [EXPANDABLE] masked card expiration datetime. 
@@ -86,6 +88,7 @@ class IssuingCard extends Resource
         $this->holderId = Checks::checkParam($params, "holderId");
         $this->type = Checks::checkParam($params, "type");
         $this->status = Checks::checkParam($params, "status");
+        $this->isPinDefined = Checks::checkParam($params, "isPinDefined");
         $this->number = Checks::checkParam($params, "number");
         $this->securityCode = Checks::checkParam($params, "securityCode");
         $expiration = Checks::checkParam($params, "expiration");

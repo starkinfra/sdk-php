@@ -17,6 +17,7 @@ class IssuingPurchase extends Resource
     public $cardId;
     public $cardEnding;
     public $purpose;
+    public $installmentCount;
     public $amount;
     public $tax;
     public $issuerAmount;
@@ -27,6 +28,7 @@ class IssuingPurchase extends Resource
     public $merchantCurrencySymbol;
     public $merchantCategoryCode;
     public $merchantCategoryType;
+    public $merchantCategoryNumber;
     public $merchantCountryCode;
     public $acquirerId;
     public $merchantId;
@@ -39,6 +41,7 @@ class IssuingPurchase extends Resource
     public $tags;
     public $issuingTransactionIds;
     public $status;
+    public $confirmed;
     public $description;
     public $metadata;
     public $zipCode;
@@ -61,6 +64,7 @@ class IssuingPurchase extends Resource
         - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
         - cardEnding [string]: last 4 digits of the card number. ex: "1234"
         - purpose [string]: purchase purpose. ex: "purchase"
+        - installmentCount [integer]: quantity of installments to be confirmed. Minimum = 1. ex: 12
         - amount [integer]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
         - tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
         - issuerAmount [integer]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -71,6 +75,7 @@ class IssuingPurchase extends Resource
         - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
         - merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
         - merchantCategoryType [string]: merchant category type. ex: "food"
+        - merchantCategoryNumber [integer]: merchant category number. ex: 5814
         - merchantCountryCode [string]: merchant country code. ex: "USA"
         - acquirerId [string]: acquirer ID. ex: "5656565656565656"
         - merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -85,6 +90,7 @@ class IssuingPurchase extends Resource
     ## Attributes (IssuingPurchase only):
         - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
         - status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed", "voided"
+        - confirmed [boolean]: indicates whether the IssuingPurchase is confirmed. ex: true
         - description [string]:  IssuingPurchase description. ex: "Office Supplies"
         - metadata [dictionary object]: dictionary object used to store additional information about the IssuingPurchase object. ex: [authorizationId => "OjZAqj"]
         - zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -106,6 +112,7 @@ class IssuingPurchase extends Resource
         $this->cardId = Checks::checkParam($params, "cardId");
         $this->cardEnding = Checks::checkParam($params, "cardEnding");
         $this->purpose = Checks::checkParam($params, "purpose");
+        $this->installmentCount = Checks::checkParam($params, "installmentCount");
         $this->amount = Checks::checkParam($params, "amount");
         $this->tax = Checks::checkParam($params, "tax");
         $this->issuerAmount = Checks::checkParam($params, "issuerAmount");
@@ -116,6 +123,7 @@ class IssuingPurchase extends Resource
         $this->merchantCurrencySymbol = Checks::checkParam($params, "merchantCurrencySymbol");
         $this->merchantCategoryCode = Checks::checkParam($params, "merchantCategoryCode");
         $this->merchantCategoryType = Checks::checkParam($params, "merchantCategoryType");
+        $this->merchantCategoryNumber = Checks::checkParam($params, "merchantCategoryNumber");
         $this->merchantCountryCode = Checks::checkParam($params, "merchantCountryCode");
         $this->acquirerId = Checks::checkParam($params, "acquirerId");
         $this->merchantId = Checks::checkParam($params, "merchantId");
@@ -128,6 +136,7 @@ class IssuingPurchase extends Resource
         $this->tags = Checks::checkParam($params, "tags");
         $this->issuingTransactionIds = Checks::checkParam($params, "issuingTransactionIds");
         $this->status = Checks::checkParam($params, "status");
+        $this->confirmed = Checks::checkParam($params, "confirmed");
         $this->description = Checks::checkParam($params, "description");
         $this->metadata = Checks::checkParam($params, "metadata");
         $this->zipCode = Checks::checkParam($params, "zipCode");

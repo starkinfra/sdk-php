@@ -10,6 +10,8 @@ class IssuingBalance extends Resource
 {
 
     public $amount;
+    public $limit;
+    public $maxLimit;
     public $currency;
     public $updated;
 
@@ -24,6 +26,8 @@ class IssuingBalance extends Resource
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
         - amount [integer]: current issuing balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
+        - limit [integer]: current issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
+        - maxLimit [integer]: maximum issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
         - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
         - updated [DateTime]: update datetime for the IssuingBalance. 
      */
@@ -32,6 +36,8 @@ class IssuingBalance extends Resource
         parent::__construct($params);
 
         $this->amount = Checks::checkParam($params, "amount");
+        $this->limit = Checks::checkParam($params, "limit");
+        $this->maxLimit = Checks::checkParam($params, "maxLimit");
         $this->currency = Checks::checkParam($params, "currency");
         $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 

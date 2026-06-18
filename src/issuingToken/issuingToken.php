@@ -15,7 +15,10 @@ class IssuingToken extends Resource
     public $cardId;
     public $walletId;
     public $walletName;
+    public $walletDeviceScore;
+    public $walletAccountScore;
     public $merchantId;
+    public $url;
     public $externalId;
     public $tags;
     public $status;
@@ -40,7 +43,10 @@ class IssuingToken extends Resource
         - cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
         - walletId [string]: wallet provider which the token is bounded to. ex: "google"
         - walletName [string]: wallet name. ex: "GOOGLE"
+        - walletDeviceScore [float]: wallet device score. ex: 7.6
+        - walletAccountScore [float]: wallet account score. ex: 7.6
         - merchantId [string]: merchant unique id. ex: "5656565656565656"
+        - url [string]: token URL returned by the API. ex: "https://example.com/issuing-token/5656565656565656"
 
     ## Attributes (IssuingToken only):
         - id [string]: unique id returned when IssuingToken is created. ex: "5656565656565656"
@@ -68,12 +74,15 @@ class IssuingToken extends Resource
         $this->cardId = Checks::checkParam($params, "cardId");
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->walletName = Checks::checkParam($params, "walletName");
+        $this->walletDeviceScore = Checks::checkParam($params, "walletDeviceScore");
+        $this->walletAccountScore = Checks::checkParam($params, "walletAccountScore");
         $this->merchantId = Checks::checkParam($params, "merchantId");
+        $this->url = Checks::checkParam($params, "url");
         $this->externalId = Checks::checkParam($params, "externalId");
         $this->tags = Checks::checkParam($params, "tags");
         $this->status = Checks::checkParam($params, "status");
-        $this->created = Checks::checkParam($params, "created");
-        $this->updated = Checks::checkParam($params, "updated");
+        $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this->updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
         $this->activationCode = Checks::checkParam($params, "activationCode");
         $this->methodCode = Checks::checkParam($params, "methodCode");
         $this->deviceType = Checks::checkParam($params, "deviceType");
@@ -178,7 +187,7 @@ class IssuingToken extends Resource
     ## Return:
         - target IssuingToken with updated attributes
      */
-    public static function update($id, $params, $user = null)
+    public static function update($id, $params = [], $user = null)
     {
         return Rest::patchId($user, IssuingToken::resource(), $id, $params);
     }
