@@ -15,6 +15,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ## [Unreleased]
 ### Added
 - IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
 ### Changed
 - url attribute to IssuingToken resource
 - installmentCount attribute to IssuingPurchase resource

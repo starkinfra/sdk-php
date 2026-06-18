@@ -37,6 +37,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [Purchases](#process-purchase-authorizations): Authorize and view your past purchases
         - [Invoices](#create-issuinginvoices): Add money to your issuing balance
         - [BillingInvoices](#query-issuingbillinginvoices): View the Pix invoices that charge for your issuing operation
+        - [BillingTransactions](#query-issuingbillingtransactions): View the transactions that compose your issuing billing invoices
         - [Withdrawals](#create-issuingwithdrawals): Send money back to your Workspace from your issuing balance
         - [Balance](#get-your-issuingbalance): View your issuing balance
         - [Transactions](#query-issuingtransactions): View the transactions that have affected your issuing balance
@@ -1215,6 +1216,42 @@ use StarkInfra\IssuingBillingInvoice;
 $invoice = IssuingBillingInvoice::get("5155165527080960");
 
 print_r($invoice);
+```
+
+### Query IssuingBillingTransactions
+
+You can get a list of the transactions that compose your issuing billing invoices given some filters.
+
+```php
+use StarkInfra\IssuingBillingTransaction;
+
+$transactions = IssuingBillingTransaction::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "invoiceId" => "5656565656565656",
+    "tags" => ['iron', 'suit'],
+]);
+
+foreach ($transactions as $transaction) {
+    print_r($transaction);
+}
+```
+
+### Query IssuingBillingTransactions page
+
+You can also get a list of the transactions one page at a time and manually control the cursor.
+
+```php
+use StarkInfra\IssuingBillingTransaction;
+
+list($transactions, $cursor) = IssuingBillingTransaction::page([
+    "limit" => 5,
+]);
+
+foreach ($transactions as $transaction) {
+    print_r($transaction);
+}
 ```
 
 ### Create IssuingWithdrawals
