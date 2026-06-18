@@ -13,6 +13,58 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- BusinessIdentity and BusinessAttachment resources
+### Added
+- IssuingBillingInvoice resource
+### Changed
+- url attribute to IssuingToken resource
+- installmentCount attribute to IssuingPurchase resource
+- PixPullSubscription resource
+- PixPullRequest resource
+- IssuingStockRule resource
+
+## [0.17.0] - 2026-06-30
+### Added
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+### Changed
+- url attribute to IssuingToken resource
+- installmentCount attribute to IssuingPurchase resource
+- BusinessIdentity and BusinessAttachment resources
+- PixPullSubscription resource
+- PixPullRequest resource
+- IssuingStockRule resource
+- PixFraud.Log resource
+- PixKeyHolmes resource
+- PixInternalTransactionReport resource
+- PixInternalTransactionReport.Log resource
+- priority and reason attributes to PixRequest resource
+- rules and debtorWorkspaceId parameters to CreditNote resource
+- Ledger resource
+- LedgerLog resource
+- LedgerTransaction resource
+
+## [0.17.0] - 2026-06-30
+### Added
+- IssuingBillingInvoice resource
+- IssuingBillingTransaction resource
+### Changed
+- url attribute to IssuingToken resource
+- installmentCount attribute to IssuingPurchase resource
+- BusinessIdentity and BusinessAttachment resources
+- PixPullSubscription resource
+- PixPullRequest resource
+- IssuingStockRule resource
+- PixFraud.Log resource
+- PixKeyHolmes resource
+- PixInternalTransactionReport resource
+- PixInternalTransactionReport.Log resource
+- priority and reason attributes to PixRequest resource
+- rules and debtorWorkspaceId parameters to CreditNote resource
+- Ledger resource
+- LedgerLog resource
+- LedgerTransaction resource
 
 ## [0.17.0] - 2026-06-30
 ### Added

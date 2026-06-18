@@ -13,6 +13,7 @@ class IssuingProduct extends Resource
     public $fundingType;
     public $holderType;
     public $code;
+    public $customerType;
     public $created;
 
     /**
@@ -27,6 +28,7 @@ class IssuingProduct extends Resource
         - fundingType [string]: type of funding used for payment. ex: "credit", "debit"
         - holderType [string]: holder type. ex: "business", "individual"
         - code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
+        - customerType [string]: customer type. ex: "business", "individual"
         - created [DateTime]: creation datetime for the IssuingProduct.
      */
     function __construct(array $params)
@@ -37,6 +39,7 @@ class IssuingProduct extends Resource
         $this->fundingType = Checks::checkParam($params, "fundingType");
         $this->holderType = Checks::checkParam($params, "holderType");
         $this->code = Checks::checkParam($params, "code");
+        $this->customerType = Checks::checkParam($params, "customerType");
         $this->created = Checks::checkDateTime(Checks::checkParam($params, "created"));
 
         Checks::checkParams($params);

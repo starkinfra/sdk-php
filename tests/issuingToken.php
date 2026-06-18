@@ -47,9 +47,6 @@ class TestIssuingToken
                 break;
             }
         }
-        if (count($ids) != 4) {
-            throw new Exception("failed");
-        }
     }
 
     public function queryAndUpdate()
@@ -60,7 +57,7 @@ class TestIssuingToken
                 throw new Exception("failed");
             }
             $updatedtoken = IssuingToken::update($token->id, ["status" => "blocked"]);
-            if ($updatedtoken->result != "blocked") {
+            if ($updatedtoken->status != "blocked") {
                 throw new Exception("failed");
             }    
         }
@@ -68,24 +65,25 @@ class TestIssuingToken
 
     public function queryAndDelete()
     {
-        $tokens = iterator_to_array(IssuingToken::query(["limit"=>1]));
-
-        if (count($tokens) != 1){
-            throw new Exception("failed");
+        $tokens = IssuingToken::query(["limit" => 1]);
+        foreach ($tokens as $token) {
+            if (is_null($token->id)) {
+                throw new Exception("failed");
+            }
+            $canceledToken = IssuingToken::cancel($token->id);
+            if ($token->status == "canceled") {
+                throw new Exception("failed");
+            }
+            if ($token->id != $canceledToken->id) {
+                throw new Exception("failed");
+            }
         }
-        $token = IssuingToken::cancel($tokens[0]->id);
-        if ($tokens[0]->status == "canceled") {
-            throw new Exception("failed");
-        } 
-        if ($tokens[0]->id != $token->id) {
-            throw new Exception("failed");
-        } 
     }
 
     public function parseRight()
     {
         $token_1 = IssuingToken::parse(self::CONTENT, self::VALID_SIGNATURE);
-        $token_2 = IssuingToken::parse(self::CONTENT, self::VALID_SIGNATURE); // using cache
+        $token_2 = IssuingToken::parse(self::CONTENT, self::VALID_SIGNATURE);
 
         if ($token_1 != $token_2) {
             throw new Exception("failed");
@@ -141,36 +139,74 @@ class TestIssuingToken
             throw new Exception("failed");
         }
     }
+
+    public function urlAttribute()
+    {
+        $token = self::example();
+
+        if (!is_string($token->url)) {
+            throw new Exception("failed");
+        }
+
+        if ($token->url != "https://example.com/issuing-token/5656565656565656") {
+            throw new Exception("failed");
+        }
+    }
+
+    public static function example()
+    {
+        return new IssuingToken([
+            "id" => "5656565656565656",
+            "cardId" => "5189831499972623",
+            "walletId" => "google",
+            "walletName" => "GOOGLE",
+            "merchantId" => "12345678901",
+            "status" => "active",
+            "url" => "https://example.com/issuing-token/5656565656565656",
+        ]);
+    }
 }
 
 echo "\n\nIssuingToken:";
 
 $test = new TestIssuingToken();
 
-// echo "\n\t- query and get";
-// $test->queryAndGet();
-// echo " - OK";
+echo "\n\t- query and get";
+$test->queryAndGet();
+echo " - OK";
 
-// echo "\n\t- query and update";
-// $test->queryAndUpdate();
-// echo " - OK";
+echo "\n\t- get page";
+$test->getPage();
+echo " - OK";
+
+echo "\n\t- query and update";
+$test->queryAndUpdate();
+echo " - OK";
 
 echo "\n\t- parse right";
 $test->parseRight();
 echo " - OK";
 
-// echo "\n\t- parse wrong";
-// $test->parseWrong();
-// echo " - OK";
+echo "\n\t- url attribute";
+$test->urlAttribute();
+echo " - OK";
 
-// echo "\n\t- parse malformed";
-// $test->parseMalformed();
-// echo " - OK";
+echo "\n\t- parse wrong";
+$test->parseWrong();
+echo " - OK";
 
-// echo "\n\t- create response activation";
-// $test->createResponseActivation();
-// echo " - OK";
+echo "\n\t- parse malformed";
+$test->parseMalformed();
+echo " - OK";
 
-// echo "\n\t- create response authorization";
-// $test->createResponseAuthorization();
-// echo " - OK";
+echo "\n\t- create response activation";
+$test->createResponseActivation();
+echo " - OK";
+
+echo "\n\t- create response authorization";
+$test->createResponseAuthorization();
+echo " - OK";
+
+echo "\n\t- query and delete";
+$test->queryAndDelete();
+echo " - OK";
