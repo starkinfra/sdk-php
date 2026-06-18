@@ -17,6 +17,7 @@ class IssuingPurchase extends Resource
     public $cardId;
     public $cardEnding;
     public $purpose;
+    public $installmentCount;
     public $amount;
     public $tax;
     public $issuerAmount;
@@ -61,6 +62,7 @@ class IssuingPurchase extends Resource
         - cardId [string]: unique id returned when IssuingCard is created. ex: "5656565656565656"
         - cardEnding [string]: last 4 digits of the card number. ex: "1234"
         - purpose [string]: purchase purpose. ex: "purchase"
+        - installmentCount [integer]: quantity of installments to be confirmed. Minimum = 1. ex: 12
         - amount [integer]: IssuingPurchase value in cents. Minimum = 0. ex: 1234 (= R$ 12.34)
         - tax [integer]: IOF amount taxed for international purchases. ex: 1234 (= R$ 12.34)
         - issuerAmount [integer]: issuer amount. ex: 1234 (= R$ 12.34)
@@ -106,6 +108,7 @@ class IssuingPurchase extends Resource
         $this->cardId = Checks::checkParam($params, "cardId");
         $this->cardEnding = Checks::checkParam($params, "cardEnding");
         $this->purpose = Checks::checkParam($params, "purpose");
+        $this->installmentCount = Checks::checkParam($params, "installmentCount");
         $this->amount = Checks::checkParam($params, "amount");
         $this->tax = Checks::checkParam($params, "tax");
         $this->issuerAmount = Checks::checkParam($params, "issuerAmount");
