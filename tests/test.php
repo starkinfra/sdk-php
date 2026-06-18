@@ -90,5 +90,6 @@ include_once("individualAccountRequestLog.php");
 include_once("individualAccountAttachment.php");
 include_once("individualAccountAttachmentLog.php");
 include_once("issuingBillingInvoice.php");
+include_once("issuingBillingTransaction.php");
 
 echo "\n\nAll tests concluded\n\n";
