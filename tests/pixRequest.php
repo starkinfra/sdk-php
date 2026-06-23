@@ -159,18 +159,20 @@ class TestPixRequest
         $params = [
             "amount" => 10,
             "externalId" => "php-" . $uuid = mt_rand(0, 0xffffffff),
-            "senderAccountNumber" => "76543-8",
+            "senderAccountNumber" => "76543",
             "senderBranchCode" => "2201",
             "senderAccountType" => "checking",
             "senderName" => "Tony",
             "senderTaxId" => "594.739.480-42",
             "receiverBankCode" => $_SERVER["SANDBOX_BANK_CODE"],
-            "receiverAccountNumber" => "00000-1",
+            "receiverAccountNumber" => "00000",
             "receiverBranchCode" => "0001",
             "receiverAccountType" => "checking",
             "receiverName" => "Daenerys Targaryen Stormborn",
             "receiverTaxId" => "01234567890",
             "endToEndId" => EndToEndId::create($_SERVER["SANDBOX_BANK_CODE"]),
+            "priority" => "low",
+            "reason" => "subscriptionFlaw",
         ];
         return new PixRequest($params);
     }

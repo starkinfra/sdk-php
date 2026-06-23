@@ -1445,6 +1445,8 @@ $requests = PixRequest::create([
         "receiverName" => "Daenerys Targaryen Stormborn",
         "receiverTaxId" => "012.345.678-90",
         "endToEndId" => EndToEndId::create("20018183"),
+        "reason" => "subscriptionFlaw",
+        "priority" => "low",
     ]),
     new PixRequest([
         "amount" => 200,
@@ -1461,6 +1463,8 @@ $requests = PixRequest::create([
         "receiverName" => "Daenerys Targaryen Stormborn",
         "receiverTaxId" => "012.345.678-90",
         "endToEndId" => EndToEndId::create("20018183"),
+        "reason" => "subscriptionFlaw",
+        "priority" => "low",
     ]);
 ]);
 
