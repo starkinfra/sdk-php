@@ -15,6 +15,8 @@ class IssuingToken extends Resource
     public $cardId;
     public $walletId;
     public $walletName;
+    public $walletDeviceScore;
+    public $walletAccountScore;
     public $merchantId;
     public $url;
     public $externalId;
@@ -41,6 +43,8 @@ class IssuingToken extends Resource
         - cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
         - walletId [string]: wallet provider which the token is bounded to. ex: "google"
         - walletName [string]: wallet name. ex: "GOOGLE"
+        - walletDeviceScore [float]: wallet device score. ex: 7.6
+        - walletAccountScore [float]: wallet account score. ex: 7.6
         - merchantId [string]: merchant unique id. ex: "5656565656565656"
         - url [string]: token URL returned by the API. ex: "https://example.com/issuing-token/5656565656565656"
 
@@ -70,6 +74,8 @@ class IssuingToken extends Resource
         $this->cardId = Checks::checkParam($params, "cardId");
         $this->walletId = Checks::checkParam($params, "walletId");
         $this->walletName = Checks::checkParam($params, "walletName");
+        $this->walletDeviceScore = Checks::checkParam($params, "walletDeviceScore");
+        $this->walletAccountScore = Checks::checkParam($params, "walletAccountScore");
         $this->merchantId = Checks::checkParam($params, "merchantId");
         $this->url = Checks::checkParam($params, "url");
         $this->externalId = Checks::checkParam($params, "externalId");
