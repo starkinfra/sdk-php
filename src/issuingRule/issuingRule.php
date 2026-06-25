@@ -19,6 +19,9 @@ class IssuingRule extends Resource
     public $categories;
     public $countries;
     public $methods;
+    public $schedule;
+    public $purposes;
+    public $merchants;
 
     /**
     # IssuingRule object
@@ -41,6 +44,9 @@ class IssuingRule extends Resource
         - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)
         - currencySymbol [string]: currency symbol. ex: "R$"
         - currencyName [string]: currency name. ex: "Brazilian Real"
+        - schedule [string]: schedule time for the rule. ex: "every monday, wednesday from 00:00 to 23:59 in America/Sao_Paulo"
+        - purposes [array of strings]: purchase purposes accepted by the rule. ex: ["purchase", "withdrawal"]
+        - merchants [array of strings]: merchants accepted by the rule. ex: ["5656565656565656", "4545454545454545"]
      */
     function __construct(array $params)
     {
@@ -56,6 +62,9 @@ class IssuingRule extends Resource
         $this->categories = MerchantCategory::parseCategories(Checks::checkParam($params, "categories"));
         $this->countries = MerchantCountry::parseCountries(Checks::checkParam($params, "countries"));
         $this->methods = CardMethod::parseMethods(Checks::checkParam($params, "methods"));
+        $this->schedule = Checks::checkParam($params, "schedule");
+        $this->purposes = Checks::checkParam($params, "purposes");
+        $this->merchants = Checks::checkParam($params, "merchants");
 
         Checks::checkParams($params);
     }

@@ -14,6 +14,7 @@ class MerchantCategory extends SubResource
     public $type;
     public $name;
     public $number;
+    public $group;
 
     /**
     # MerchantCategory object
@@ -30,6 +31,7 @@ class MerchantCategory extends SubResource
     ## Attributes (return-only):
         - name [string]: category's name. ex: "Veterinary services", "Fast food restaurants"
         - number [string]: category's number. ex: "742", "5814"
+        - group [string]: category's group. ex: "pets", "food"
      */
     function __construct(array $params)
     {
@@ -37,6 +39,7 @@ class MerchantCategory extends SubResource
         $this-> type = Checks::checkParam($params, "type");
         $this-> name = Checks::checkParam($params, "name");
         $this-> number = Checks::checkParam($params, "number");
+        $this-> group = Checks::checkParam($params, "group");
 
         Checks::checkParams($params);
     }
