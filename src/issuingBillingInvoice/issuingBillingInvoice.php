@@ -41,7 +41,7 @@ class IssuingBillingInvoice extends Resource
         -amount [integer]: invoice amount in cents. ex: 11234 (= R$ 112.34)
         -nominalAmount [integer]: nominal invoice amount in cents. ex: 11234 (= R$ 112.34)
         -brcode [string]: BR Code for the invoice payment. ex: "00020101021226930014br.gov.bcb.pix..."
-        -link [string]: public invoice webpage URL. ex: "https://starkinfra.com/invoicelink/5656565656565656"
+        -link [string]: public invoice webpage URL. ex: "https://starkbank-card-issuer.sandbox.starkbank.com/billinginvoicelink/97de4d51e8984c459639a645ce920abb"
         -due [DateTime]: invoice due datetime.
         -start [DateTime]: billing cycle start datetime.
         -end [DateTime]: billing cycle end datetime.
