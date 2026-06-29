@@ -6,6 +6,7 @@ use \Exception;
 use \DateTimeZone;
 use \DateInterval;
 use StarkInfra\CreditNote;
+use StarkInfra\CreditNote\Rule;
 use StarkInfra\CreditSigner;
 
 
@@ -61,6 +62,70 @@ class TestCreditNote
         }
     }
 
+    public function ruleConstruct()
+    {
+        $rule = new CreditNote\Rule([
+            "key" => "invoiceCreationMode",
+            "value" => "scheduled"
+        ]);
+
+        if ($rule->key != "invoiceCreationMode") {
+            throw new Exception("failed");
+        }
+        if ($rule->value != "scheduled") {
+            throw new Exception("failed");
+        }
+
+        $reachable = new \StarkInfra\CreditNote\Rule([
+            "key" => "invoiceCreationMode",
+            "value" => "scheduled"
+        ]);
+
+        if ($reachable->key != "invoiceCreationMode" | $reachable->value != "scheduled") {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createWithRules()
+    {
+        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
+        if (is_null($creditNote->id)) {
+            throw new Exception("failed");
+        }
+
+        if (count($creditNote->rules) == 0) {
+            throw new Exception("failed");
+        }
+
+        foreach ($creditNote->rules as $rule) {
+            if (!($rule instanceof CreditNote\Rule)) {
+                throw new Exception("failed");
+            }
+            if (is_null($rule->key) | is_null($rule->value)) {
+                throw new Exception("failed");
+            }
+        }
+
+        if ($creditNote->rules[0]->key != "invoiceCreationMode") {
+            throw new Exception("failed");
+        }
+        if ($creditNote->rules[0]->value != "scheduled") {
+            throw new Exception("failed");
+        }
+    }
+
+    public function debtorWorkspaceId()
+    {
+        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
+        if (is_null($creditNote->id)) {
+            throw new Exception("failed");
+        }
+
+        if (!property_exists($creditNote, "debtorWorkspaceId")) {
+            throw new Exception("failed");
+        }
+    }
+
     public function exampleCCB()
     {
         $params = [
@@ -101,6 +166,12 @@ class TestCreditNote
                 'War supply',
                 'Invoice #1234'
             ],
+            "rules" => [
+                new CreditNote\Rule([
+                    "key" => "invoiceCreationMode",
+                    "value" => "scheduled"
+                ])
+            ],
             "externalId" => "php-".$uuid = mt_rand(0, 0xffffffff),
             "streetLine1" => "Rua ABC",
             "streetLine2" => "Ap 123",
@@ -127,4 +198,16 @@ echo " - OK";
 
 echo "\n\t- get page";
 $test->getPage();
+echo " - OK";
+
+echo "\n\t- rule construct";
+$test->ruleConstruct();
+echo " - OK";
+
+echo "\n\t- create with rules";
+$test->createWithRules();
+echo " - OK";
+
+echo "\n\t- debtor workspace id";
+$test->debtorWorkspaceId();
 echo " - OK";
