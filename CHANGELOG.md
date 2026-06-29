@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- BusinessIdentity and BusinessAttachment resources
 
 ## [0.16.0] - 2026-06-01
 ### Added
