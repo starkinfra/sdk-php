@@ -57,6 +57,8 @@ This SDK version is compatible with the Stark Infra API v2.
         - [DynamicBrcode](#create-dynamicbrcodes): Create dynamic Pix BR codes
         - [BrcodePreview](#create-brcodepreviews): Read data from BR Codes before paying them
         - [PixDispute](#create-pixdisputes): Create Pix Disputes
+        - [PixPullSubscription](#create-pixpullsubscriptions): Set up recurring Pix debit authorizations
+        - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -2590,6 +2592,223 @@ use StarkInfra\PixDispute;
 
 $log = PixDispute\Log::get("5155165527080960");
 
+print_r($log);
+```
+
+### Create PixPullSubscriptions
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscriptions = PixPullSubscription::create([
+    new PixPullSubscription([
+        "bacenId" => "RR2017032900000000000000003",
+        "externalId" => "my-subscription-001",
+        "installmentStart" => "2026-04-01T12:00:00+00:00",
+        "interval" => "month",
+        "receiverName" => "Edward Stark",
+        "receiverTaxId" => "20.018.183/0001-80",
+        "senderAccountNumber" => "876543-2",
+        "senderBankCode" => "20018183",
+        "senderBranchCode" => "1357-9",
+        "senderTaxId" => "01234567890",
+        "type" => "push",
+        "amount" => 11234,
+        "description" => "Monthly subscription",
+        "tags" => ["employees", "monthly"],
+    ]),
+]);
+
+foreach ($subscriptions as $subscription) {
+    print_r($subscription);
+}
+```
+
+### Query PixPullSubscriptions
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscriptions = PixPullSubscription::query([
+    "limit" => 10,
+    "after" => "2026-01-01",
+    "before" => "2026-04-30",
+    "status" => ["active"],
+    "tags" => ["monthly"],
+]);
+
+foreach ($subscriptions as $subscription) {
+    print_r($subscription);
+}
+```
+
+### Get a PixPullSubscription
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscription = PixPullSubscription::get("5656565656565656");
+print_r($subscription);
+```
+
+### Update a PixPullSubscription
+
+When patching `status` to `"confirmed"`, `senderCityCode` MUST be present.
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscription = PixPullSubscription::update("5656565656565656", [
+    "status" => "confirmed",
+    "senderCityCode" => "3550308",
+]);
+print_r($subscription);
+```
+
+### Cancel a PixPullSubscription
+
+The `reason` is sent as a query parameter on the DELETE request.
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscription = PixPullSubscription::cancel("5656565656565656", "accountClosed");
+print_r($subscription);
+```
+
+### Query PixPullSubscription logs
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$logs = PixPullSubscription\Log::query([
+    "limit" => 50,
+    "after" => "2026-01-01",
+    "before" => "2026-04-30",
+    "subscriptionIds" => ["5656565656565656"],
+]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get a PixPullSubscription log
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$log = PixPullSubscription\Log::get("5155165527080960");
+print_r($log);
+```
+
+### Process inbound PixPullSubscription events
+
+```php
+use StarkInfra\PixPullSubscription;
+
+$subscription = PixPullSubscription::parse(
+    '{"bacenId": "RR2017032900000000000000003", ...}',
+    "MEUCIQC7FVhXdripx/aXg5yNLxmNoZlehpyvX3QYDXJ8o3PAZQIgVe1omKFh7Vd54ML4U1z7L+kpx+GHl+G2XLeFTLZeBJk="
+);
+print_r($subscription);
+```
+
+### Create PixPullRequests
+
+```php
+use StarkInfra\PixPullRequest;
+
+$requests = PixPullRequest::create([
+    new PixPullRequest([
+        "amount" => 11234,
+        "due" => "2026-04-15T12:00:00+00:00",
+        "endToEndId" => "E00002649202201172211u34srod19le",
+        "receiverAccountNumber" => "876543-2",
+        "receiverAccountType" => "checking",
+        "receiverBankCode" => "20018183",
+        "reconciliationId" => "cycle-202604",
+        "subscriptionId" => "5656565656565656",
+        "tags" => ["monthly"],
+    ]),
+]);
+
+foreach ($requests as $request) {
+    print_r($request);
+}
+```
+
+### Query PixPullRequests
+
+```php
+use StarkInfra\PixPullRequest;
+
+$requests = PixPullRequest::query([
+    "limit" => 10,
+    "status" => ["created", "active"],
+    "subscriptionIds" => ["5656565656565656"],
+]);
+
+foreach ($requests as $request) {
+    print_r($request);
+}
+```
+
+### Get a PixPullRequest
+
+```php
+use StarkInfra\PixPullRequest;
+
+$request = PixPullRequest::get("5656565656565656");
+print_r($request);
+```
+
+### Update a PixPullRequest
+
+When denying, `reason` is required.
+
+```php
+use StarkInfra\PixPullRequest;
+
+$request = PixPullRequest::update("5656565656565656", [
+    "status" => "denied",
+    "reason" => "senderAccountClosed",
+]);
+print_r($request);
+```
+
+### Cancel a PixPullRequest
+
+The `reason` is sent as a query parameter on the DELETE request.
+
+```php
+use StarkInfra\PixPullRequest;
+
+$request = PixPullRequest::cancel("5656565656565656", "senderUserRequested");
+print_r($request);
+```
+
+### Query PixPullRequest logs
+
+```php
+use StarkInfra\PixPullRequest;
+
+$logs = PixPullRequest\Log::query([
+    "limit" => 50,
+    "requestIds" => ["5656565656565656"],
+]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get a PixPullRequest log
+
+```php
+use StarkInfra\PixPullRequest;
+
+$log = PixPullRequest\Log::get("5155165527080960");
 print_r($log);
 ```
 

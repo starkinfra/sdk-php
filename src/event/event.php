@@ -29,7 +29,7 @@ class Event extends Resource
         - id [string]: unique id returned when the event is created. ex: "5656565656565656"
         - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
-        - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note", "business-identity"
+        - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "pix-pull-subscription", "pix-pull-request", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note", "business-identity"
         - workspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
         - created [DateTime]: creation datetime for the notification event.
      */
@@ -62,7 +62,9 @@ class Event extends Resource
             "issuing-purchase" => Event::issuingPurchaseLogResource(),
             "credit-note" => Event::creditNoteLogResource(),
             "pix-dispute" => Event::pixDisputeLogResource(),
-            "business-identity" => Event::businessIdentityLogResource()
+            "business-identity" => Event::businessIdentityLogResource(),
+            "pix-pull-subscription" => Event::pixPullSubscriptionLogResource(),
+            "pix-pull-request" => Event::pixPullRequestLogResource()
         ];
 
         if (!isset($makerOptions[$subscription])) {
@@ -235,6 +237,34 @@ class Event extends Resource
             $array["identity"] = API::fromApiJson($identity, $array["identity"]);
             $log = function ($array) {
                 return new BusinessIdentity\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixPullSubscriptionLogResource()
+    {
+        return function ($array) {
+            $subscription = function ($array) {
+                return new PixPullSubscription($array);
+            };
+            $array["subscription"] = API::fromApiJson($subscription, $array["subscription"]);
+            $log = function ($array) {
+                return new PixPullSubscription\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function pixPullRequestLogResource()
+    {
+        return function ($array) {
+            $request = function ($array) {
+                return new PixPullRequest($array);
+            };
+            $array["request"] = API::fromApiJson($request, $array["request"]);
+            $log = function ($array) {
+                return new PixPullRequest\Log($array);
             };
             return API::fromApiJson($log, $array);
         };
