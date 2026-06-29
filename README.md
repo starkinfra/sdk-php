@@ -64,6 +64,8 @@ This SDK version is compatible with the Stark Infra API v2.
     - [Identity](#identity)
         - [IndividualIdentity](#create-individualidentities): Create individual identities
         - [IndividualDocument](#create-individualdocuments): Create individual documents
+        - [BusinessIdentity](#create-businessidentities): Create business identities
+        - [BusinessAttachment](#create-businessattachments): Attach documents to a business identity
         - [IndividualAccountRequest](#create-individualaccountrequests): Open an individual Stark Infra account
         - [IndividualAccountAttachment](#create-individualaccountattachments): Attach documents to an individual account request
     - [Webhook](#webhook):
@@ -3157,6 +3159,216 @@ $log = IndividualDocument\Log::get("5155165527080960");
 print_r($log);
 ```
 
+### Create BusinessIdentities
+
+You can create a BusinessIdentity to validate a document of a legal entity
+
+```php
+use StarkInfra\BusinessIdentity;
+
+$identities = BusinessIdentity::create([
+    new BusinessIdentity([
+        "taxId" => "20.018.183/0001-80",
+        "tags" =>["breaking", "bad"]
+    ]);
+]);
+
+foreach($identities as $identity){
+    print_r($identity);
+}
+```
+
+**Note**: Instead of using BusinessIdentity objects, you can also pass each element in dictionary format
+
+### Query BusinessIdentities
+
+You can query multiple business identities according to filters.
+
+```php
+use StarkInfra\BusinessIdentity;
+
+$identities = BusinessIdentity::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "success",
+    "tags" =>["breaking", "bad"]
+]);
+
+foreach($identities as $identity){
+    print_r($identity);
+}
+```
+
+### Get a BusinessIdentity
+
+After its creation, information on a business identity may be retrieved by its id.
+
+```php
+use StarkInfra\BusinessIdentity;
+
+$identity = BusinessIdentity::get("5155165527080960");
+
+print_r($identity);
+```
+
+### Update a BusinessIdentity
+
+You can update a specific identity status to "processing" for send it to validation.
+
+```php
+use StarkInfra\BusinessIdentity;
+
+$identity = BusinessIdentity::update(
+    "5155165527080960",
+    ["status" => "processing"]
+)
+
+print_r($identity)
+```
+
+**Note**: Before sending your business identity to validation by patching its status, you must send all the required attachments using the create method of the BusinessAttachment resource. Note that you must reference the business identity in the create method of the BusinessAttachment resource by its id.
+
+
+### Cancel a BusinessIdentity
+
+You can cancel a business identity before updating its status to processing.
+
+```php
+use StarkInfra\BusinessIdentity;
+
+$identity = BusinessIdentity::cancel("5155165527080960");
+
+print_r($identity);
+```
+
+### Query BusinessIdentity logs
+
+You can query business identity logs to better understand business identity life cycles.
+
+```php
+use StarkInfra\BusinessIdentity\Log;
+
+$logs = BusinessIdentity\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a BusinessIdentity log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\BusinessIdentity\Log;
+
+$log = BusinessIdentity\Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create BusinessAttachments
+
+You can create a business attachment to attach documents to a specific business Identity.
+You must reference the desired business identity by its id.
+
+```php
+$attachments = BusinessAttachment::create([
+    new BusinessAttachment([
+        "name" => "articles-of-incorporation.png",
+        "content" => "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
+        "contentType" => "image/png",
+        "businessIdentityId" => "5155165527080960",
+        "tags" => ["breaking", "bad"]
+    ]);
+]);
+
+foreach($attachments as $attachment){
+    print_r($attachment);
+}
+```
+
+**Note**: Instead of using BusinessAttachment objects, you can also pass each element in dictionary format
+
+### Query BusinessAttachments
+
+You can query multiple business attachments according to filters.
+
+```php
+use StarkInfra\BusinessAttachment;
+
+$attachments = BusinessAttachment::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "approved",
+    "tags" => ["breaking", "bad"]
+]);
+
+foreach($attachments as $attachment){
+    print_r($attachment);
+}
+```
+
+### Get a BusinessAttachment
+
+After its creation, information on a business attachment may be retrieved by its id.
+
+```php
+use StarkInfra\BusinessAttachment;
+
+$attachment = BusinessAttachment::get("5155165527080960", ["expand" => ["content"]]);
+
+print_r($attachment);
+```
+
+### Cancel a BusinessAttachment
+
+You can cancel a business attachment by its id.
+
+```php
+use StarkInfra\BusinessAttachment;
+
+$attachment = BusinessAttachment::cancel("5155165527080960");
+
+print_r($attachment);
+```
+
+### Query BusinessAttachment logs
+
+You can query business attachment logs to better understand business attachment life cycles.
+
+```php
+use StarkInfra\BusinessAttachment\Log;
+
+$logs = BusinessAttachment\Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a BusinessAttachment log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\BusinessAttachment\Log;
+
+$log = BusinessAttachment\Log::get("5155165527080960");
+
+print_r($log);
+```
+
 ### Create IndividualAccountRequests
 
 You can create an IndividualAccountRequest to open a Stark Infra account for a natural person. The approval flow runs asynchronously.
@@ -3382,7 +3594,7 @@ $webhook = Webhook::create(
     new Webhook(
         "url" => "https://webhook.site/",
         "subscriptions" =>[
-            "credit-note"
+            "credit-note", "business-identity",
             "issuing-card", "issuing-invoice", "issuing-purchase",
             "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback"
         ]
@@ -3464,6 +3676,8 @@ if ($event->subscription == "pix-request.in"){
     print_r($event->log->invoice);
 } elseif ($event->subscription == "issuing-purchase"){
     print_r($event->log->purchase);
+} elseif ($event->subscription == "business-identity"){
+    print_r($event->log->identity);
 } 
 ```
 

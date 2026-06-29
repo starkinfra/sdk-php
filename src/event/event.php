@@ -29,7 +29,7 @@ class Event extends Resource
         - id [string]: unique id returned when the event is created. ex: "5656565656565656"
         - log [Log]: a Log object from one the subscription services ex: IssuingCard\Log, PixRequest\Log
         - isDelivered [bool]: true if the event has been successfully delivered to the user url. ex: false
-        - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note"
+        - subscription [string]: service that triggered this event. Options: "issuing-card", "pix-request.in", "pix-reversal.in", "pix-reversal.out", "pix-key", "pix-claim", "pix-infraction", "pix-chargeback", "issuing-card", "issuing-invoice", "issuing-purchase", "credit-note", "business-identity"
         - workspaceId [string]: ID of the Workspace that generated this Event. Mostly used when multiple Workspaces have Webhooks registered to the same endpoint. ex: "4545454545454545"
         - created [DateTime]: creation datetime for the notification event.
      */
@@ -61,7 +61,8 @@ class Event extends Resource
             "issuing-invoice" => Event::issuingInvoiceLogResource(),
             "issuing-purchase" => Event::issuingPurchaseLogResource(),
             "credit-note" => Event::creditNoteLogResource(),
-            "pix-dispute" => Event::pixDisputeLogResource()
+            "pix-dispute" => Event::pixDisputeLogResource(),
+            "business-identity" => Event::businessIdentityLogResource()
         ];
 
         if (!isset($makerOptions[$subscription])) {
@@ -220,6 +221,20 @@ class Event extends Resource
             $array["dispute"] = API::fromApiJson($dispute, $array["dispute"]);
             $log = function ($array) {
                 return new PixDispute\Log($array);
+            };
+            return API::fromApiJson($log, $array);
+        };
+    }
+
+    private static function businessIdentityLogResource()
+    {
+        return function ($array) {
+            $identity = function ($array) {
+                return new BusinessIdentity($array);
+            };
+            $array["identity"] = API::fromApiJson($identity, $array["identity"]);
+            $log = function ($array) {
+                return new BusinessIdentity\Log($array);
             };
             return API::fromApiJson($log, $array);
         };

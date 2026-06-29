@@ -22,6 +22,10 @@ $project = new \StarkInfra\Project([
 echo "\n\nStarting tests\n";
 
 include_once("brcodePreview.php");
+include_once("businessAttachment.php");
+include_once("businessAttachmentLog.php");
+include_once("businessIdentity.php");
+include_once("businessIdentityLog.php");
 include_once("cardMethod.php");
 include_once("creditHolmes.php");
 include_once("creditHolmesLog.php");
