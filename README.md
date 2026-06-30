@@ -62,6 +62,9 @@ This SDK version is compatible with the Stark Infra API v2.
         - [PixPullRequest](#create-pixpullrequests): Trigger automatic Pix debits against a subscription
         - [PixKeyHolmes](#create-pixkeyholmes): Investigate the registration status of a Pix Key
         - [PixInternalTransactionReport](#create-a-pixinternaltransactionreport): Report internal transactions to the Central Bank
+    - [Ledger](#ledger)
+        - [Ledger](#create-ledgers): Track the balance of a given amount
+        - [LedgerTransaction](#create-ledgertransactions): Move amounts in and out of a Ledger
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
         - [CreditPreview](#create-creditpreviews): Create credit previews
@@ -3071,6 +3074,158 @@ use StarkInfra\PixInternalTransactionReport;
 $log = PixInternalTransactionReport\Log::get("5155165527080960");
 
 print_r($log);
+```
+
+## Ledger
+
+Ledgers are used to track the balance of a given amount by inserting LedgerTransactions to them.
+They can represent a bank account, a digital wallet, an inventory product, etc.
+
+### Create Ledgers
+
+Send a list of Ledger objects for creation in the Stark Infra API.
+
+```php
+use StarkInfra\Ledger;
+use StarkInfra\Ledger\Rule;
+
+$ledgers = Ledger::create([
+    new Ledger([
+        "externalId" => "my-internal-id-123456",
+        "tags" => ["account/123", "savings"],
+        "rules" => [
+            new Rule([
+                "key" => "minimumBalance",
+                "value" => 0
+            ])
+        ]
+    ])
+]);
+
+foreach ($ledgers as $ledger) {
+    print_r($ledger);
+}
+```
+
+### Query Ledgers
+
+You can query multiple Ledgers according to filters.
+
+```php
+use StarkInfra\Ledger;
+
+$ledgers = Ledger::query([
+    "after" => "2020-01-01",
+    "before" => "2020-03-01"
+]);
+
+foreach ($ledgers as $ledger) {
+    print_r($ledger);
+}
+```
+
+### Get a Ledger
+
+After its creation, information on a Ledger may be retrieved by its id.
+
+```php
+use StarkInfra\Ledger;
+
+$ledger = Ledger::get("5155165527080960");
+
+print_r($ledger);
+```
+
+### Update a Ledger
+
+Update a Ledger by passing its id to change its rules, tags or metadata.
+
+```php
+use StarkInfra\Ledger;
+
+$ledger = Ledger::update("5155165527080960", [
+    "tags" => ["account/123", "updated"]
+]);
+
+print_r($ledger);
+```
+
+### Query Ledger logs
+
+You can query Ledger logs to better understand Ledger life cycles.
+
+```php
+use StarkInfra\Ledger\Log;
+
+$logs = Log::query(["limit" => 50]);
+
+foreach ($logs as $log) {
+    print_r($log);
+}
+```
+
+### Get a Ledger log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\Ledger\Log;
+
+$log = Log::get("5155165527080960");
+
+print_r($log);
+```
+
+### Create LedgerTransactions
+
+Send a list of LedgerTransaction objects to move amounts in and out of a Ledger.
+
+```php
+use StarkInfra\LedgerTransaction;
+
+$transactions = LedgerTransaction::create([
+    new LedgerTransaction([
+        "amount" => 11234,
+        "ledgerId" => "5656565656565656",
+        "externalId" => "my-internal-id-123456",
+        "source" => "bank-transfer/123",
+        "tags" => ["transfer/123", "savings"]
+    ])
+]);
+
+foreach ($transactions as $transaction) {
+    print_r($transaction);
+}
+```
+
+### Query LedgerTransactions
+
+You can query multiple LedgerTransactions according to filters.
+
+```php
+use StarkInfra\LedgerTransaction;
+
+$transactions = LedgerTransaction::query([
+    "ledgerId" => "5656565656565656",
+    "after" => "2020-01-01",
+    "before" => "2020-03-01"
+]);
+
+foreach ($transactions as $transaction) {
+    print_r($transaction);
+}
+```
+
+### Get a LedgerTransaction
+
+After its creation, information on a LedgerTransaction may be retrieved by its id.
+
+```php
+use StarkInfra\LedgerTransaction;
+
+$transaction = LedgerTransaction::get("5155165527080960");
+
+print_r($transaction);
 ```
 
 ## Lending

@@ -4,6 +4,8 @@ namespace Test;
 require_once('vendor/autoload.php');
 include_once("tests/utils/rule.php");
 include_once("tests/utils/dynamicBrcode.php");
+include_once("tests/utils/ledger.php");
+include_once("tests/utils/ledgerTransaction.php");
 
 
 $projectId = $_SERVER["SANDBOX_INFRA_ID"]; # "9999999999999999",
@@ -64,6 +66,9 @@ include_once("issuingTokenLog.php");
 include_once("issuingTokenRequest.php");
 include_once("issuingTransaction.php");
 include_once("issuingWithdrawal.php");
+include_once("ledger.php");
+include_once("ledgerLog.php");
+include_once("ledgerTransaction.php");
 include_once("key.php");
 include_once("merchantCategory.php");
 include_once("merchantCountry.php");
