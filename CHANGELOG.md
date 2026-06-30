@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.17.0] - 2026-06-30
 ### Added
 - BusinessIdentity and BusinessAttachment resources
 - PixPullSubscription resource
