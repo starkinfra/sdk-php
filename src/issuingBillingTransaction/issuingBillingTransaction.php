@@ -44,8 +44,8 @@ class IssuingBillingTransaction extends Resource
         -externalId [string]: external transaction id. ex: "my-external-id-123456"
         -description [string]: transaction description. ex: "Payment for service #1234"
         -cardEnding [string]: last 4 digits of the card. ex: "1234"
-        -tax [float]: tax amount in cents. ex: 100 (= R$ 1.00)
-        -rate [float]: tax rate as a percentage. ex: 1.5
+        -tax [integer]: IOF amount in cents applied to the transaction
+        -rate [float]: Conversion rate applied to international transactions
         -merchantAmount [integer]: merchant amount in cents. ex: 11234 (= R$ 112.34)
         -merchantCurrencyCode [string]: merchant currency code (ISO 4217). ex: "USD"
         -created [DateTime]: creation datetime for the IssuingBillingTransaction.

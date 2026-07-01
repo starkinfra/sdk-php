@@ -75,7 +75,7 @@ class IssuingPurchase extends Resource
         - merchantCurrencySymbol [string]: merchant currency symbol. ex: "$"
         - merchantCategoryCode [string]: merchant category code. ex: "fastFoodRestaurants"
         - merchantCategoryType [string]: merchant category type. ex: "food"
-        - merchantCategoryNumber [integer]: merchant category number. ex: 5814
+        - merchantCategoryNumber [integer]: MCC number of the merchant category. ex: 5814
         - merchantCountryCode [string]: merchant country code. ex: "USA"
         - acquirerId [string]: acquirer ID. ex: "5656565656565656"
         - merchantId [string]: merchant ID. ex: "5656565656565656"
@@ -90,7 +90,7 @@ class IssuingPurchase extends Resource
     ## Attributes (IssuingPurchase only):
         - issuingTransactionIds [string]: ledger transaction ids linked to this Purchase
         - status [string]: current IssuingCard status. Options: "approved", "canceled", "denied", "confirmed", "voided"
-        - confirmed [boolean]: indicates whether the IssuingPurchase is confirmed. ex: true
+        - confirmed [DateTime]: Confirmation datetime. Null until the purchase is confirmed.
         - description [string]:  IssuingPurchase description. ex: "Office Supplies"
         - metadata [dictionary object]: dictionary object used to store additional information about the IssuingPurchase object. ex: [authorizationId => "OjZAqj"]
         - zipCode [string]: zip code of the merchant location. ex: "02101234"
@@ -136,7 +136,7 @@ class IssuingPurchase extends Resource
         $this->tags = Checks::checkParam($params, "tags");
         $this->issuingTransactionIds = Checks::checkParam($params, "issuingTransactionIds");
         $this->status = Checks::checkParam($params, "status");
-        $this->confirmed = Checks::checkParam($params, "confirmed");
+        $this->confirmed = Checks::checkDateTime(Checks::checkParam($params, "confirmed"));
         $this->description = Checks::checkParam($params, "description");
         $this->metadata = Checks::checkParam($params, "metadata");
         $this->zipCode = Checks::checkParam($params, "zipCode");

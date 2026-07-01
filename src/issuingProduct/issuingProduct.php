@@ -28,7 +28,7 @@ class IssuingProduct extends Resource
         - fundingType [string]: type of funding used for payment. ex: "credit", "debit"
         - holderType [string]: holder type. ex: "business", "individual"
         - code [string]: internal code from card flag informing the product. ex: "MRW", "MCO", "MWB", "MCS"
-        - customerType [string]: customer type. ex: "business", "individual"
+        - customerType [string]: Same as holderType. Kept for backward compatibility
         - created [DateTime]: creation datetime for the IssuingProduct.
      */
     function __construct(array $params)

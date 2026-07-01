@@ -35,8 +35,8 @@ class IssuingBillingInvoice extends Resource
         -id [string]: unique id returned when the IssuingBillingInvoice is created. ex: "5656565656565656"
         -taxId [string]: payer tax ID (CPF or CNPJ). ex: "012.345.678-90"
         -name [string]: payer name. ex: "Tony Stark"
-        -fine [float]: fine amount charged on the invoice in cents. ex: 200 (= R$ 2.00)
-        -interest [float]: interest amount charged on the invoice in cents. ex: 100 (= R$ 1.00)
+        -fine [float]: Fine percentage applied when paid after the due date. ex: 2.0
+        -interest [float]: Monthly interest percentage applied when paid after the due date. ex: 1.0
         -status [string]: current IssuingBillingInvoice status. ex: "paid" or "expired"
         -amount [integer]: invoice amount in cents. ex: 11234 (= R$ 112.34)
         -nominalAmount [integer]: nominal invoice amount in cents. ex: 11234 (= R$ 112.34)
