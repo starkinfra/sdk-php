@@ -26,8 +26,8 @@ class IssuingBalance extends Resource
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingBalance is created. ex: "5656565656565656"
         - amount [integer]: current issuing balance amount of the workspace in cents. ex: 200 (= R$ 2.00)
-        - limit [integer]: current issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
-        - maxLimit [integer]: maximum issuing balance limit of the workspace in cents. ex: 200 (= R$ 2.00)
+        - limit [integer]: Spending limit of the balance
+        - maxLimit [integer]: Maximum spending limit. This field is currently always equal to limit
         - currency [string]: currency of the current workspace. Expect others to be added eventually. ex: "BRL"
         - updated [DateTime]: update datetime for the IssuingBalance. 
      */

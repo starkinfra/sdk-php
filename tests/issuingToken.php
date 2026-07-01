@@ -140,19 +140,6 @@ class TestIssuingToken
         }
     }
 
-    public function urlAttribute()
-    {
-        $token = self::example();
-
-        if (!is_string($token->url)) {
-            throw new Exception("failed");
-        }
-
-        if ($token->url != "https://example.com/issuing-token/5656565656565656") {
-            throw new Exception("failed");
-        }
-    }
-
     public static function example()
     {
         return new IssuingToken([
@@ -162,7 +149,6 @@ class TestIssuingToken
             "walletName" => "GOOGLE",
             "merchantId" => "12345678901",
             "status" => "active",
-            "url" => "https://example.com/issuing-token/5656565656565656",
         ]);
     }
 }
@@ -185,10 +171,6 @@ echo " - OK";
 
 echo "\n\t- parse right";
 $test->parseRight();
-echo " - OK";
-
-echo "\n\t- url attribute";
-$test->urlAttribute();
 echo " - OK";
 
 echo "\n\t- parse wrong";

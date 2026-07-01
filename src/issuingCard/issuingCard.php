@@ -61,7 +61,7 @@ class IssuingCard extends Resource
         - holderId [string]: card holder unique id. ex: "5656565656565656"
         - type [string]: card type. ex: "virtual"
         - status [string]: current IssuingCard status. ex: "canceled" or "active"
-        - isPinDefined [boolean]: indicates whether the card's PIN has been defined. ex: true
+        - isPinDefined [boolean]: Whether the card has a PIN defined. Returned only when "expand=isPinDefined" is informed in the request
         - number [string]: [EXPANDABLE] masked card number. ex: "1234 5678 1234 5678"
         - securityCode [string]: [EXPANDABLE] masked card verification value (cvv). Expand to unmask the value. ex: "123".
         - expiration [string]: [EXPANDABLE] masked card expiration datetime. 

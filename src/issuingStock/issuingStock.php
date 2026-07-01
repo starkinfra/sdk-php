@@ -28,7 +28,7 @@ class IssuingStock extends Resource
         - balance [integer]: [EXPANDABLE] current stock balance. ex: 1000
         - designId [string]: IssuingDesign unique id. ex: "5656565656565656"
         - embosserId [string]: Embosser unique id. ex: "5656565656565656"
-        - embosserName [string]: Embosser name. ex: "Stark Embosser"
+        - embosserName [string]: Name of the embosser that holds this stock
         - created [DateTime]: creation datetime for the IssuingStock.
         - updated [DateTime]: latest update datetime for the IssuingStock.
      */
