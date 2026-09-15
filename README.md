@@ -77,6 +77,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [BusinessAttachment](#create-businessattachments): Attach documents to a business identity
         - [IndividualAccountRequest](#create-individualaccountrequests): Open an individual Stark Infra account
         - [IndividualAccountAttachment](#create-individualaccountattachments): Attach documents to an individual account request
+        - [BusinessAccountRequest](#create-businessaccountrequests): Open a Stark Infra account for a company
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -4253,6 +4254,118 @@ You can also get a specific log by its id.
 use StarkInfra\IndividualAccountAttachment\Log;
 
 $log = Log::get("5189530608992256");
+
+print_r($log);
+```
+
+### Create BusinessAccountRequests
+
+You can create a BusinessAccountRequest to open a Stark Infra account for a company. Each of the company's owners completes an identity verification through a webview, delivered as the owner's `validatorLink`. The approval flow runs asynchronously.
+
+```php
+use StarkInfra\BusinessAccountRequest;
+use StarkInfra\BusinessAccountRequest\Owner;
+use StarkInfra\BusinessAccountRequest\Address;
+
+$requests = BusinessAccountRequest::create([
+    new BusinessAccountRequest([
+        "name" => "Stark Bank S.A.",
+        "taxId" => "20.018.183/0001-80",
+        "address" => new Address([
+            "street" => "Av. Faria Lima",
+            "number" => "2000",
+            "neighborhood" => "Itaim Bibi",
+            "city" => "Sao Paulo",
+            "state" => "SP",
+            "zipCode" => "04538-132",
+            "complement" => "Sala 42"
+        ]),
+        "revenue" => 100000000,
+        "owners" => [
+            new Owner([
+                "taxId" => "012.345.678-90",
+                "name" => "Jamie Lannister",
+                "role" => "partner"
+            ]),
+            new Owner([
+                "taxId" => "812.531.960-36",
+                "name" => "Cersei Lannister",
+                "role" => "representative"
+            ])
+        ],
+        "tags" => ["employees", "monthly"]
+    ])
+]);
+
+foreach($requests as $request){
+    print_r($request);
+}
+```
+
+**Note**: Instead of using BusinessAccountRequest, Address and Owner objects, you can also pass each element in dictionary format
+
+### Query BusinessAccountRequests
+
+You can query multiple business account requests according to filters.
+
+```php
+use StarkInfra\BusinessAccountRequest;
+
+$requests = BusinessAccountRequest::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "status" => "approved",
+    "tags" => ["employees", "monthly"]
+]);
+
+foreach($requests as $request){
+    print_r($request);
+}
+```
+
+### Get a BusinessAccountRequest
+
+After its creation, information on a business account request may be retrieved by its id. Use it to read the per-owner verification status.
+
+```php
+use StarkInfra\BusinessAccountRequest;
+
+$request = BusinessAccountRequest::get("5155165527080960");
+
+foreach($request->owners as $owner){
+    print_r($owner->name . " " . $owner->status);
+}
+```
+
+Each owner also carries a `validatorLink`, the webview where that owner completes biometrics and document capture. Treat it as a credential: deliver it to its owner through a secure channel, and never log it or write it to disk.
+
+### Query BusinessAccountRequest logs
+
+You can query business account request logs to better understand business account request life cycles.
+
+```php
+use StarkInfra\BusinessAccountRequest\Log;
+
+$logs = Log::query([
+    "limit" => 10,
+    "after" => "2020-04-01",
+    "before" => "2020-04-30"
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a BusinessAccountRequest log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\BusinessAccountRequest\Log;
+
+$log = Log::get("5155165527080960");
 
 print_r($log);
 ```

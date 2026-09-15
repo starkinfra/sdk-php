@@ -18,6 +18,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - CreditSigner.resendToken method
 ### Fixed
 - PixPullSubscription::parse method
+- BusinessAccountRequest resource
 
 ## [0.17.0] - 2026-06-30
 ### Added
