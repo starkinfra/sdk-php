@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Fixed
+- PixPullSubscription::parse method
 
 ## [0.17.0] - 2026-06-30
 ### Added
