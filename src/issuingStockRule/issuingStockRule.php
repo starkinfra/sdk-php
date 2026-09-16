@@ -32,8 +32,8 @@ class IssuingStockRule extends Resource
 
     ## Parameters (optional):
         - tags [array of strings, default null]: list of strings for tagging. ex: ["card", "corporate"]
-        - emails [array of strings, default null]: emails notified when the stock reaches the minimum balance. ex: ["john.doe@enterprise.com"]
-        - phones [array of strings, default null]: phones notified when the stock reaches the minimum balance. ex: ["+55 (11) 91234 5678"]
+        - emails [array of up to 10 strings, default null]: emails notified when the stock falls below minimumBalance. ex: ["john.doe@enterprise.com"]
+        - phones [array of up to 10 strings, default null]: phones notified when the stock falls below minimumBalance. ex: ["+55 (11) 91234 5678"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingStockRule is created. ex: "5664445921492992"
@@ -60,7 +60,7 @@ class IssuingStockRule extends Resource
     /**
     # Create IssuingStockRules
 
-    Send an array of IssuingStockRule objects for creation at the Stark Infra API
+    Send an array of IssuingStockRule objects for creation at the Stark Infra API. Each IssuingStock can have only one active rule at a time, and every rule must include at least one email or phone.
 
     ## Parameters (required):
         - rules [array of IssuingStockRule objects]: array of IssuingStockRule objects to be created in the API
@@ -174,7 +174,7 @@ class IssuingStockRule extends Resource
     /**
     # Cancel an IssuingStockRule entity
 
-    Cancel an IssuingStockRule entity previously created in the Stark Infra API
+    Cancel an IssuingStockRule entity previously created in the Stark Infra API. This action is irreversible.
 
     ## Parameters (required):
         - id [string]: IssuingStockRule unique id. ex: "5664445921492992"

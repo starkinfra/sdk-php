@@ -47,7 +47,7 @@ class IssuingEmbossingRequest extends Resource
         - shippingStateCode [string]: Shipping state code. ex: "NY"
         - shippingStreetLine1 [string]: Shipping main address. ex: "AVENUE OF THE AMERICAS"
         - shippingStreetLine2 [string]: Shipping address complement. ex: "Apt. 6"
-        - shippingService [string]: Shipping service. ex: "loggi"
+        - shippingService [string]: Shipping service. Options: "loggi", "conveyor". ex: "loggi"
         - shippingTrackingNumber [string]: Shipping tracking number. ex: "5656565656565656"
         - shippingZipCode [string]: Shipping zip code. ex: "12345-678"
 
@@ -97,7 +97,7 @@ class IssuingEmbossingRequest extends Resource
     /**
     # Create IssuingEmbossingRequests
 
-    Send an array of IssuingEmbossingRequest objects for creation in the Stark Infra API
+    Send an array of IssuingEmbossingRequest objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - requests [array of IssuingEmbossingRequest objects]: array of IssuingEmbossingRequest objects to be created in the API

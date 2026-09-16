@@ -22,7 +22,7 @@ class Statistics extends SubResource
     
     ## Parameters (return-only):
         - source [string]: source of PixUser. ex: "pix-fraud"
-        - type [string]: type of PixUser. Options: "settled", "registered", "denied", "mule", "scam", "unknown", "other"
+        - type [string]: type of the statistic; valid values depend on source. Options: "registered", "unique" (pix-key); "settled" (pix-request); "identity", "mule", "scam", "other", "unknown", "amount", "unique" (pix-fraud); "open", "denied", "unique" (pix-infraction).
         - value [string]: value of PixUser. ex: "0"
         - after [Datetime]: after datetime for the PixUser. ex: "2020-03-10 10:30:00.000000+00:00"
         - updated [Datetime]: latest update datetime for the PixUser. ex: "2020-03-10 10:30:00.000000+00:00"

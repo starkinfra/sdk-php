@@ -36,6 +36,7 @@ class LedgerTransaction extends Resource
 
     ## Parameters (optional):
         - fee [integer, default null]: fee applied to the LedgerTransaction. ex: 100
+        - created [Date, DateTime or string, default: current datetime]: datetime of the transaction, used to import existing transaction history; must not be in the future, and across a single create() call transactions must be passed in chronological order of `created`.
         - rules [array of Ledger\Rule objects, default null]: list of Rule objects linked to the LedgerTransaction. Rules are used to overwrite the Ledger's rules for this transaction. ex: [new Ledger\Rule(["key" => "minimumBalance", "value" => 0])]
         - metadata [dictionary object, default null]: dictionary object used to store additional information about the LedgerTransaction object. ex: ["orderId" => "123", "orderType" => "purchase"]
         - tags [array of strings, default null]: list of strings for reference when searching for LedgerTransactions. ex: ["transfer/123", "savings"]
@@ -66,7 +67,7 @@ class LedgerTransaction extends Resource
     /**
     # Create LedgerTransactions
 
-    Send a list of LedgerTransaction objects for creation in the Stark Infra API
+    Send a list of LedgerTransaction objects (up to 500 per call, which may target different Ledgers) for creation in the Stark Infra API. Each transaction is applied to its Ledger in the order sent, and the resulting balance is returned for each one.
 
     ## Parameters (required):
         - transactions [array of LedgerTransaction objects]: list of LedgerTransaction objects to be created in the API

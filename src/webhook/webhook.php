@@ -15,12 +15,12 @@ class Webhook extends Resource
     /**
     # Webhook subscription object
     
-    A Webhook is used to subscribe to notification events on an user-selected endpoint.
+    A Webhook is used to subscribe to notification events on a user-selected endpoint. If your endpoint does not answer with HTTP 200, Stark Infra retries up to 3 times, waiting 5, 30 and then 120 minutes between attempts.
     Currently, available services for subscription are credit-note, issuing-card, issuing-invoice, issuing-purchase, pix-request.in, pix-request.out, pix-reversal.in, pix-reversal.out, pix-claim, pix-key, pix-infraction, pix-chargeback, pix-dispute, pix-pull-subscription, pix-pull-request
-    
+
     ## Parameters (required):
         - url [string]: Url that will be notified when an event occurs.
-        - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: ["credit-note", "issuing-card", "issuing-invoice", "issuing-purchase", "pix-request.in", "pix-request.out", "pix-reversal.in", "pix-reversal.out", "pix-claim", "pix-key", "pix-infraction", "pix-chargeback", "pix-dispute", "pix-pull-subscription", "pix-pull-request"]
+        - subscriptions [array of strings]: list of any non-empty combination of the available services. Options: "pix-request", "pix-reversal", "pix-pull-subscription", "pix-pull-request", "pix-internal-transaction-report", "pix-key", "pix-key-holmes", "pix-claim", "pix-infraction", "pix-chargeback", "pix-dispute", "issuing-card", "issuing-holder", "issuing-purchase", "issuing-invoice", "credit-note", "credit-holmes"
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the webhook is created. ex: "5656565656565656"

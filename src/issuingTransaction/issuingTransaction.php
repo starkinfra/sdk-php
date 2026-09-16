@@ -24,7 +24,7 @@ class IssuingTransaction extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingTransaction is created. ex: "5656565656565656"
-        - amount [integer]: IssuingTransaction value in cents. ex: 1234 (= R$ 12.34)
+        - amount [integer]: IssuingTransaction value in cents; positive for credits, negative for debits. ex: 1234 (= R$ 12.34)
         - balance [integer]: balance amount of the Workspace at the instant of the Transaction in cents. ex: 200 (= R$ 2.00)
         - description [string]: IssuingTransaction description. ex: "Buying food"
         - source [string]: source of the transaction. ex: "issuing-purchase/5656565656565656"

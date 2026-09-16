@@ -4120,7 +4120,7 @@ print_r($log);
 
 ### Create IndividualAccountAttachments
 
-You can create an IndividualAccountAttachment to attach supporting documents to an individual account request. You must reference the desired individual account request by its id. Pass the raw file content and its MIME type; the SDK encodes it before sending.
+You can create an IndividualAccountAttachment to attach a supporting document to an individual account request. You must reference the desired individual account request by its id. Pass the raw file content and its MIME type; the SDK encodes it before sending. Only one attachment is accepted per call.
 
 ```php
 use StarkInfra\IndividualAccountAttachment;
@@ -4129,13 +4129,6 @@ $attachments = IndividualAccountAttachment::create([
     new IndividualAccountAttachment([
         "type" => "identity-front",
         "content" => file_get_contents("identity-front.png"),
-        "contentType" => "image/png",
-        "accountRequestId" => "5189530608992256",
-        "tags" => ["employees", "monthly"]
-    ]),
-    new IndividualAccountAttachment([
-        "type" => "identity-back",
-        "content" => file_get_contents("identity-back.png"),
         "contentType" => "image/png",
         "accountRequestId" => "5189530608992256",
         "tags" => ["employees", "monthly"]
@@ -4200,7 +4193,7 @@ You can query individual account attachment logs to better understand individual
 ```php
 use StarkInfra\IndividualAccountAttachment\Log;
 
-$logs = IndividualAccountAttachment\Log::query([
+$logs = Log::query([
     "limit" => 10,
     "after" => "2020-04-01",
     "before" => "2020-04-30"
@@ -4218,7 +4211,7 @@ You can also get a specific log by its id.
 ```php
 use StarkInfra\IndividualAccountAttachment\Log;
 
-$log = IndividualAccountAttachment\Log::get("5189530608992256");
+$log = Log::get("5189530608992256");
 
 print_r($log);
 ```

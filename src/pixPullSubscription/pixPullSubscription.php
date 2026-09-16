@@ -123,7 +123,7 @@ class PixPullSubscription extends Resource
     /**
     # Create PixPullSubscriptions
 
-    Send an array of PixPullSubscription objects for creation in the Stark Infra API
+    Send an array of PixPullSubscription objects (1 to 100 per call) for creation in the Stark Infra API. Only one automatic debit settles per billing cycle (week/month/quarter/semester/year); use a fixed `amount` for an exact authorized value or `amountMinLimit` to bound a variable amount the payer approves. When retries are allowed, the receiver may retry once, one day before the expected settlement date, up to 3 times within 7 days of the original date, always for the same amount, and never across a new cycle boundary.
 
     ## Parameters (required):
         - subscriptions [array of PixPullSubscription objects]: array of PixPullSubscription objects to be created.
@@ -218,9 +218,9 @@ class PixPullSubscription extends Resource
 
     ## Parameters (optional):
         - params [array]: associative array of fields to patch. Allowed keys:
-            - status [string]: target status. ex: "approved"
+            - status [string]: target status. As the payer you may set "approved" or "denied"; as the receiver you may set "active". ex: "approved"
             - senderCityCode [string]: IBGE code. Required if you are confirming the subscription. ex: "3550308"
-            - reason [string]: reason for the update. Options: "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered".
+            - reason [string]: reason for the update, required when denying. Options: "invalidSenderAccountNumber", "accountClosed", "accountBlocked", "invalidBranchCode", "notRecognizedBySender", "userRejected", "notOffered".
             - amount [integer]: amount in cents charged every cycle. ex: 1234 (= R$ 12.34)
             - amountMinLimit [integer]: floor value for variable-amount subscriptions. ex: 1000 (= R$ 10.00)
             - due [string]: due date for the sender's answer. ISO 8601. ex: "2026-04-03T12:00:00+00:00"
@@ -244,8 +244,8 @@ class PixPullSubscription extends Resource
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
         - reason [string]: cancellation reason.
-            Options as receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested".
-            Options as sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested".
+            Options as receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested", "paymentNotFound".
+            Options as sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested", "paymentNotFound".
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call

@@ -58,7 +58,7 @@ class IssuingHolder extends Resource
     /**
     # Create IssuingHolder
 
-    Send a list of IssuingHolder objects for creation in the Stark Infra API
+    Send a list of IssuingHolder objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - holders [array of IssuingHolder objects]: list of IssuingHolder objects to be created in the API
@@ -86,7 +86,7 @@ class IssuingHolder extends Resource
 
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
-            - expand [array of strings, default []]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+            - expand [array of strings, default []]: fields to expand information. Options: "rules". ex: ["rules"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -175,7 +175,7 @@ class IssuingHolder extends Resource
     /**
     # Cancel an IssuingHolder entity
 
-    Cancel an IssuingHolder entity previously created in the Stark Infra API
+    Cancel an IssuingHolder entity previously created in the Stark Infra API. This action is irreversible.
 
     ## Parameters (required):
         - id [string]: IssuingHolder unique id. ex: "5656565656565656"

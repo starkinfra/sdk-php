@@ -81,7 +81,7 @@ class BusinessIdentity extends Resource
     /**
     # Create BusinessIdentities
 
-    Send an array of BusinessIdentity objects for creation in the Stark Infra API
+    Send an array of BusinessIdentity objects for creation in the Stark Infra API. The taxId (CNPJ) must be valid, active in the official bureau, and must return at least one representative (sócio); each identity is created in "pending" status.
 
     ## Parameters (required):
         - identities [array of BusinessIdentity objects]: array of BusinessIdentity objects to be created in the API.
@@ -178,7 +178,7 @@ class BusinessIdentity extends Resource
         - id [string]: BusinessIdentity id. ex: "5656565656565656"
 
     ## Parameters (optional):
-        - status [string, default null]: You may send BusinessAttachments to validation by passing 'processing' in the status
+        - status [string, default null]: only "processing" is accepted; it triggers the AI Model analysis. The identity must be in "created" or "pending" status and must already have at least one BusinessAttachment associated with it.
         - tags [array of strings, default null]: array of strings for reference when searching for BusinessIdentities. ex: ["employees", "monthly"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -193,7 +193,7 @@ class BusinessIdentity extends Resource
     /**
     # Cancel a BusinessIdentity entity
 
-    Cancel a BusinessIdentity entity previously created in the Stark Infra API
+    Cancel a BusinessIdentity entity previously created in the Stark Infra API. Only identities in "created" or "pending" status can be canceled.
 
     ## Parameters (required):
         - id [string]: BusinessIdentity unique id. ex: "5656565656565656"

@@ -31,7 +31,7 @@ class PixFraud extends Resource
     
     ## Parameters (required):
         - externalId [string]: a string that must be unique among all your PixFrauds, used to avoid resource duplication. ex: "my-internal-id-123456"
-        - type [string]: type of PixFraud. Options: "identity", "mule", "scam", "other"
+        - type [string]: type of PixFraud. Options: "identity", "mule", "scam", "other", "unknown"
         - taxId [string]: user tax ID (CPF or CNPJ) with or without formatting. ex: "01234567890" or "20.018.183/0001-80"
 
     ## Parameters (optional):
@@ -65,8 +65,8 @@ class PixFraud extends Resource
     /**
     # Create PixFraud objects
 
-    Create PixFraud objects in the Stark Infra API
-    
+    Create PixFraud objects in the Stark Infra API. You can create up to 100 PixFraud reports in a single call.
+
     ## Parameters (optional):
         - frauds [array of PixFraud objects]: array of PixFraud objects to be created in the API.
     
@@ -140,7 +140,7 @@ class PixFraud extends Resource
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
         - status [array of strings, default null]: filter for status of retrieved objects. Options: "created", "failed", "registered", "canceled".
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
-        - type [array of strings, default null]: filter for the type of retrieved PixFraud. Options: "reversal", "reversalChargeback"
+        - type [array of strings, default null]: filter for the type of retrieved PixFraud. Options: "identity", "mule", "scam", "other"
         - flow [string, default null]: direction of the PixFraud flow. Options: "out" if you created the PixFraud, "in" if you received the PixFraud.
         - tags [array of strings, default null]: array of strings for tagging. ex: ["travel", "food"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -160,7 +160,7 @@ class PixFraud extends Resource
     /**
     # Cancel a PixFraud entity
 
-    Cancel a PixFraud entity previously created in the Stark Infra API
+    Cancel a PixFraud entity previously created in the Stark Infra API. Only fraud reports you submitted can be canceled this way.
 
     ## Parameters (required):
         - id [string]: Pix Fraud unique id. ex: "5656565656565656"

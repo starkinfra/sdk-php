@@ -74,7 +74,7 @@ class DynamicBrcode extends Resource
     /**
     # Create DynamicBrcodes
 
-    Send an array of DynamicBrcode objects for creation at the Stark Infra API
+    Send an array of DynamicBrcode objects (up to 100 per call) for creation at the Stark Infra API
 
     ## Parameters (required):
         - brcodes [array of DynamicBrcode objects]: array of DynamicBrcode objects to be created in the API.

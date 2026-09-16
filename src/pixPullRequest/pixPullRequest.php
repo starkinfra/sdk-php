@@ -42,7 +42,7 @@ class PixPullRequest extends Resource
 
     ## Parameters (required):
         - amount [integer]: amount to be charged in cents. ex: 1234 (= R$ 12.34)
-        - due [string]: due date for answering with an approval or denial. ISO 8601. ex: "2026-04-03T12:00:00+00:00"
+        - due [string]: due datetime for the pull's settlement (the requested payment date). ISO 8601. ex: "2026-04-03T12:00:00+00:00"
         - endToEndId [string]: Central Bank's unique transaction id. ex: "E20018183202201201450u34sDGd19lz"
         - receiverAccountNumber [string]: receiver's bank account number. ex: "00000-0"
         - receiverAccountType [string]: receiver's bank account type. Options: "checking", "savings", "salary", "payment".
@@ -102,7 +102,7 @@ class PixPullRequest extends Resource
     /**
     # Create PixPullRequests
 
-    Send a list of PixPullRequest objects for creation in the Stark Infra API.
+    Send a list of PixPullRequest objects (1 to 100 per call) for creation in the Stark Infra API. Each request is validated against the target PixPullSubscription: it must be approved, the amount must be within the authorized limit, the due date must match the subscription's charge cycle, payer/receiver data must match the contract, the request must be sent between 2 and 10 days before the expected settlement date, and no other request can already be scheduled for the same cycle.
 
     ## Parameters (required):
         - requests [array of PixPullRequest objects]: PixPullRequest objects to be created.
@@ -194,7 +194,7 @@ class PixPullRequest extends Resource
     /**
     # Update PixPullRequest
 
-    Change status to "scheduled" or "denied". When denying, `reason` is required.
+    Change status to "scheduled" or "denied". Only the payer may update a PixPullRequest. When denying, `reason` is required.
 
     ## Parameters (required):
         - id [string]: PixPullRequest unique id. ex: "5656565656565656"
@@ -220,9 +220,7 @@ class PixPullRequest extends Resource
 
     ## Parameters (required):
         - id [string]: PixPullRequest unique id. ex: "5656565656565656"
-        - reason [string]: cancellation reason.
-            Options as receiver: "accountClosed", "receiverOrganizationClosed", "receiverInternalError", "fraud", "receiverUserRequested".
-            Options as sender: "accountClosed", "senderDeceased", "fraud", "senderUserRequested".
+        - reason [string, required]: cancellation reason. As sender: "accountClosed", "accountBlocked", "pixRequestFailed", "other", "senderUserRequested". As receiver: "accountClosed", "accountBlocked", "other", "receiverUserRequested".
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call

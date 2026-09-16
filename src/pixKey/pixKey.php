@@ -103,11 +103,12 @@ class PixKey extends Resource
     
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656".
-        - payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information. This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80".
-    
+        - payerId [string]: tax id (CPF/CNPJ) of the individual or business requesting the PixKey information (called payerTaxId on the API docs). This id is used by the Central Bank to limit request rates. ex: "20.018.183/0001-80". Deprecated and ignored by the API — the payer's tax ID is now always derived automatically from the calling Workspace's own registered tax ID for Central Bank rate-limiting purposes; do not rely on this value being sent to or used by the server.
+
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
             - endToEndId [string, default null]: central bank's unique transaction id. If the request results in the creation of a PixRequest, the same endToEndId should be used. If this parameter is not passed, one endToEndId will be automatically created. Example: "E00002649202201172211u34srod19le"
+            - expand [array of strings, default null]: entity fields to expand in the response. Options: "statistics", "ownerStatistics".
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

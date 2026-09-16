@@ -74,7 +74,7 @@ class StaticBrcode extends Resource
     /**
     # Create StaticBrcodes
 
-    Send a list of StaticBrcode objects for creation at the Stark Infra API
+    Send a list of StaticBrcode objects (up to 100 per call) for creation at the Stark Infra API
 
     ## Parameters (optional):
         - brcodes [array of StaticBrcode objects]: list of StaticBrcode objects to be created in the API.

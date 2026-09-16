@@ -33,7 +33,7 @@ class IssuingRestock extends Resource
 
     ## Attributes (return-only):
         - id [string]: unique id returned when IssuingRestock is created. ex: "5656565656565656"
-        - status [string]: current IssuingRestock status. ex: "created", "processing", "confirmed"
+        - status [string]: current IssuingRestock status. Options: "created", "processing", "confirmed", "canceled"
         - created [DateTime]: creation datetime for the IssuingRestock.
         - updated [DateTime]: latest update datetime for the IssuingRestock.
      */
@@ -54,7 +54,7 @@ class IssuingRestock extends Resource
     /**
     # Create IssuingRestocks
 
-    Send an array of IssuingRestock objects for creation at the Stark Infra API
+    Send an array of IssuingRestock objects (up to 100 per call) for creation at the Stark Infra API
 
     ## Parameters (required):
         - restocks [array of IssuingRestock objects]: array of IssuingRestock objects to be created in the API

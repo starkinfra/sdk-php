@@ -27,7 +27,7 @@ class IndividualAccountRequest extends Resource
     Request to open a Stark Infra account for an individual. The caller submits the
     individual's identifying data and income, and the API runs the approval flow
     asynchronously — moving the request through "created" -> "processing" ->
-    ("success" | "failed" | "canceled"). Supporting documents are uploaded as
+    ("denied" | "approved"). Supporting documents are uploaded as
     IndividualAccountAttachment and reference this request via accountRequestId.
 
     When you initialize an IndividualAccountRequest, the entity will not be automatically
@@ -42,10 +42,11 @@ class IndividualAccountRequest extends Resource
 
     ## Parameters (optional):
         - tags [array of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
+        - birthDate [string, default null]: individual's birth date. ex: "1990-05-23"
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
-        - status [string]: current IndividualAccountRequest status. Options: "created", "processing", "success", "failed", "canceled"
+        - status [string]: current IndividualAccountRequest status. Options: "created", "processing", "denied", "approved"
         - accountType [string]: always "individual" for this resource. Returned for parity with other account-request kinds.
         - flags [array of strings]: server-side review flags. Empty unless the request triggered a manual-review condition.
         - created [DateTime]: creation datetime for the IndividualAccountRequest.
@@ -116,7 +117,7 @@ class IndividualAccountRequest extends Resource
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "success", "failed", "canceled"
+        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "denied", "approved"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5189530608992256", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -142,7 +143,7 @@ class IndividualAccountRequest extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "success", "failed", "canceled"
+        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "denied", "approved"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5189530608992256", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
