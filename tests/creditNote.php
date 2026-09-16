@@ -126,6 +126,32 @@ class TestCreditNote
         }
     }
 
+    public function pdf()
+    {
+        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
+        if (is_null($creditNote->id)) {
+            throw new Exception("failed");
+        }
+
+        $pdf = CreditNote::pdf($creditNote->id);
+        if (strlen($pdf) == 0) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function payment()
+    {
+        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
+        if (is_null($creditNote->id)) {
+            throw new Exception("failed");
+        }
+
+        $payment = CreditNote::payment($creditNote->id);
+        if (strlen($payment) == 0) {
+            throw new Exception("failed");
+        }
+    }
+
     public function exampleCCB()
     {
         $params = [
@@ -210,4 +236,12 @@ echo " - OK";
 
 echo "\n\t- debtor workspace id";
 $test->debtorWorkspaceId();
+echo " - OK";
+
+echo "\n\t- pdf";
+$test->pdf();
+echo " - OK";
+
+echo "\n\t- payment";
+$test->payment();
 echo " - OK";
