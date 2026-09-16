@@ -42,7 +42,7 @@ class TestIssuingPurchase
     public function parseRight()
     {
         $authorization_1 = IssuingPurchase::parse(self::CONTENT, self::VALID_SIGNATURE);
-        $authorization_2 = IssuingPurchase::parse(self::CONTENT, self::VALID_SIGNATURE); // using cache
+        $authorization_2 = IssuingPurchase::parse(self::CONTENT, self::VALID_SIGNATURE);
 
         if ($authorization_1 != $authorization_2) {
             throw new Exception("failed");
@@ -87,6 +87,21 @@ class TestIssuingPurchase
             throw new Exception("failed");
         }
     }
+
+    public function installmentCount()
+    {
+        $purchases = IssuingPurchase::query(["limit" => 10]);
+
+        foreach ($purchases as $purchase) {
+            if (!property_exists($purchase, "installmentCount")) {
+                throw new Exception("failed");
+            }
+
+            if (!is_null($purchase->installmentCount) && !is_int($purchase->installmentCount)) {
+                throw new Exception("failed");
+            }
+        }
+    }
 }
 
 echo "\n\nIssuingPurchase:";
@@ -111,4 +126,8 @@ echo " - OK";
 
 echo "\n\t- create response";
 $test->createResponse();
+echo " - OK";
+
+echo "\n\t- installment count";
+$test->installmentCount();
 echo " - OK";

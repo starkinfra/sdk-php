@@ -19,6 +19,8 @@ class IssuingRule extends Resource
     public $categories;
     public $countries;
     public $methods;
+    public $schedule;
+    public $purposes;
 
     /**
     # IssuingRule object
@@ -41,6 +43,8 @@ class IssuingRule extends Resource
         - counterAmount [integer]: amount spent per rule. ex: 200000 (= R$ 2000.00)
         - currencySymbol [string]: currency symbol. ex: "R$"
         - currencyName [string]: currency name. ex: "Brazilian Real"
+        - schedule [string]: Optional schedule dictating when the rule can be used. Some examples: "everyday from 09:00 to 18:00 in America/Sao_Paulo" - every day, 09:00-18:00 Sao Paulo time; "every monday, wednesday, friday from 08:00 to 12:00 in America/Sao_Paulo" - only those weekdays, mornings; "every saturday, sunday" - weekends, all day, in UTC
+        - purposes [array of strings]: Optional list of transaction purposes the rule applies to. Options: "purchase", "withdrawal", "verification". The rule then limits only purchases of those purposes; omit it to allow any purposes. Example: ["purchase", "verification"] if you want us to automatically deny withdrawal.
      */
     function __construct(array $params)
     {
@@ -56,6 +60,8 @@ class IssuingRule extends Resource
         $this->categories = MerchantCategory::parseCategories(Checks::checkParam($params, "categories"));
         $this->countries = MerchantCountry::parseCountries(Checks::checkParam($params, "countries"));
         $this->methods = CardMethod::parseMethods(Checks::checkParam($params, "methods"));
+        $this->schedule = Checks::checkParam($params, "schedule");
+        $this->purposes = Checks::checkParam($params, "purposes");
 
         Checks::checkParams($params);
     }
