@@ -30,6 +30,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
 - PixPullSubscription::parse method
+- BusinessAccountRequest resource
 
 ## [0.17.0] - 2026-06-30
 ### Added
