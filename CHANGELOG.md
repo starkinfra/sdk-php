@@ -28,6 +28,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - group attribute to MerchantCategory resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
+- update method to IssuingPurchase resource
 ### Fixed
 - PixPullSubscription::parse method
 - BusinessAccountRequest resource
