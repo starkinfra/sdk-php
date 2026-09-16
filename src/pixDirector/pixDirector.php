@@ -29,7 +29,7 @@ class PixDirector extends SubResource
     
     ## Parameters (required):
         - name [string]: name of the PixDirector. ex: "Edward Stark".
-        - taxId [string]: tax ID (CPF/CNPJ) of the PixDirector. ex: "03.300.300/0001-00"
+        - taxId [string]: director's CPF (individual tax ID). ex: "012.345.678-90"
         - phone [string]: phone of the PixDirector. ex: "+551198989898"
         - email [string]: email of the PixDirector. ex: "ned.stark@starkbank.com"
         - password [string]: password of the PixDirector. ex: "12345678"

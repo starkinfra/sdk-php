@@ -99,19 +99,10 @@ class PixInfraction extends Resource
     }
 
     /**
-     * @deprecated Function deprecated since v0.16.0
-    # Create PixInfraction objects
+     * @deprecated since v0.16.0 — Pix Infraction creation was removed from the Stark Infra API; this function now always throws.
+    # Create PixInfraction objects (removed)
 
-    Create PixInfraction objects in the Stark Infra API
-    
-    ## Parameters (optional):
-        - infractions [array of PixInfraction objects]: array of PixInfraction objects to be created in the API.
-    
-    ## Parameters (optional):
-        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
-    
-    ## Return:
-        - array of PixInfraction objects with updated attributes
+    This function is deprecated and permanently disabled: the Stark Infra API no longer exposes a POST /pix-infraction endpoint for client-initiated creation, so calling create() only raises/returns an error and never reaches the API. This method is kept only to avoid breaking old integrations and immediately throws an Exception; do not call it.
     */
     public static function create($infractions, $user=null)
     {
@@ -197,13 +188,15 @@ class PixInfraction extends Resource
     /**
     # Update PixInfraction entity
 
-    Respond to a received PixInfraction.
-    
+    Respond to a received PixInfraction. You must analyze and answer an inbound PixInfraction within 7 days of its delivery.
+
     ## Parameters (required):
         - id [string]: PixInfraction id. ex: '5656565656565656'
         - result [string]: result after the analysis of the PixInfraction. Options: "agreed", "disagreed"
-        - fraudType [string]: type of Pix Fraud. Options: "identity", "mule", "scam", "other"
-    
+
+    ## Parameters (conditionally required):
+        - fraudType [string, default null]: type of Pix Fraud, required only when result is "agreed" (optional/ignored when result is "disagreed"). Options: "identity", "mule", "scam", "other" — "unknown" is not an accepted value.
+
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
         - analysis [string, default null]: analysis that led to the result.
@@ -222,8 +215,8 @@ class PixInfraction extends Resource
     /**
     # Cancel a PixInfraction entity
     
-    Cancel a PixInfraction entity previously created in the Stark Infra API
-    
+    Cancel a PixInfraction entity previously created in the Stark Infra API. Only infractions you reported (outbound, flow "out") can be canceled this way.
+
     ## Parameters (required):
         - id [string]: object unique id. ex: "5656565656565656"
     

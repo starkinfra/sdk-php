@@ -34,11 +34,14 @@ class CreditNotePreview extends SubResource
 
     ## Parameters (required):
         - type [string]: table type that defines the amortization system. Options: "sac", "price", "american", "bullet", "custom"
-        - nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions. ex: nominalAmount=11234 (= R$ 112.34)
         - scheduled [Date, DateTime or string ]: date of payment execution to the credit receiver. ex: "2023-10-25T17:59:26.249976+00:00"
         - taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
 
-    ## Parameters (conditionally required):
+    ## Parameters (conditionally required, depending on `type`):
+        - nominalInterest, scheduled, initialDue, taxId, and one of count/initialAmount — required for "sac"/"price"
+        - nominalInterest, scheduled, initialDue, taxId, count — required for "american"
+        - nominalInterest, scheduled, initialDue, taxId — required for "bullet"
+        - scheduled, taxId, invoices — required for "custom"
         - invoices [list of CreditNote.Invoice objects]: list of Invoice objects to be created and sent to the credit receiver.
         - nominalInterest [float]: yearly nominal interest rate of the credit note, in percentage. ex: 12.5
         - initialDue [Date, DateTime or string]: date of the first Invoice. ex: "2023-11-25T17:59:26.249976+00:00"
@@ -47,10 +50,11 @@ class CreditNotePreview extends SubResource
         - interval [string]: interval between Invoices. ex: "year", "month"
 
     ## Parameters (optional):
+        - nominalAmount [integer]: amount in cents transferred to the credit receiver, before deductions -- provide exactly one of nominalAmount or amount, for every type including custom. ex: nominalAmount=11234 (= R$ 112.34)
+        - amount [integer]: net amount in cents disbursed to the credit receiver -- provide exactly one of nominalAmount or amount. ex: amount=11234 (= R$ 112.34)
         - rebateAmount [integer, default 0]: credit analysis fee deducted from lent amount. ex: rebateAmount=11234 (= R$ 112.34)
 
     ## Attributes (return-only):
-        - amount [integer]: credit note value in cents. ex: 1234 (= R$ 12.34)
         - interest [float]: yearly effective interest rate of the CreditNote, in percentage. ex: 12.5
         - taxAmount [integer]: tax amount included in the credit note. ex: 100
      */

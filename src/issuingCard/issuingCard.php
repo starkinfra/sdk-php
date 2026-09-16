@@ -101,14 +101,14 @@ class IssuingCard extends Resource
     /**
     # Create IssuingCards
 
-    Send an array of IssuingCard objects for creation in the Stark Infra API
+    Send an array of IssuingCard objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - cards [array of IssuingCard objects]: array of IssuingCard objects to be created in the API
 
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
-            - expand [array of strings, default null]: fields to to expand information. ex: ["rules", "securityCode", "number", "expiration"]
+            - expand [array of strings, default null]: fields to expand in the response. Options: "rules", "securityCode", "number", "expiration", "isPinDefined". ex: ["rules", "securityCode", "number", "expiration", "isPinDefined"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
     ## Return:
@@ -207,8 +207,8 @@ class IssuingCard extends Resource
         - id [string]: IssuingCard id. ex: "5656565656565656"
 
     ## Parameters (optional):
-        - status [string]: You may block the IssuingCard by passing 'blocked' in the status
-        - pin [string, default null]: You may unlock your physical card by passing its PIN. This is also the PIN you use to authorize a purchase.
+        - status [string]: new status for the card. Options: "active" (also used to activate a pending physical card, together with `pin`), "blocked".
+        - pin [string, default null]: card PIN, a numeric string of 4 to 6 digits, used to authorize purchases. Write-only — it is never returned by the API; pass "expand" => ["isPinDefined"] on a get/query to check whether a PIN is set. A pending physical card must receive a pin when activated (status set to "active").
         - displayName [string, default null]: card displayed name
         - rules [array of dictionaries, default null]: array of dictionaries with "amount": int, "currencyCode": string, "id": string, "interval": string, "name": string pairs.
         - tags [array of strings]: array of strings for tagging
@@ -225,7 +225,7 @@ class IssuingCard extends Resource
     /**
     # Cancel an IssuingCard entity
 
-    Cancel an IssuingCard entity previously created in the Stark Infra API
+    Cancel an IssuingCard entity previously created in the Stark Infra API. This action is irreversible.
 
     ## Parameters (required):
         - id [string]: IssuingCard unique id. ex: "5656565656565656"

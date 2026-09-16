@@ -38,7 +38,7 @@ class PixReversal extends Resource
         - amount [integer]: amount in cents to be reversed from PixRequest. ex: 1234 (= R$ 12.34)
         - externalId [string]: url safe string that must be unique among all your PixReversals. Duplicated external IDs will cause failures. By default, this parameter will block any PixReversal that repeats amount and receiver information on the same date. ex: "my-internal-id-123456"
         - endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
-        - reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "chashierError", "customerRequest"
+        - reason [string]: reason why the PixRequest is being reversed. Options are "bankError", "fraud", "cashierError", "customerRequest"
 
     ## Parameters (optional):
         - tags [array of strings, default null]: list of strings for reference when searching for PixReversals. ex: ["employees", "monthly"]
@@ -74,7 +74,7 @@ class PixReversal extends Resource
     /**
     # Create PixReversals
 
-    Send an array of PixReversal objects for creation in the Stark Infra API
+    Send an array of PixReversal objects for creation in the Stark Infra API. You can only reverse inbound PixRequests that have status "success", referenced by their endToEndId, and you can create up to 100 PixReversals in a single call.
 
     ## Parameters (required):
         - reversals [array of PixReversal objects]: array of PixReversal objects to be created in the API.
@@ -195,6 +195,8 @@ class PixReversal extends Resource
 
     /**
     # Helps you respond to a PixReversal authorization
+
+    Helps you respond to a PixReversal authorization request. You must answer within 1 second (HTTP 200); if you do not respond in time, or if no pixReversalUrl is registered, Stark Infra accepts the PixReversal by default.
 
     ## Parameters (required):
         - status [string]: response to the authorization request. ex: "approved" or "denied"

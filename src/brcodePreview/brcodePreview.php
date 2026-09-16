@@ -106,7 +106,7 @@ class BrcodePreview extends Resource
     /**
     # Retrieve BrcodePreviews
 
-    Process BR Codes before paying them.
+    Process BR Codes before paying them. You can preview up to 100 Brcodes in a single call.
 
     ## Parameters (required):
         - previews [array of BrcodePreview objects]: Array of BrcodePreview objects to preview. ex: [starkinfra\BrcodePreview("00020126580014br.gov.bcb.pix0136a629532e-7693-4846-852d-1bbff817b5a8520400005303986540510.005802BR5908T'Challa6009Sao Paulo62090505123456304B14A")]

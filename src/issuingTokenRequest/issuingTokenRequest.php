@@ -23,13 +23,13 @@ class IssuingTokenRequest extends SubResource
 
     ## Attributes (required):
         - cardId [string]: card ID which the token is bounded to. ex: "5656565656565656"
-        - wallet_id [string]: desired wallet to be integrated. ex: "google"
+        - wallet_id [string]: desired wallet to be integrated. Options: "apple", "google", "merchant". ex: "google"
         - method_code [string]: method code. ex: "app" or "manual"
         
     ## Attributes (return-only):
         - content [string]: token request content. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
         - signature [string]: token request signature. ex: "eyJwdWJsaWNLZXlGaW5nZXJwcmludCI6ICJlNTNiZThjZTRhYWQxNWU2OWNmMjExOTA5Mjk4YzJkOTE0O..."
-        - metadata [dictionary object]: dictionary object used to store additional information about the IssuingPurchase object. ex: [authorizationId => "OjZAqj"]
+        - metadata [dictionary object]: dictionary object used to store additional information about the IssuingTokenRequest. ex: ["authorizationId" => "OjZAqj"]
     */
     function __construct(array $params)
     {

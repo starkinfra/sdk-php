@@ -19,26 +19,26 @@ class IndividualIdentity extends Resource
     /**
     # IndividualIdentity object
 
-    An IndividualDocument represents an individual to be validated. It can have several individual documents attached
-    to it, which are used to validate the identity of the individual. Once an individual identity is created, individual
-    documents must be attached to it using the created method of the individual document resource. When all the required
-    individual documents are attached to an individual identity it can be sent to validation by patching its status to 
-    processing.
+    An IndividualIdentity represents an end-to-end identity verification of a Brazilian individual, created with name, email, deliveryMethod ("automatic" or "manual") and proofs ("identity" and/or "biometric") as required parameters, and taxId, phone and tags as optional; the created object already carries a validatorLink the holder uses to submit each proof — there is no separate individual-document resource or "created" method to attach documents to.
 
     When you initialize an IndividualIdentity, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
     to the Stark Infra API and returns the array of created objects.
 
     ## Parameters (required):
-        - name [integer]: individual's full name. ex: "Edward Stark"
-        - taxId [string]: individual's tax ID (CPF). ex: "594.739.480-42"
+        - name [string]: individual's full name. ex: "Edward Stark"
+        - email [string]: e-mail used to deliver the validatorLink when deliveryMethod is "automatic".
+        - deliveryMethod [string]: how the validatorLink reaches the holder. Options: "automatic", "manual".
+        - proofs [array of strings]: proof types to collect. Options: "identity", "biometric"; each must be enabled on your workspace's Identity Profile.
 
     ## Parameters (optional):
+        - taxId [string, default null]: individual's tax ID (CPF); can be set later via update(). ex: "594.739.480-42"
+        - phone [string, default null]: holder's phone in international format.
         - tags [array of strings, default null]: array of strings for reference when searching for IndividualIdentities. ex: ["employees", "monthly"]
 
     ## Attributes (return-only):
         - id [string]: Unique id returned when the identity is created. ex: "5656565656565656"
-        - status [string]: current status of the IndividualIdentity. Options: "created", "canceled", "processing", "failed", "success"
+        - status [string]: current status of the IndividualIdentity. Options: "created", "processing", "pending", "success", "failed" — "canceled" is not a valid value; a canceled identity shows status "failed".
         - created [DateTime]: creation datetime for the IndividualIdentity.
      */
     function __construct(array $params)
@@ -167,7 +167,7 @@ class IndividualIdentity extends Resource
     /**
     # Cancel an IndividualIdentity entity
 
-    Cancel an IndividualIdentity entity previously created in the Stark Infra API
+    Cancel an IndividualIdentity entity previously created in the Stark Infra API. This is a soft delete: the identity moves to "failed", every pending proof is canceled, and a "canceled" log is delivered through the webhook. Only identities in "created" or "pending" status can be canceled.
 
     ## Parameters (required):
         - id [string]: IndividualIdentity unique id. ex: "5656565656565656"

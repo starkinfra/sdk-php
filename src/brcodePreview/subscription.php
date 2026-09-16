@@ -37,7 +37,7 @@ class Subscription extends SubResource
         - description [string]: description of the subscription.
         - installmentEnd [DateTime or string]: end datetime for the installments.
         - installmentStart [DateTime or string]: start datetime for the installments.
-        - interval [string]: interval for the recurring charge. ex: "monthly"
+        - interval [string]: interval for the recurring charge. Options: "week", "month", "quarter", "semester", "year". ex: "month"
         - pullRetryLimit [integer]: maximum number of retries for pulling the payment.
         - receiverBankCode [string]: bank code of the receiver.
         - receiverName [string]: name of the receiver.

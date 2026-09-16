@@ -44,7 +44,7 @@ class PixClaim extends Resource
         - branchCode [string]: branch code of the account claiming the PixKey. ex: 1234".
         - name [string]: holder's name of the account claiming the PixKey. ex: "Jamie Lannister".
         - taxId [string]: holder's taxId of the account claiming the PixKey (CPF/CNPJ). ex: "012.345.678-90".
-        - keyId [string]: id of the registered PixKey to be claimed. Allowed keyTypes are CPF, CNPJ, phone number or email. ex: "+5511989898989".
+        - keyId [string]: id of the registered PixKey to be claimed. Which claim type is created depends on the key's type: an ownership claim is created only for a phone keyType; a portability claim is created for phone, email or taxId (cpf/cnpj) keyTypes. ex: "+5511989898989".
 
     ## Parameters (optional):
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
@@ -188,7 +188,7 @@ class PixClaim extends Resource
     /**
     # Update PixClaim entity
 
-    Update a PixClaim parameters by passing id.
+    Update a PixClaim by passing its id. You must answer an inbound PixClaim within 7 days of its status changing to "delivered" — an unanswered portability claim is rejected and an unanswered ownership claim is accepted, both with reason "defaultBehavior". Only PixClaims with status "delivered" can be confirmed (confirming deletes the referenced PixKey from Stark Infra and the Central Bank), and only PixClaims with status "delivered" or "confirmed" can be canceled.
 
     ## Parameters (required):
         - id [string]: PixClaim id. ex: '5656565656565656'
@@ -196,7 +196,7 @@ class PixClaim extends Resource
     
     ## Parameters (optional):
         - params [dictionary of optional parameters]:
-            - reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "fraud", "userRequested".
+            - reason [string, default: "userRequested"]: reason why the PixClaim is being patched. Options: "userRequested", "accountClosure", "fraud".
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
     
     ## Return:

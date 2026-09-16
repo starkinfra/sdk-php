@@ -36,7 +36,7 @@ class CreditPreview extends SubResource
     /**
     # Create CreditPreviews
 
-    Send a list of CreditPreview objects for processing in the Stark Infra API
+    Send a list of CreditPreview objects (up to 100 per call) for processing in the Stark Infra API. Nothing is persisted; results are computed on the fly.
 
     ## Parameters (required):
         - previews [array of CreditPreview objects]: array of CreditPreview objects to be created in the API.

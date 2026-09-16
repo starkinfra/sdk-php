@@ -19,7 +19,10 @@ class IndividualDocument extends Resource
     public $created;
 
     /**
+     * @deprecated IndividualDocument is deprecated: the current API has no create (or any) endpoint for it.
     # IndividualDocument object
+
+    IndividualDocument is deprecated: the current API has no create (or any) endpoint for it. Use IndividualIdentity's validatorLink flow instead — IndividualIdentityProof entries are generated automatically as the holder submits proofs there and can only be listed and retrieved, never created directly.
 
     Individual documents are images containing either side of a document or a selfie
     to be used in a matching validation. When created, they must be attached to an individual

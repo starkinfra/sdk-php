@@ -25,7 +25,7 @@ class Ledger extends Resource
     They can represent a bank account, a digital wallet, an inventory product, etc.
 
     ## Parameters (required):
-        - externalId [string]: string that must be unique among all your Ledgers. ex: "my-internal-id-123456"
+        - externalId [string]: string that must be unique among all your Ledgers; repeated externalIds will cause failures. ex: "my-internal-id-123456"
 
     ## Parameters (optional):
         - rules [array of Ledger\Rule objects, default null]: list of Rule objects linked to the Ledger. Rules are used to limit the balance of the Ledger. ex: [new Ledger\Rule(["key" => "minimumBalance", "value" => 0])]
@@ -54,7 +54,7 @@ class Ledger extends Resource
     /**
     # Create Ledgers
 
-    Send a list of Ledger objects for creation in the Stark Infra API
+    Send a list of Ledger objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - ledgers [array of Ledger objects]: list of Ledger objects to be created in the API

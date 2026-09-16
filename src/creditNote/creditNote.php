@@ -58,9 +58,9 @@ class CreditNote extends Resource
         - name [string]: credit receiver's full name. ex: "Edward Stark"
         - taxId [string]: credit receiver's tax ID (CPF or CNPJ). ex: "20.018.183/0001-80"
         - scheduled [Date or string]: date of transfer execution. ex: "2020-03-10"
-        - invoices [array of Invoice objects or dictionaries]: list of Invoices to be created and sent to the credit receiver. ex: [Invoice(), Invoice()]
-        - payment [Transfer object or dictionary]: payment to be created and sent to the credit receiver. ex: CreditNote\Transfer()
-        - signers [array of CreditSigner objects or dictionaries]: signers contain the name and email of the signer and the method of delivery. ex: [{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
+        - invoices [array of up to 100 Invoice objects or dictionaries]: installments to be paid by the borrower. Each invoice requires "amount" (cents) and accepts optional "due", "fine" (default 2.0), "interest" (default 1.0), "expiration", "descriptions" and "tags" — all invoices in the same CreditNote must share the same fine and interest. ex: [Invoice(), Invoice()]
+        - payment [Transfer object or dictionary]: disbursement payment to the credit receiver's account. Do not set an "amount" on it — the disbursed amount is computed by the API from nominalAmount/amount. ex: CreditNote\Transfer()
+        - signers [array of CreditSigner objects or dictionaries, max 10]: every person or entity that must sign the contract, each with "name", "contact" and "method". Methods: "link"/"token" (sent to an email or phone contact) or "server"/"organization" (automatic signature over a URL contact). Signers already registered in your credit profile and the SCD signature are appended automatically. ex: [{"name": "Tony Stark", "contact": "tony@starkindustries.com", "method": "link"}]
         - externalId [string]: url safe string that must be unique among all your CreditNotes. ex: "my-internal-id-123456"
         - streetLine1 [string]: credit receiver main address. ex: "Av. Paulista, 200"
         - streetLine2 [string]: credit receiver address complement. ex: "Apto. 123"
@@ -201,7 +201,7 @@ class CreditNote extends Resource
     /**
     # Create CreditNotes
 
-    Send an array of Credit Note objects for creation in the Stark Infra API
+    Send an array of Credit Note objects for creation in the Stark Infra API. You can create up to 100 CreditNotes in a single call. Provide either nominalAmount (pre-tax) or amount (net disbursed value) — the other value, plus taxAmount and the interest rates, is computed from the invoice schedule.
 
     ## Parameters (required):
         - notes [array of CreditNote objects]: array of Credit Note objects to be created in the API
@@ -293,7 +293,7 @@ class CreditNote extends Resource
     /**
     # Cancel a CreditNote entity
 
-    Cancel a CreditNote entity previously created in the Stark Infra API
+    Cancel a CreditNote entity previously created in the Stark Infra API. Only notes with status "created", "signed" or "processing" are actually canceled (which also cancels the signing document); notes already "success", "failed", "expired" or "canceled" are returned unchanged.
 
     ## Parameters (required):
         - id [string]: Credit Note unique id. ex: "5656565656565656"

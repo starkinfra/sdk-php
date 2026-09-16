@@ -160,7 +160,7 @@ class PixDispute extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null] date filter for objects created only after specified date. ex: "2020-04-03"
         - before [Date or string, default null] date filter for objects created only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. ex: "canceled", "created", "expired", "failed", "processing", "signed", "success"
+        - status [string, default null]: filter for status of retrieved objects. Options: "created", "delivered", "analysed", "processing", "closed", "failed", "canceled"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: list of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was set before function call
@@ -180,7 +180,7 @@ class PixDispute extends Resource
     /**
     # Cancel a PixDispute entity
 
-    Cancel a PixDispute entity previously created in the Stark Infra API
+    Cancel a PixDispute entity previously created in the Stark Infra API. Only disputes you initiated (flow "out") can be canceled.
 
     ## Parameters (required):
         - id [string]: Pix Dispute unique id. ex: "5656565656565656"

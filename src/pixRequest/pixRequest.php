@@ -71,7 +71,7 @@ class PixRequest extends Resource
         -endToEndId [string]: central bank's unique transaction ID. ex: "E79457883202101262140HHX553UPqeq"
 
     ## Parameters (conditionally-required):
-        -cashierBankCode [string, default null]: Cashier's bank code. ex: "00000000"
+        -cashierBankCode [string, default null]: Cashier's bank ISPB code for Pix Cash-out and Pix Change. Required together with cashierType whenever cashAmount is used. ex: "00000000"
         -cashierType [string, default null]: Cashier's type. ex: [merchant, other, participant]
 
     ## Parameters (optional):
@@ -136,7 +136,7 @@ class PixRequest extends Resource
     /**
     # Create PixRequests
 
-    Send an array of PixRequest objects for creation in the Stark Infra API
+    Send an array of PixRequest objects for creation in the Stark Infra API. You can create up to 100 PixRequests in a single call.
 
     ## Parameters (required):
         - requests [array of PixRequest objects]: array of PixRequest objects to be created in the API.
@@ -258,9 +258,8 @@ class PixRequest extends Resource
 
     /**
     # Helps you respond to a PixRequest authorization request.
-    
-    Authorization requests will be posted at your registered 
-    endpoint whenever inbound PixRequests are received.
+
+    Authorization requests are posted at your registered pixRequestUrl whenever inbound PixRequests are received, and you must answer within 1 second (HTTP 200); if you do not respond in time, or if no pixRequestUrl is registered, Stark Infra denies the PixRequest by default.
 
     ## Parameters (required):
         - status [string]: response to the authorization request. ex: "approved" or "denied"

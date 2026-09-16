@@ -27,7 +27,7 @@ class IssuingWithdrawal extends Resource
 
     ## Parameters (required):
         - amount [integer]: IssuingWithdrawal value in cents. Minimum = 0 (any value will be accepted). ex: 1234 (= R$ 12.34)
-        - externalId [string] IssuingWithdrawal external ID. ex: "12345"
+        - externalId [string]: unique identifier for this withdrawal, used to prevent duplicate withdrawals per workspace. ex: "withdrawal-2024-001"
         - description [string]: IssuingWithdrawal description. ex: "sending money back"
 
     ## Parameters (optional):

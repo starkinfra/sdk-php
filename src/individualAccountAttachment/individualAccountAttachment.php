@@ -33,7 +33,7 @@ class IndividualAccountAttachment extends Resource
     objects to the Stark Infra API and returns the array of created objects.
 
     ## Parameters (required):
-        - type [string]: type of the IndividualAccountAttachment. Options: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back", "selfie"
+        - type [string]: type of the IndividualAccountAttachment. Options: "drivers-license-front", "drivers-license-back", "identity-front", "identity-back" ("selfie" is not a valid value)
         - content [string]: raw image bytes at constructor time. After client-side encoding inside `create`, becomes a `data:<contentType>;base64,<payload>` URL on the wire.
         - contentType [string]: content MIME type. This parameter is required as input only — consumed client-side to build the data URL; never sent as its own wire field. ex: "image/png", "image/jpeg"
         - accountRequestId [string]: id of the parent IndividualAccountRequest. ex: "5189530608992256"

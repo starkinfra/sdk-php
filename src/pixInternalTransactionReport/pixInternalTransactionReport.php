@@ -97,7 +97,7 @@ class PixInternalTransactionReport extends Resource
     /**
     # Create PixInternalTransactionReports
 
-    Send an array of PixInternalTransactionReport objects for creation in the Stark Infra API
+    Send an array of PixInternalTransactionReport objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - reports [array of PixInternalTransactionReport objects]: array of PixInternalTransactionReport objects to be created in the API.

@@ -48,7 +48,7 @@ class PixChargeback extends Resource
     ## Parameters (required):
         - amount [integer]: amount in cents to be reversed. ex: 11234 (= R$ 112.34)
         - referenceId [string]: endToEndId or returnId of the transaction to be reversed. ex: "E20018183202201201450u34sDGd19lz"
-        - reason [string]: reason why the chargeback was requested. Options: "fraud", "flaw", "reversalChargeback"
+        - reason [string]: reason why the reversal was requested. Options: "flaw", "fraud", "subscriptionFlaw" (the API also assigns "reversalChargeback" automatically when a chargeback stems from a closed Pix Infraction, but it cannot be passed on creation).
 
     ## Parameters (conditionally required)::
         - description [string, default null]: description for the PixChargeback. Required if reason is "flaw".
@@ -111,7 +111,7 @@ class PixChargeback extends Resource
     /**
     # Create PixChargeback objects
 
-    Create PixChargebacks in the Stark Infra API
+    Create PixChargebacks in the Stark Infra API. A PixChargeback should only be created after a corresponding PixInfraction is completed (or after a system malfunction); the other participant must answer within 24 hours.
 
     ## Parameters (optional):
         - chargebacks [array of PixChargeback objects]: PixChargeback objects to be created in the API.
@@ -204,15 +204,15 @@ class PixChargeback extends Resource
     /**
     # Update PixChargeback entity
     
-    Respond to a received PixChargeback.
-    
+    Respond to a received PixChargeback. You must analyze and answer an inbound PixChargeback within 24 hours.
+
     ## Parameters (required):
         - id [string]: PixChargeback id. ex: '5656565656565656'
         - result [string]: result after the analysis of the PixChargeback. Options: "rejected", "accepted", "partiallyAccepted".
     
     ## Parameters (conditionally required):
         - params [dictionary of parameters]:
-            - rejectionReason [string, default null]: if the PixChargeback is rejected a reason is required. Options: "noBalance", "accountClosed", "invalidRequest", "unableToReverse",
+            - rejectionReason [string, default null]: if the PixChargeback's result is "rejected", a reason is required. Options: "other", "noBalance", "accountClosed", "invalidRequest" ("unableToReverse" is not a valid value),
             - reversalReferenceId [string, default null]: returnId of the chargeback transaction. ex: "D20018183202201201450u34sDGd19lz"
     
     ## Parameters (optional):

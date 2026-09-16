@@ -61,7 +61,7 @@ class CreditHolmes extends Resource
     /**
     # Create CreditHolmes
 
-    Send an array of Credit Holmes objects for creation in the Stark Infra API
+    Send an array of Credit Holmes objects (up to 100 per call) for creation in the Stark Infra API
 
     ## Parameters (required):
         - holmes [array of CreditHolmes objects]: array of Credit Holmes objects to be created in the API
