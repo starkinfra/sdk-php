@@ -116,6 +116,34 @@ class TestPixPullSubscription
         }
     }
 
+    public function parseSubscriptionWrong()
+    {
+        $error = false;
+        try {
+            PixPullSubscription::parse(self::CONTENT, self::INVALID_SIGNATURE);
+        } catch (InvalidSignatureError $e) {
+            $error = true;
+        }
+
+        if (!$error) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function parseSubscriptionMalformed()
+    {
+        $error = false;
+        try {
+            PixPullSubscription::parse(self::CONTENT, "something is definitely wrong");
+        } catch (InvalidSignatureError $e) {
+            $error = true;
+        }
+
+        if (!$error) {
+            throw new Exception("failed");
+        }
+    }
+
     public static function example()
     {
         $now = new \DateTime("now", new \DateTimeZone("UTC"));
@@ -176,4 +204,12 @@ echo " - OK";
 
 echo "\n\t- parse malformed";
 $test->parseMalformed();
+echo " - OK";
+
+echo "\n\t- parse subscription wrong";
+$test->parseSubscriptionWrong();
+echo " - OK";
+
+echo "\n\t- parse subscription malformed";
+$test->parseSubscriptionMalformed();
 echo " - OK";

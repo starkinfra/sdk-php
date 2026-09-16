@@ -3,6 +3,7 @@
 namespace StarkInfra;
 use StarkCore\Utils\API;
 use StarkInfra\Utils\Rest;
+use StarkInfra\Utils\Parse;
 use StarkCore\Utils\Checks;
 use StarkCore\Utils\Resource;
 use StarkCore\Utils\StarkDate;
@@ -261,6 +262,27 @@ class PixPullSubscription extends Resource
         $json = $response->json();
         $entity = $json[API::lastName($resource["name"])];
         return API::fromApiJson($resource["maker"], $entity);
+    }
+
+    /**
+    # Create a single verified PixPullSubscription object from a content string
+
+    Create a single PixPullSubscription object from a content string received from a handler listening at the subscription url.
+    If the provided digital signature does not check out with the StarkInfra public key, a StarkCore\Error\InvalidSignatureError will be raised.
+
+    ## Parameters (required):
+        - content [string]: response content from request received at user endpoint (not parsed)
+        - signature [string]: base-64 digital signature received at response header "Digital-Signature"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - Parsed PixPullSubscription object
+     */
+    public static function parse($content, $signature, $user = null)
+    {
+        return Parse::parseAndVerify($content, $signature, PixPullSubscription::resource(), $user);
     }
 
     private static function resource()
