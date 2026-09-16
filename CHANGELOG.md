@@ -13,6 +13,9 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- CreditNote.pdf and CreditNote.payment methods
+- CreditSigner.resendToken method
 ### Fixed
 - PixPullSubscription::parse method
 

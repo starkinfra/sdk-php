@@ -309,6 +309,44 @@ class CreditNote extends Resource
         return Rest::deleteId($user, CreditNote::resource(), $id);
     }
 
+    /**
+    # Retrieve CCB disbursement pdf
+
+    Receive a CCB disbursement pdf file.
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - CreditNote pdf file
+     */
+    public static function pdf($id, $user = null)
+    {
+        return Rest::getContent($user, CreditNote::resource(), $id, "pdf");
+    }
+
+    /**
+    # Retrieve CCB disbursement payment pdf
+
+    Receive a CCB disbursement payment pdf file.
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - CreditNote payment pdf file
+     */
+    public static function payment($id, $user = null)
+    {
+        return Rest::getContent($user, CreditNote::resource(), $id, "payment/pdf");
+    }
+
     private static function resource()
     {
         $note = function ($array) {

@@ -67,6 +67,7 @@ This SDK version is compatible with the Stark Infra API v2.
         - [LedgerTransaction](#create-ledgertransactions): Move amounts in and out of a Ledger
     - [Lending](#lending)
         - [CreditNote](#create-creditnotes): Create credit notes
+        - [CreditSigner](#resend-a-creditsigner-token): Resend a CreditNote signer's contract signing token
         - [CreditPreview](#create-creditpreviews): Create credit previews
         - [CreditHolmes](#create-creditholmes): Create credit holmes debt verification
     - [Identity](#identity)
@@ -3347,6 +3348,34 @@ $note = CreditNote::get("5155966664310784");
 print_r($note);
 ```
 
+## Get a CreditNote pdf
+
+After its creation, you can retrieve the CCB disbursement pdf file for a CreditNote.
+
+```php
+use StarkInfra\CreditNote;
+
+$pdf = CreditNote::pdf("5155966664310784");
+
+$fp = fopen('note.pdf', 'w');
+fwrite($fp, $pdf);
+fclose($fp);
+```
+
+## Get a CreditNote payment pdf
+
+You can also retrieve the CCB disbursement payment pdf file for a CreditNote.
+
+```php
+use StarkInfra\CreditNote;
+
+$pdf = CreditNote::payment("5155966664310784");
+
+$fp = fopen('payment.pdf', 'w');
+fwrite($fp, $pdf);
+fclose($fp);
+```
+
 ## Cancel a CreditNote
 
 You can cancel a Credit Note if it has not been signed yet.
@@ -3383,6 +3412,18 @@ use StarkInfra\CreditNote\Log;
 $log = Log::get("5155966664310784");
 
 print_r($log);
+```
+
+## Resend a CreditSigner token
+
+If a CreditSigner's contract signing token expires or is lost, you can resend it.
+
+```php
+use StarkInfra\CreditSigner;
+
+$signer = CreditSigner::resendToken("5155966664310784");
+
+print_r($signer);
 ```
 
 ### Create CreditPreviews
