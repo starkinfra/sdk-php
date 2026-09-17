@@ -19,7 +19,7 @@ class IndividualIdentity extends Resource
     /**
     # IndividualIdentity object
 
-    An IndividualIdentity represents an end-to-end identity verification of a Brazilian individual, created with name, email, deliveryMethod ("automatic" or "manual") and proofs ("identity" and/or "biometric") as required parameters, and taxId, phone and tags as optional; the created object already carries a validatorLink the holder uses to submit each proof — there is no separate individual-document resource or "created" method to attach documents to.
+    An IndividualIdentity represents an end-to-end identity verification of a Brazilian individual, created with name, email, deliveryMethod ("automatic" or "manual") and proofs ("identity" and/or "biometric") as required parameters, and taxId, phone and tags as optional; the created object already carries a validatorLink the holder uses to submit each proof directly.
 
     When you initialize an IndividualIdentity, the entity will not be automatically
     created in the Stark Infra API. The 'create' function sends the objects
@@ -150,7 +150,7 @@ class IndividualIdentity extends Resource
 
     ## Parameters (required):
         - id [string]: IndividualIdentity id. ex: "5656565656565656"
-        - status [string]: You may send IndividualDocuments to validation by passing 'processing' in the status
+        - status [string]: pass 'processing' to trigger validation once the holder has submitted the required proofs through the validatorLink
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call

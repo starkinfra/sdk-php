@@ -37,8 +37,6 @@ include_once("creditPreview.php");
 include_once("creditSigner.php");
 include_once("dynamicBrcode.php");
 include_once("event.php");
-include_once("individualDocument.php");
-include_once("individualDocumentLog.php");
 include_once("individualIdentity.php");
 include_once("individualIdentityLog.php");
 include_once("issuingBalance.php");

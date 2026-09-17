@@ -36,6 +36,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - type attribute to StaticBrcode resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
+### Removed
+- IndividualDocument resource and its Log: no API route serves them
 ### Fixed
 - PixPullSubscription::parse method
 - transactionIds attribute name in CreditNote resource, which was misspelled transactionsIds and never populated
