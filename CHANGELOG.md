@@ -28,6 +28,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - group attribute to MerchantCategory resource
 - BusinessAccountRequest resource
 - update method to IssuingPurchase resource
+- data, description, expired and jws attributes to BrcodePreview resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed

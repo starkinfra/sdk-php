@@ -21,10 +21,13 @@ class BrcodePreview extends Resource
     public $cashAmount;
     public $cashierBankCode;
     public $cashierType;
+    public $data;
     public $discountAmount;
     public $due;
+    public $expired;
     public $fineAmount;
     public $interestAmount;
+    public $jws;
     public $keyId;
     public $name;
     public $nominalAmount;
@@ -34,6 +37,7 @@ class BrcodePreview extends Resource
     public $status;
     public $subscription;
     public $taxId;
+    public $description;
 
     /**
     # BrcodePreview object
@@ -57,10 +61,13 @@ class BrcodePreview extends Resource
         - cashAmount [integer]: Amount to be withdrawn from the cashier in cents. ex: 1000 (= R$ 10.00)
         - cashierBankCode [string]: Cashier's bank code. ex: "20018183"
         - cashierType [string]: Cashier's type. Options: "merchant", "participant" and "other"
+        - data [array of arrays]: additional data of the dynamic QR code, in key/value pairs. ex: [["key" => "additional-info", "value" => "order #12345"]]
         - discountAmount [integer]: Discount value calculated over nominalAmount. ex: 3000
         - due [DateTime]: BR Code due date
+        - expired [DateTime]: date and time after which the dynamic QR code is considered expired. ex: DateTime(2022, 2, 1)
         - fineAmount [integer]: Fine value calculated over nominalAmount. ex: 20000
         - interestAmount [integer]: Interest value calculated over nominalAmount. ex: 10000
+        - jws [string]: JWS of the dynamic QR code. Returned only when "jws" is passed in the expand query parameter. ex: "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9..."
         - keyId [string]: Receiver's PixKey id. ex: "+5511989898989"
         - name [string]: Payment receiver name. ex: "Tony Stark"
         - nominalAmount [integer]: Brcode emission amount, without fines, fees and discounts. ex: 1234 (= R$ 12.34)
@@ -70,6 +77,7 @@ class BrcodePreview extends Resource
         - status [string]: Payment status. ex: "active", "paid", "canceled" or "unknown"
         - subscription [Subscription object]: BR code subscription information
         - taxId [string]: Payment receiver tax ID. ex: "012.345.678-90"
+        - description [string]: Description of the payment.
      */
     function __construct(array $params)
     {
@@ -86,10 +94,13 @@ class BrcodePreview extends Resource
         $this->cashAmount = Checks::checkParam($params, "cashAmount");
         $this->cashierBankCode = Checks::checkParam($params, "cashierBankCode");
         $this->cashierType = Checks::checkParam($params, "cashierType");
+        $this->data = Checks::checkParam($params, "data");
         $this->discountAmount = Checks::checkParam($params, "discountAmount");
         $this->due = empty($params['due']) ? null : Checks::checkDateTime(Checks::checkParam($params, "due"));
+        $this->expired = empty($params['expired']) ? null : Checks::checkDateTime(Checks::checkParam($params, "expired"));
         $this->fineAmount = Checks::checkParam($params, "fineAmount");
         $this->interestAmount = Checks::checkParam($params, "interestAmount");
+        $this->jws = Checks::checkParam($params, "jws");
         $this->keyId = Checks::checkParam($params, "keyId");
         $this->name = Checks::checkParam($params, "name");
         $this->nominalAmount = Checks::checkParam($params, "nominalAmount");
@@ -99,6 +110,7 @@ class BrcodePreview extends Resource
         $this->status = Checks::checkParam($params, "status");
         $this->subscription = Subscription::parseSubscription(Checks::checkParam($params, "subscription"));
         $this->taxId = Checks::checkParam($params, "taxId");
+        $this->description = Checks::checkParam($params, "description");
 
         Checks::checkParams($params);
     }
