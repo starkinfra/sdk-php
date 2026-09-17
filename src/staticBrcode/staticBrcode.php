@@ -18,6 +18,7 @@ class StaticBrcode extends Resource
     public $description;
     public $reconciliationId;
     public $tags;
+    public $type;
     public $uuid;
     public $url;
     public $updated;
@@ -43,6 +44,7 @@ class StaticBrcode extends Resource
         - description [string, default ""] Optional description to override default description to be shown in the bank statement. ex: "Payment for service #1234"
         - reconciliationId [string, default ""]: id to be used for conciliation of the resulting Pix transaction. ex: "123"
         - tags [array of strings, default []]: array of strings for tagging. ex: ["travel", "food"]
+        - type [string, default "instant"]: type of the StaticBrcode. Options: "instant", "instantAndOrSubscription"
 
     ## Attributes (return-only):
         - id [string]: id returned on creation, this is the BR Code. ex: "00020126360014br.gov.bcb.pix0114+552840092118152040000530398654040.095802BR5915Jamie Lannister6009Sao Paulo620705038566304FC6C"
@@ -63,6 +65,7 @@ class StaticBrcode extends Resource
         $this-> description = Checks::checkParam($params, "description");
         $this-> reconciliationId = Checks::checkParam($params, "reconciliationId");
         $this-> tags = Checks::checkParam($params, "tags");
+        $this-> type = Checks::checkParam($params, "type");
         $this-> uuid = Checks::checkParam($params, "uuid");
         $this-> url = Checks::checkParam($params, "url");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
