@@ -32,6 +32,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - birthDate attribute to IndividualAccountRequest resource
 - bacenId attribute to PixClaim resource
 - description attribute to PixReversal resource
+- chunkCount attribute to PixStatement resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
