@@ -36,7 +36,7 @@ class CreditNote extends Resource
     public $amount;
     public $documentId;
     public $status;
-    public $transactionsIds;
+    public $transactionIds;
     public $workspaceId;
     public $debtorWorkspaceId;
     public $taxAmount;
@@ -120,7 +120,7 @@ class CreditNote extends Resource
         $this-> amount = Checks::checkParam($params, "amount");
         $this-> documentId = Checks::checkParam($params, "documentId");
         $this-> status = Checks::checkParam($params, "status");
-        $this-> transactionsIds = Checks::checkParam($params, "transactionsIds");
+        $this-> transactionIds = Checks::checkParam($params, "transactionIds");
         $this-> workspaceId = Checks::checkParam($params, "workspaceId");
         $this-> debtorWorkspaceId = Checks::checkParam($params, "debtorWorkspaceId");
         $this-> taxAmount = Checks::checkParam($params, "taxAmount");
