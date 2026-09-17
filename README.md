@@ -1175,6 +1175,21 @@ $log = IssuingPurchase::get("5155165527080960");
 print_r($log);
 ```
 
+### Update an IssuingPurchase
+
+You can update a specific purchase by its id.
+
+```php
+use StarkInfra\IssuingPurchase;
+
+$purchase = IssuingPurchase::update("5155165527080960", [
+    "description" => "Office Supplies",
+    "tags" => ["tony", "stark"]
+]);
+
+print_r($purchase);
+```
+
 ### Query IssuingPurchase logs
 
 Logs are pretty important to understand the life cycle of a purchase.

@@ -77,6 +77,26 @@ class TestIssuingPurchase
         }
     }
 
+    public function update()
+    {
+        $purchases = iterator_to_array(IssuingPurchase::query(["limit" => 1]));
+        if (count($purchases) == 0) {
+            return false;
+        }
+
+        $description = "teste";
+        $tags = ["teste 1", "teste 2"];
+        $updatedPurchase = IssuingPurchase::update($purchases[0]->id, [
+            "description" => $description,
+            "tags" => $tags,
+        ]);
+
+        if ($updatedPurchase->description != $description) {
+            throw new Exception("failed");
+        }
+        return true;
+    }
+
     public function createResponse()
     {
         $response = IssuingPurchase::response(["status"=>"accepted", "amount"=>1000]);
@@ -111,6 +131,13 @@ $test = new TestIssuingPurchase();
 echo "\n\t- query and get";
 $test->queryAndGet();
 echo " - OK";
+
+echo "\n\t- update";
+if ($test->update()) {
+    echo " - OK";
+} else {
+    echo " - skipped (no IssuingPurchase available in this workspace)";
+}
 
 echo "\n\t- parse right";
 $test->parseRight();

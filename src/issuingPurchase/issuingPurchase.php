@@ -225,6 +225,27 @@ class IssuingPurchase extends Resource
     }
 
     /**
+    # Update IssuingPurchase entity
+
+    Update an IssuingPurchase by passing id.
+
+    ## Parameters (required):
+        - id [string]: IssuingPurchase id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - tags [array of strings, default null]: list of strings for tagging. ex: ["tony", "stark"]
+        - description [string, default null]: new IssuingPurchase description. Max of 140 characters. ex: "Office Supplies"
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - target IssuingPurchase with updated attributes
+     */
+    public static function update($id, $options = [], $user = null)
+    {
+        return Rest::patchId($user, IssuingPurchase::resource(), $id, $options);
+    }
+
+    /**
     # Create a single verified IssuingPurchase authorization request from a content string
 
     Use this method to parse and verify the authenticity of the authorization request received at the informed endpoint.
