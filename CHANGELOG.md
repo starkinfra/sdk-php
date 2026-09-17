@@ -30,6 +30,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - update method to IssuingPurchase resource
 - data, description, expired and jws attributes to BrcodePreview resource
 - birthDate attribute to IndividualAccountRequest resource
+- bacenId attribute to PixClaim resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
