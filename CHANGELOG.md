@@ -28,10 +28,17 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - group attribute to MerchantCategory resource
 - BusinessAccountRequest resource
 - update method to IssuingPurchase resource
+- data, description, expired and jws attributes to BrcodePreview resource
+- birthDate attribute to IndividualAccountRequest resource
+- bacenId attribute to PixClaim resource
+- description attribute to PixReversal resource
+- chunkCount attribute to PixStatement resource
+- type attribute to StaticBrcode resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
 - PixPullSubscription::parse method
+- transactionIds attribute name in CreditNote resource, which was misspelled transactionsIds and never populated
 
 ## [0.17.0] - 2026-06-30
 ### Added

@@ -14,6 +14,7 @@ class PixStatement extends Resource
     public $type;
     public $status;
     public $transactionCount;
+    public $chunkCount;
     public $created;
     public $updated;
 
@@ -39,7 +40,8 @@ class PixStatement extends Resource
         - id [string]: unique id returned when the PixStatement is created. ex: "5656565656565656"
         - status [string]: current PixStatement status. ex: "success" or "failed"
         - transactionCount [integer]: number of transactions that happened during the day that the PixStatement was requested. ex: 11
-        - created [DateTime or string]: creation datetime for the PixStatement. 
+        - chunkCount [integer]: number of chunks the statement file is split into. ex: 2
+        - created [DateTime or string]: creation datetime for the PixStatement.
         - updated [DateTime or string]: latest update datetime for the PixStatement. 
      */
     function __construct(array $params)
@@ -51,6 +53,7 @@ class PixStatement extends Resource
         $this-> type = Checks::checkParam($params, "type");
         $this-> status = Checks::checkParam($params, "status");
         $this-> transactionCount = Checks::checkParam($params, "transactionCount");
+        $this-> chunkCount = Checks::checkParam($params, "chunkCount");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 

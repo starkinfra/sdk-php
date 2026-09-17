@@ -21,6 +21,7 @@ class PixReversal extends Resource
     public $fee;
     public $status;
     public $flow;
+    public $description;
     public $created;
     public $updated;
 
@@ -49,7 +50,8 @@ class PixReversal extends Resource
         - fee [string]: fee charged by this PixReversal. ex: 200 (= R$ 2.00)
         - status [string]: current PixReversal status. ex: "created", "processing", "success", "failed"
         - flow [string]: direction of money flow. ex: "in" or "out"
-        - created [DateTime]: creation datetime for the PixReversal. 
+        - description [string]: description of the reversal.
+        - created [DateTime]: creation datetime for the PixReversal.
         - updated [DateTime]: latest update datetime for the PixReversal. 
      */
     function __construct(array $params)
@@ -65,6 +67,7 @@ class PixReversal extends Resource
         $this-> fee = Checks::checkParam($params, "fee");
         $this-> status = Checks::checkParam($params, "status");
         $this-> flow = Checks::checkParam($params, "flow");
+        $this-> description = Checks::checkParam($params, "description");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
         $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
@@ -189,6 +192,7 @@ class PixReversal extends Resource
         $reversal->fee = $reversal->fee ? $reversal->fee : 0;
         $reversal->tags = $reversal->tags ? $reversal->tags : [];
         $reversal->externalId = $reversal->externalId ? $reversal->externalId : "";
+        $reversal->description = $reversal->description ? $reversal->description : "";
 
         return $reversal;
     }

@@ -19,6 +19,7 @@ class PixClaim extends Resource
     public $taxId;
     public $keyId;
     public $tags;
+    public $bacenId;
     public $status;
     public $type;
     public $keyType;
@@ -51,6 +52,7 @@ class PixClaim extends Resource
     
     ## Attributes (return-only):
         - id [string]: unique id returned when the PixClaim is created. ex: "5656565656565656".
+        - bacenId [string, default null]: unique transaction id returned from Central Bank. ex: "ccf9bd9c-e99d-999e-bab9-b999ca999f99".
         - status [string]: current PixClaim status. Options: "created", "failed", "delivered", "confirmed", "success", "canceled".
         - type [string]: type of Pix Claim. Options: "ownership", "portability".
         - keyType [string]: keyType of the claimed PixKey. Options: "CPF", "CNPJ", "phone" or "email".
@@ -73,6 +75,7 @@ class PixClaim extends Resource
         $this-> taxId = Checks::checkParam($params, "taxId");
         $this-> keyId = Checks::checkParam($params, "keyId");
         $this-> tags = Checks::checkParam($params, "tags");
+        $this-> bacenId = Checks::checkParam($params, "bacenId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> type = Checks::checkParam($params, "type");
         $this-> keyType = Checks::checkParam($params, "keyType");
