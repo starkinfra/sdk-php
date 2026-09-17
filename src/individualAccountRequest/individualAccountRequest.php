@@ -15,6 +15,7 @@ class IndividualAccountRequest extends Resource
     public $address;
     public $income;
     public $tags;
+    public $birthDate;
     public $status;
     public $accountType;
     public $flags;
@@ -61,6 +62,7 @@ class IndividualAccountRequest extends Resource
         $this->address = Checks::checkParam($params, "address");
         $this->income = Checks::checkParam($params, "income");
         $this->tags = Checks::checkParam($params, "tags");
+        $this->birthDate = empty($params['birthDate']) ? null : Checks::checkDateTime(Checks::checkParam($params, "birthDate"));
         $this->status = Checks::checkParam($params, "status");
         $this->accountType = Checks::checkParam($params, "accountType");
         $this->flags = Checks::checkParam($params, "flags");

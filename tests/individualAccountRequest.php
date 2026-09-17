@@ -136,6 +136,7 @@ class TestIndividualAccountRequest
             ],
             "income"      => 1000000,
             "tags"        => ["test"],
+            "birthDate"   => "1990-05-23",
             "id"          => "5189530608992256",
             "status"      => "processing",
             "accountType" => "individual",
@@ -151,6 +152,67 @@ class TestIndividualAccountRequest
             throw new Exception("failed");
         }
         if ($request->accountType != "individual") {
+            throw new Exception("failed");
+        }
+        if ($request->birthDate->format("Y-m-d") != "1990-05-23") {
+            throw new Exception("failed");
+        }
+    }
+
+    public function birthDateOmittedIsNull()
+    {
+        $request = new IndividualAccountRequest([
+            "name"        => "Tony Stark",
+            "taxId"       => "012.345.678-90",
+            "address"     => [
+                "street"       => "Rua do Estilo Barroco",
+                "number"       => "648",
+                "neighborhood" => "Santo Amaro",
+                "city"         => "Sao Paulo",
+                "state"        => "SP",
+                "zipCode"      => "05724005",
+            ],
+            "income"      => 1000000,
+            "tags"        => ["test"],
+            "id"          => "5189530608992256",
+            "status"      => "processing",
+            "accountType" => "individual",
+            "flags"       => [],
+            "created"     => "2026-05-26T12:34:56.000000+00:00",
+            "updated"     => "2026-05-26T12:34:56.000000+00:00",
+        ]);
+
+        if (!is_null($request->birthDate)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function birthDateEmptyStringIsNull()
+    {
+        $request = new IndividualAccountRequest([
+            "name"        => "Tony Stark",
+            "taxId"       => "012.345.678-90",
+            "address"     => [
+                "street"       => "Rua do Estilo Barroco",
+                "number"       => "648",
+                "neighborhood" => "Santo Amaro",
+                "city"         => "Sao Paulo",
+                "state"        => "SP",
+                "zipCode"      => "05724005",
+            ],
+            "income"      => 1000000,
+            "tags"        => ["test"],
+            "birthDate"   => "",
+            "id"          => "5189530608992256",
+            "status"      => "processing",
+            "accountType" => "individual",
+            "flags"       => [],
+            "created"     => "2026-05-26T12:34:56.000000+00:00",
+            "updated"     => "2026-05-26T12:34:56.000000+00:00",
+            "checkParams" => false,
+        ]);
+
+        if (!is_null($request->birthDate)) {
             throw new Exception("failed");
         }
     }
@@ -320,6 +382,14 @@ echo " - OK";
 
 echo "\n\t- output only fields round trip";
 $test->outputOnlyFieldsRoundTrip();
+echo " - OK";
+
+echo "\n\t- birth date omitted is null";
+$test->birthDateOmittedIsNull();
+echo " - OK";
+
+echo "\n\t- birth date empty string is null";
+$test->birthDateEmptyStringIsNull();
 echo " - OK";
 
 echo "\n\t- address is nested object";

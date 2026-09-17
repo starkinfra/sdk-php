@@ -29,6 +29,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - BusinessAccountRequest resource
 - update method to IssuingPurchase resource
 - data, description, expired and jws attributes to BrcodePreview resource
+- birthDate attribute to IndividualAccountRequest resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
