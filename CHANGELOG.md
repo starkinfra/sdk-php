@@ -26,6 +26,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - embosserName attribute to IssuingStock resource
 - walletDeviceScore and walletAccountScore attributes to IssuingToken resource
 - group attribute to MerchantCategory resource
+- BusinessAccountRequest resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
 ### Fixed
