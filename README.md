@@ -79,6 +79,14 @@ This SDK version is compatible with the Stark Infra API v2.
         - [IndividualAccountRequest](#create-individualaccountrequests): Open an individual Stark Infra account
         - [IndividualAccountAttachment](#create-individualaccountattachments): Attach documents to an individual account request
         - [BusinessAccountRequest](#create-businessaccountrequests): Open a Stark Infra account for a company
+    - [AI](#ai)
+        - [AiKnowledgeBase](#create-an-aiknowledgebase): Turn a website into knowledge your agents can answer from
+        - [AiVoice](#create-an-aivoice): Clone a voice from a recording
+        - [AiSpeech](#create-an-aispeech): Read a text out loud with one of your voices
+        - [AiTranscript](#create-an-aitranscript): Turn a recording into text
+        - [AiAgent](#create-an-aiagent): Configure an assistant with a model, instructions, knowledge and a voice
+        - [AiChat](#create-an-aichat): Open a conversation with an agent
+        - [AiMessage](#create-an-aimessage): Post a message to a chat and get the agent's answer
     - [Webhook](#webhook):
         - [Webhook](#create-a-webhook-subscription): Configure your webhook endpoints and subscriptions
         - [WebhookEvents](#process-webhook-events): Manage Webhook events
@@ -4356,6 +4364,534 @@ use StarkInfra\BusinessAccountRequest\Log;
 $log = Log::get("5155165527080960");
 
 print_r($log);
+```
+
+## AI
+
+### Create an AiKnowledgeBase
+
+An AiKnowledgeBase turns a website into material an agent can read. Stark Infra crawls the root URL, follows its
+links, converts every page to Markdown and indexes it. The call returns at once with the base in "processing" status.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$knowledgeBase = AiKnowledgeBase::create(
+    new AiKnowledgeBase([
+        "name" => "Product Documentation",
+        "rootUrl" => "https://docs.starkinfra.com",
+        "isRecursive" => false,
+        "tags" => ["support", "public"]
+    ])
+);
+
+print_r($knowledgeBase);
+```
+
+### Get an AiKnowledgeBase
+
+Poll a knowledge base by its id until its status leaves "processing".
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$knowledgeBase = AiKnowledgeBase::get("5155165527080960");
+
+print_r($knowledgeBase);
+```
+
+### Query AiKnowledgeBases
+
+You can list your knowledge bases, optionally filtered by ids, by a substring of the name or by status.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$knowledgeBases = AiKnowledgeBase::query(["name" => "documentation", "status" => "success"]);
+
+foreach ($knowledgeBases as $knowledgeBase) {
+    print_r($knowledgeBase);
+}
+```
+
+### Get paged AiKnowledgeBases
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$cursor = null;
+while (true) {
+    list($knowledgeBases, $cursor) = AiKnowledgeBase::page(["cursor" => $cursor, "limit" => 50, "status" => "success"]);
+    foreach ($knowledgeBases as $knowledgeBase) {
+        print_r($knowledgeBase);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Update an AiKnowledgeBase
+
+Rename a knowledge base, retag it or change whether its crawl is recursive. The root URL cannot be changed. Only the parameters you give are sent.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$knowledgeBase = AiKnowledgeBase::update("5155165527080960", ["name" => "Public Documentation", "tags" => ["support"]]);
+
+print_r($knowledgeBase);
+```
+
+### List the pages of an AiKnowledgeBase
+
+Get every page the crawler has seen, grouped by host, with the status of each one.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$hosts = AiKnowledgeBase::hosts("5155165527080960");
+
+print_r($hosts);
+```
+
+### Delete AiKnowledgeBases
+
+Delete up to 100 knowledge bases at once. Agents that still reference a deleted base simply retrieve nothing from it.
+
+```php
+use StarkInfra\AiKnowledgeBase;
+
+$knowledgeBases = AiKnowledgeBase::delete(["5155165527080960", "4545454545454545"]);
+
+foreach ($knowledgeBases as $knowledgeBase) {
+    print_r($knowledgeBase);
+}
+```
+
+### Create an AiVoice
+
+An AiVoice is cloned from a recording you upload, sent as base64. The call returns at once with the voice in
+"processing" status; it can speak when it reaches "success".
+
+```php
+use StarkInfra\AiVoice;
+
+$voice = AiVoice::create(
+    new AiVoice([
+        "audio" => base64_encode(file_get_contents("helena.mp3")),
+        "name" => "Helena",
+        "description" => "Calm voice",
+        "language" => "portuguese",
+        "gender" => "female"
+    ])
+);
+
+print_r($voice);
+```
+
+### Query AiVoices
+
+You can list your voices.
+
+```php
+use StarkInfra\AiVoice;
+
+$voices = AiVoice::query(["limit" => 35]);
+
+foreach ($voices as $voice) {
+    print_r($voice);
+}
+```
+
+### Get paged AiVoices
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiVoice;
+
+$cursor = null;
+while (true) {
+    list($voices, $cursor) = AiVoice::page(["cursor" => $cursor, "limit" => 50]);
+    foreach ($voices as $voice) {
+        print_r($voice);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Delete AiVoices
+
+Delete up to 100 voices at once.
+
+```php
+use StarkInfra\AiVoice;
+
+$voices = AiVoice::delete(["5155165527080960", "4545454545454545"]);
+
+foreach ($voices as $voice) {
+    print_r($voice);
+}
+```
+
+### Create an AiSpeech
+
+An AiSpeech is a text read out loud by one of your voices. The call waits for the synthesis and returns the
+audio, base64-encoded, in the "audio" attribute.
+
+```php
+use StarkInfra\AiSpeech;
+
+$speech = AiSpeech::create(
+    new AiSpeech([
+        "voiceId" => "5155165527080960",
+        "text" => "Your order has shipped."
+    ])
+);
+
+file_put_contents("speech.mp3", base64_decode($speech->audio));
+```
+
+### Get an AiSpeech
+
+Retrieve a speech by its id. It carries the audio. Ask to expand the voice name to receive it along.
+
+```php
+use StarkInfra\AiSpeech;
+
+$speech = AiSpeech::get("5155165527080960", ["expand" => ["voiceName"]]);
+
+print_r($speech);
+```
+
+### Query AiSpeeches
+
+You can list your speeches. The list leaves the audio out; use get to receive it.
+
+```php
+use StarkInfra\AiSpeech;
+
+$speeches = AiSpeech::query(["limit" => 35, "expand" => ["voiceName"]]);
+
+foreach ($speeches as $speech) {
+    print_r($speech);
+}
+```
+
+### Get paged AiSpeeches
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiSpeech;
+
+$cursor = null;
+while (true) {
+    list($speechs, $cursor) = AiSpeech::page(["cursor" => $cursor, "limit" => 50, "expand" => ["voiceName"]]);
+    foreach ($speechs as $speech) {
+        print_r($speech);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Create an AiTranscript
+
+An AiTranscript is the text spoken in a recording, sent as base64. The call waits for the transcription and
+returns the text.
+
+```php
+use StarkInfra\AiTranscript;
+
+$transcript = AiTranscript::create(
+    new AiTranscript([
+        "audio" => base64_encode(file_get_contents("recording.mp3"))
+    ])
+);
+
+print_r($transcript);
+```
+
+### Query AiTranscripts
+
+You can list your transcripts.
+
+```php
+use StarkInfra\AiTranscript;
+
+$transcripts = AiTranscript::query(["limit" => 35]);
+
+foreach ($transcripts as $transcript) {
+    print_r($transcript);
+}
+```
+
+### Get paged AiTranscripts
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiTranscript;
+
+$cursor = null;
+while (true) {
+    list($transcripts, $cursor) = AiTranscript::page(["cursor" => $cursor, "limit" => 50]);
+    foreach ($transcripts as $transcript) {
+        print_r($transcript);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Create an AiAgent
+
+An AiAgent is the configuration of an assistant: the model, the instructions, the knowledge it may consult and the
+voice it speaks with. The keys of the metadataSchema are yours and are sent exactly as written.
+
+```php
+use StarkInfra\AiAgent;
+
+$agent = AiAgent::create(
+    new AiAgent([
+        "name" => "Support assistant",
+        "model" => "bender-1.0",
+        "systemPrompt" => "Answer in one short sentence.",
+        "knowledgeBaseIds" => ["5155165527080960"],
+        "metadataSchema" => ["order_id" => ["type" => "string", "description" => "Order the customer mentions"]]
+    ])
+);
+
+print_r($agent);
+```
+
+### Get an AiAgent
+
+Retrieve an agent by its id. Ask to expand the knowledge bases to receive them as AiKnowledgeBase objects.
+
+```php
+use StarkInfra\AiAgent;
+
+$agent = AiAgent::get("5155165527080960", ["expand" => ["knowledgeBases"]]);
+
+print_r($agent);
+```
+
+### Query AiAgents
+
+You can list your agents, optionally expanding their knowledge bases.
+
+```php
+use StarkInfra\AiAgent;
+
+$agents = AiAgent::query(["limit" => 35, "expand" => ["knowledgeBases"]]);
+
+foreach ($agents as $agent) {
+    print_r($agent);
+}
+```
+
+### Get paged AiAgents
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiAgent;
+
+$cursor = null;
+while (true) {
+    list($agents, $cursor) = AiAgent::page(["cursor" => $cursor, "limit" => 50, "expand" => ["knowledgeBases"]]);
+    foreach ($agents as $agent) {
+        print_r($agent);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Update an AiAgent
+
+The API keeps what you do not send; clear systemPrompt and voiceId with "", knowledgeBaseIds with [] and metadataSchema with an empty array (sent as {}).
+
+```php
+use StarkInfra\AiAgent;
+
+$agent = AiAgent::update("5155165527080960", ["name" => "Billing assistant"]);
+
+print_r($agent);
+```
+
+### Delete AiAgents
+
+Delete up to 100 agents at once.
+
+```php
+use StarkInfra\AiAgent;
+
+$agents = AiAgent::delete(["5155165527080960", "4545454545454545"]);
+
+foreach ($agents as $agent) {
+    print_r($agent);
+}
+```
+
+### Create an AiChat
+
+An AiChat is a conversation with an agent. It holds the history; each turn is an AiMessage. The tags help you find the chat later, and the context is free-form data about the conversation whose keys are sent exactly as written.
+
+```php
+use StarkInfra\AiChat;
+
+$chat = AiChat::create(
+    new AiChat([
+        "agentId" => "5155165527080960",
+        "title" => "Order 123",
+        "tags" => ["vip", "order"],
+        "context" => ["orderId" => "123"]
+    ])
+);
+
+print_r($chat);
+```
+
+### Get an AiChat
+
+Retrieve a chat by its id. Ask to expand the agent name to receive it along.
+
+```php
+use StarkInfra\AiChat;
+
+$chat = AiChat::get("5155165527080960", ["expand" => ["agentName"]]);
+
+print_r($chat);
+```
+
+### Query AiChats
+
+You can list your chats, optionally filtered by tags.
+
+```php
+use StarkInfra\AiChat;
+
+$chats = AiChat::query(["limit" => 35, "expand" => ["agentName"], "tags" => ["vip"]]);
+
+foreach ($chats as $chat) {
+    print_r($chat);
+}
+```
+
+### Get paged AiChats
+
+To page the list by hand, use page: it returns the objects and the cursor of the next page, which is null on the last page.
+
+```php
+use StarkInfra\AiChat;
+
+$cursor = null;
+while (true) {
+    list($chats, $cursor) = AiChat::page(["cursor" => $cursor, "limit" => 50, "tags" => ["vip"]]);
+    foreach ($chats as $chat) {
+        print_r($chat);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
+```
+
+### Update an AiChat
+
+Rename a chat, hand it to another agent, or change its tags and context. The history is kept. The API keeps what you
+do not send; clear the title with "", the tags with [] and the context with an empty array (sent as {}).
+
+```php
+use StarkInfra\AiChat;
+
+$chat = AiChat::update("5155165527080960", [
+    "title" => "Order 124",
+    "tags" => ["vip"],
+    "context" => ["orderId" => "124"]
+]);
+
+print_r($chat);
+```
+
+### Delete AiChats
+
+Delete up to 100 chats at once, with their messages.
+
+```php
+use StarkInfra\AiChat;
+
+$chats = AiChat::delete(["5155165527080960", "4545454545454545"]);
+
+foreach ($chats as $chat) {
+    print_r($chat);
+}
+```
+
+### Create an AiMessage
+
+Post the user's message to a chat. The call waits for the agent, which takes a few seconds, and returns the user's
+message and the agent's answer. Expand the chat name to receive the title on every message, which is useful on the
+first turn, when the title is generated.
+
+```php
+use StarkInfra\AiMessage;
+
+$messages = AiMessage::create(
+    new AiMessage([
+        "chatId" => "5155165527080960",
+        "text" => "What is the status of order 123?"
+    ]),
+    ["chatName"]
+);
+
+foreach ($messages as $message) {
+    print_r($message);
+}
+```
+
+### Query AiMessages
+
+You can read the history of a chat. Without a chat id, it reads the history of the whole workspace.
+
+```php
+use StarkInfra\AiMessage;
+
+$messages = AiMessage::query(["chatId" => "5155165527080960", "limit" => 35]);
+
+foreach ($messages as $message) {
+    print_r($message);
+}
+```
+
+### Get paged AiMessages
+
+To page the history by hand, use page: it returns the messages and the cursor of the next page.
+
+```php
+use StarkInfra\AiMessage;
+
+$cursor = null;
+while (true) {
+    list($messages, $cursor) = AiMessage::page(["chatId" => "5155165527080960", "cursor" => $cursor, "limit" => 50]);
+    foreach ($messages as $message) {
+        print_r($message);
+    }
+    if (is_null($cursor)) {
+        break;
+    }
+}
 ```
 
 ## Webhook
