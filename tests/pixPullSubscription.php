@@ -146,13 +146,13 @@ class TestPixPullSubscription
 
     public static function example()
     {
-        $now = new \DateTime("now", new \DateTimeZone("UTC"));
+        $installmentStart = (new \DateTime("now", new \DateTimeZone("UTC")))->modify("+7 days");
         $bankCode = $_SERVER["SANDBOX_BANK_CODE"];
-        $bacenId = "RR" . \StarkInfra\Utils\BacenId::create($bankCode);
+        $bacenId = \StarkInfra\Utils\PixSubscriptionBacenId::create($bankCode, "RR");
         $params = [
             "bacenId" => $bacenId,
             "externalId" => "php-" . mt_rand(0, 0xffffffff),
-            "installmentStart" => $now->format("Y-m-d\TH:i:s+00:00"),
+            "installmentStart" => $installmentStart->format("Y-m-d\TH:i:s+00:00"),
             "interval" => "month",
             "receiverName" => "Stark Bank",
             "receiverTaxId" => "39.908.427/0001-28",

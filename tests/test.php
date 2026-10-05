@@ -92,6 +92,7 @@ include_once("pixPullRequest.php");
 include_once("pixPullRequestLog.php");
 include_once("pixPullSubscription.php");
 include_once("pixPullSubscriptionLog.php");
+include_once("pixSubscriptionBacenId.php");
 include_once("pixRequest.php");
 include_once("pixRequestLog.php");
 include_once("pixReversal.php"); 
