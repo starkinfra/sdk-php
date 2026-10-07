@@ -75,6 +75,25 @@ class PixKeyHolmes extends Resource
     }
 
     /**
+    # Retrieve a specific PixKeyHolmes
+
+    Receive a single PixKeyHolmes object previously created in the Stark Infra API by its id
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - PixKeyHolmes object with updated attributes
+     */
+    public static function get($id, $user = null)
+    {
+        return Rest::getId($user, PixKeyHolmes::resource(), $id);
+    }
+
+    /**
     # Retrieve PixKeyHolmes
 
     Receive an enumerator of PixKeyHolmes objects previously created in the Stark Infra API.
