@@ -37,7 +37,7 @@ class PixKeyHolmes extends Resource
     ## Attributes (return-only):
         - id [string]: Unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"
         - result [string]: Result of the investigation after the case is solved. ex: "registered", "unregistered"
-        - status [string]: Current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"
+        - status [string]: Current status of the PixKeyHolmes. ex: "solving", "solved"
         - created [DateTime]: Creation datetime for the PixKeyHolmes.
         - updated [DateTime]: Latest update datetime for the PixKeyHolmes.
      */
