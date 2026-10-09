@@ -23,6 +23,14 @@ $project = new \StarkInfra\Project([
 
 echo "\n\nStarting tests\n";
 
+include_once("aiAgent.php");
+include_once("aiBoundarySuite.php");
+include_once("aiChat.php");
+include_once("aiKnowledgeBase.php");
+include_once("aiMessage.php");
+include_once("aiSpeech.php");
+include_once("aiTranscript.php");
+include_once("aiVoice.php");
 include_once("brcodePreview.php");
 include_once("businessAttachment.php");
 include_once("businessAttachmentLog.php");
