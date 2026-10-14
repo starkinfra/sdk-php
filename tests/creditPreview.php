@@ -26,6 +26,57 @@ class TestCreditPreview
         }
     }
 
+    public function createWithNominalAmountOrAmount()
+    {
+        $value = rand(100000, 1000000);
+        $sent = [];
+        foreach (["amount", "nominalAmount"] as $field) {
+            foreach (["sac", "price", "american", "bullet"] as $type) {
+                array_push($sent, new CreditPreview(["type" => "credit-note", "credit" => $this->exampleAmountCreditNotePreview($type, $field, $value)]));
+            }
+        }
+
+        $received = CreditPreview::create($sent);
+        if (count($received) != count($sent)) {
+            throw new Exception("failed");
+        }
+
+        foreach ($received as $index => $preview) {
+            $sentNote = $sent[$index]->credit;
+            $receivedNote = $preview->credit;
+            if ($receivedNote->type != $sentNote->type) {
+                throw new Exception("failed");
+            }
+            if (is_null($sentNote->amount)) {
+                if ($receivedNote->nominalAmount != $value || $receivedNote->amount <= 0) {
+                    throw new Exception("failed");
+                }
+                continue;
+            }
+            if ($receivedNote->amount != $value || $receivedNote->nominalAmount <= 0) {
+                throw new Exception("failed");
+            }
+        }
+    }
+
+    public function exampleAmountCreditNotePreview($type, $field, $value)
+    {
+        $preview = [
+            "taxId" => "012.345.678-90",
+            "type" => $type,
+            $field => $value,
+            "nominalInterest" => 12.5,
+            "scheduled" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval("P" . rand(11, 19) . "D")))->format("Y-m-d"),
+            "initialDue" => ((new DateTime("now", new DateTimeZone('Europe/London')))->add(new DateInterval("P" . rand(30, 39) . "D")))->format("Y-m-d"),
+        ];
+        // bullet has a single installment, and the API rejects an interval for it
+        if ($type != "bullet") {
+            $preview["count"] = 12;
+            $preview["interval"] = "month";
+        }
+        return new CreditPreview\CreditNotePreview($preview);
+    }
+
     public function exampleBulletCreditNotePreview()
     {
         $preview = [
@@ -103,4 +154,8 @@ $test = new TestCreditPreview();
 
 echo "\n\t- create";
 $test->create();
+echo " - OK";
+
+echo "\n\t- create with nominalAmount or amount";
+$test->createWithNominalAmountOrAmount();
 echo " - OK";
