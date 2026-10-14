@@ -37,6 +37,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - type attribute to StaticBrcode resource
 ### Changed
 - IssuingToken created and updated attributes are parsed as DateTime
+- nominalAmount and amount parameters to conditionally required to CreditNotePreview sub-resource
 ### Removed
 - IndividualDocument resource and its Log: no API route serves them
 ### Fixed
