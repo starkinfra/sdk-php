@@ -22,7 +22,7 @@ class TestPixSubscriptionBacenId
             throw new Exception("failed");
         }
 
-        if (substr($bacenId, 10, 8) != date("Ymd")) {
+        if (substr($bacenId, 10, 8) != gmdate("Ymd")) {
             throw new Exception("failed");
         }
     }
@@ -54,6 +54,17 @@ class TestPixSubscriptionBacenId
             throw new Exception("failed");
         }
     }
+
+    public function endToEndIdAndReturnIdUseUtc()
+    {
+        $utcNow = new \DateTime("now", new \DateTimeZone("UTC"));
+        foreach ([EndToEndId::create("32160637"), ReturnId::create("32160637")] as $bacenId) {
+            $generated = \DateTime::createFromFormat("YmdHi", substr($bacenId, 9, 12), new \DateTimeZone("UTC"));
+            if (abs($utcNow->getTimestamp() - $generated->getTimestamp()) > 120) {
+                throw new Exception("failed");
+            }
+        }
+    }
 }
 
 echo "\n\nPixSubscriptionBacenId:";
@@ -70,4 +81,8 @@ echo " - OK";
 
 echo "\n\t- endToEndId and returnId keep minute precision";
 $test->endToEndIdAndReturnIdKeepMinutePrecision();
+echo " - OK";
+
+echo "\n\t- endToEndId and returnId use utc";
+$test->endToEndIdAndReturnIdUseUtc();
 echo " - OK";
