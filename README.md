@@ -4669,23 +4669,16 @@ individual errors that were detected in your request by the API.
 For example:
 
 ```php
-use StarkInfra;
-use StarkInfra\Error\InputErrors;
+use StarkInfra\PixReversal;
+use StarkCore\Error\InputErrors;
 
 try {
-    $cards = StarkInfra\IssuingCard::create([
-        new StarkInfra\IssuingCard([
-            "holdeNname" => "Developers",
-            "holderTaxId" => "012.345.678-90",
-            "holderExternalId" => "1234",
-            "rules" => [
-                new StarkInfra\IssuingRule([
-                    "name" => "general",
-                    "interval" => "week",
-                    "amount" => 50000,
-                    "currencyCode" => "USD"
-                ])
-            ]
+    $reversals = PixReversal::create([
+        new PixReversal([
+            "amount" => 100,
+            "externalId" => "my-external-id:17238435823958934",
+            "endToEndId" => "E00000000202201060100rzsJzG9PzMg",
+            "reason" => "fraud",
         ]),
     ]);
 } catch (InputErrors $e) {

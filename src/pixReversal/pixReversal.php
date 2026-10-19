@@ -173,7 +173,7 @@ class PixReversal extends Resource
     Create a single PixReversal object from a content string received from a handler listening at the reversal url.
 
     If the provided digital signature does not check out with the StarkInfra public key, a
-    StarkInfra\Error\InvalidSignatureError will be raised.
+    StarkCore\Error\InvalidSignatureError will be raised.
 
     ## Parameters (required):
         - content [string]: response content from request received at user endpoint (not parsed)
