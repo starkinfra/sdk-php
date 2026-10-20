@@ -3063,6 +3063,51 @@ foreach($holmes as $sherlock){
 }
 ```
 
+### Get a PixKeyHolmes
+
+After its creation, information on a PixKeyHolmes may be retrieved by its id.
+
+```php
+use StarkInfra\PixKeyHolmes;
+
+$sherlock = PixKeyHolmes::get("5656565656565656");
+
+print_r($sherlock);
+```
+
+### Query PixKeyHolmes logs
+
+You can query PixKeyHolmes logs to better understand PixKeyHolmes life cycles.
+
+```php
+use StarkInfra\PixKeyHolmes\Log;
+
+$logs = Log::query([
+    "limit" => 10,
+    "ids" => ["5729405850615808"],
+    "after" => "2020-04-01",
+    "before" => "2020-04-30",
+    "types" => ["solved"],
+    "holmesIds" => ["5719405850615809"]
+]);
+
+foreach($logs as $log){
+    print_r($log);
+}
+```
+
+### Get a PixKeyHolmes log
+
+You can also get a specific log by its id.
+
+```php
+use StarkInfra\PixKeyHolmes\Log;
+
+$log = Log::get("5155165527080960");
+
+print_r($log);
+```
+
 ### Create a PixInternalTransactionReport
 
 You can report a transaction that happened internally, outside of the SPI, so it is reflected in the Central Bank's statements:
