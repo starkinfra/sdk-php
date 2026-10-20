@@ -42,6 +42,7 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 ### Fixed
 - PixPullSubscription::parse method
 - transactionIds attribute name in CreditNote resource, which was misspelled transactionsIds and never populated
+- BacenId, EndToEndId, ReturnId and PixSubscriptionBacenId date generated in UTC instead of the PHP default timezone
 
 ## [0.17.0] - 2026-06-30
 ### Added
