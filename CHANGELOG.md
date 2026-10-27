@@ -13,6 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- email, deliveryMethod, proofs, phone, validatorLink, sourceId, sourceType, workspaceId and updated attributes to IndividualIdentity resource
+### Changed
+- IndividualIdentity.update now receives taxId instead of status, matching the API
+### Fixed
+- IndividualIdentity and IndividualIdentity.Log status and type options in docstrings
 
 ## [0.18.0] - 2026-10-26
 ### Added

@@ -3717,7 +3717,7 @@ the success or failure of the operation
 
 ### Create IndividualIdentities
 
-You can create an IndividualIdentity to validate a document of a natural person
+You can create an IndividualIdentity to run an identity verification of a natural person. Each created identity carries a validatorLink the holder uses to submit the requested proofs.
 
 ```php
 use StarkInfra\IndividualIdentity;
@@ -3725,9 +3725,12 @@ use StarkInfra\IndividualIdentity;
 $identities = IndividualIdentity::create([
     new IndividualIdentity([
         "name" => "Walter White",
+        "email" => "walter.white@example.com",
+        "deliveryMethod" => "automatic",
+        "proofs" => ["identity", "biometric"],
         "taxId" => "012.345.678-90",
-        "tags" =>["breaking", "bad"]
-    ]);
+        "tags" => ["breaking", "bad"]
+    ])
 ]);
 
 foreach($identities as $identity){
@@ -3736,6 +3739,8 @@ foreach($identities as $identity){
 ```
 
 **Note**: Instead of using IndividualIdentity objects, you can also pass each element in dictionary format
+
+**Note**: With deliveryMethod "automatic", the validatorLink is sent to the holder's e-mail. With "manual", deliver the validatorLink yourself. Treat it as a credential.
 
 ### Query IndividualIdentity
 
@@ -3771,25 +3776,22 @@ print_r($identity);
 
 ### Update an IndividualIdentity
 
-You can update a specific identity status to "processing" for send it to validation.
+You can set the taxId of an identity created without it. The status is moved by Stark Infra as the holder submits the proofs and cannot be updated.
 
 ```php
 use StarkInfra\IndividualIdentity;
 
 $identity = IndividualIdentity::update(
     "5155165527080960",
-    "processing"
-)
+    "012.345.678-90"
+);
 
-print_r($identity)
+print_r($identity);
 ```
-
-**Note**: Before sending your individual identity to validation by patching its status, you must send all the required documents using the create method of the CreditDocument resource. Note that you must reference the individual identity in the create method of the CreditDocument resource by its id.
-
 
 ### Cancel an IndividualIdentity
 
-You can cancel an individual identity before updating its status to processing.
+You can cancel an individual identity in "created" or "pending" status. The identity moves to "failed" and its pending proofs are canceled.
 
 ```php
 use StarkInfra\IndividualIdentity;

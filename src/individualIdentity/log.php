@@ -29,7 +29,7 @@ class Log extends Resource
         - id [string]: unique id returned when the log is created. ex: "5656565656565656"
         - identity [IndividualIdentity]: Individual Identity entity to which the log refers to.
         - errors [array of strings]: array of errors linked to this Individual Identity event
-        - type [string]: type of the IndividualIdentity event which triggered the log creation. ex: "created", "canceled", "processing", "failed", "success"
+        - type [string]: type of the IndividualIdentity event which triggered the log creation. Options: "created", "processing", "pending", "updated", "success", "failed", "canceled", "expired"
         - created [DateTime]: creation datetime for the log.
      */
 
@@ -74,7 +74,7 @@ class Log extends Resource
         - limit [int, default null]: Maximum number of structs to be retrieved. Unlimited if null. ex: 35
         - after [string, default null]: Date filter for structs created only after specified date.  ex: "2022-11-10"
         - before [string, default null]: Date filter for structs created only before specified date.  ex: "2022-11-10"
-        - types [array of strings, default null]: filter for log event types. ex: ["created", "canceled", "processing", "failed", "success"]
+        - types [array of strings, default null]: filter for log event types. Options: "created", "processing", "pending", "updated", "success", "failed", "canceled", "expired"
         - identityIds [array of strings, default null]: array of IndividualIdentity ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
 
@@ -100,7 +100,7 @@ class Log extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [string, default null]: Date filter for structs created only after specified date.  ex: "2022-11-10"
         - before [string, default null]: Date filter for structs created only before specified date.  ex: "2022-11-10"
-        - types [array of strings, default null]: filter for log event types. ex: ["created", "canceled", "processing", "failed", "success"]
+        - types [array of strings, default null]: filter for log event types. Options: "created", "processing", "pending", "updated", "success", "failed", "canceled", "expired"
         - identityIds [array of strings, default null]: array of IndividualIdentity ids to filter logs. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
     
