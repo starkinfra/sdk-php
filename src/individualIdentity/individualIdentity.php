@@ -11,10 +11,19 @@ class IndividualIdentity extends Resource
 {
 
     public $name;
+    public $email;
+    public $deliveryMethod;
+    public $proofs;
     public $taxId;
+    public $phone;
     public $tags;
+    public $validatorLink;
+    public $sourceId;
+    public $sourceType;
+    public $workspaceId;
     public $status;
     public $created;
+    public $updated;
 
     /**
     # IndividualIdentity object
@@ -38,18 +47,32 @@ class IndividualIdentity extends Resource
 
     ## Attributes (return-only):
         - id [string]: Unique id returned when the identity is created. ex: "5656565656565656"
+        - validatorLink [string]: URL the holder opens to submit each proof. Treat it as a credential.
+        - sourceId [string]: id of the entity that triggered this verification. Filled with the workspace id for external callers.
+        - sourceType [string]: origin of the verification. Options: "onboarding", "reboarding", "external"
+        - workspaceId [string]: id of the workspace that owns this identity.
         - status [string]: current status of the IndividualIdentity. Options: "created", "processing", "pending", "success", "failed" — "canceled" is not a valid value; a canceled identity shows status "failed".
         - created [DateTime]: creation datetime for the IndividualIdentity.
+        - updated [DateTime]: latest update datetime for the IndividualIdentity.
      */
     function __construct(array $params)
     {
         parent::__construct($params);
 
         $this-> name = Checks::checkParam($params, "name");
+        $this-> email = Checks::checkParam($params, "email");
+        $this-> deliveryMethod = Checks::checkParam($params, "deliveryMethod");
+        $this-> proofs = Checks::checkParam($params, "proofs");
         $this-> taxId = Checks::checkParam($params, "taxId");
+        $this-> phone = Checks::checkParam($params, "phone");
         $this-> tags = Checks::checkParam($params, "tags");
+        $this-> validatorLink = Checks::checkParam($params, "validatorLink");
+        $this-> sourceId = Checks::checkParam($params, "sourceId");
+        $this-> sourceType = Checks::checkParam($params, "sourceType");
+        $this-> workspaceId = Checks::checkParam($params, "workspaceId");
         $this-> status = Checks::checkParam($params, "status");
         $this-> created = Checks::checkDateTime(Checks::checkParam($params, "created"));
+        $this-> updated = Checks::checkDateTime(Checks::checkParam($params, "updated"));
 
         Checks::checkParams($params);
     }
@@ -101,7 +124,9 @@ class IndividualIdentity extends Resource
         - limit [integer, default null]: maximum number of objects to be retrieved. Unlimited if null. ex: 35
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. Options: "created", "canceled", "processing", "failed" and "success"
+        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "pending", "success", "failed"
+        - taxIds [array of strings, default null]: array of CPFs to filter retrieved objects. ex: ["012.345.678-90"]
+        - email [string, default null]: filter retrieved objects by holder e-mail. ex: "tony@starkindustries.com"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -127,7 +152,9 @@ class IndividualIdentity extends Resource
         - limit [integer, default 100]: maximum number of objects to be retrieved. It must be an integer between 1 and 100. ex: 50
         - after [Date or string, default null]: date filter for objects created or updated only after specified date. ex: "2020-04-03"
         - before [Date or string, default null]: date filter for objects created or updated only before specified date. ex: "2020-04-03"
-        - status [string, default null]: filter for status of retrieved objects. Options: "created", "canceled", "processing", "failed" and "success"
+        - status [string, default null]: filter for status of retrieved objects. Options: "created", "processing", "pending", "success", "failed"
+        - taxIds [array of strings, default null]: array of CPFs to filter retrieved objects. ex: ["012.345.678-90"]
+        - email [string, default null]: filter retrieved objects by holder e-mail. ex: "tony@starkindustries.com"
         - tags [array of strings, default null]: tags to filter retrieved objects. ex: ["tony", "stark"]
         - ids [array of strings, default null]: array of ids to filter retrieved objects. ex: ["5656565656565656", "4545454545454545"]
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -146,11 +173,11 @@ class IndividualIdentity extends Resource
     /**
     # Update IndividualIdentity entity
 
-    Update an IndividualIdentity by passing id.
+    Update the taxId of an IndividualIdentity by passing its id. Useful when the CPF is unknown at creation time and is only collected during the proof submission flow. Status transitions are handled by Stark Infra and cannot be patched.
 
     ## Parameters (required):
         - id [string]: IndividualIdentity id. ex: "5656565656565656"
-        - status [string]: pass 'processing' to trigger validation once the holder has submitted the required proofs through the validatorLink
+        - taxId [string]: CPF to assign to the identity, with or without punctuation. ex: "012.345.678-90"
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
@@ -158,9 +185,9 @@ class IndividualIdentity extends Resource
     ## Return:
         - target IndividualIdentity with updated attributes
      */
-    public static function update($id, $status, $user = null)
+    public static function update($id, $taxId, $user = null)
     {
-        $params["status"] = $status;
+        $params["taxId"] = $taxId;
         return Rest::patchId($user, IndividualIdentity::resource(), $id, $params);
     }
 
