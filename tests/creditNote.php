@@ -128,26 +128,16 @@ class TestCreditNote
 
     public function pdf()
     {
-        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
-        if (is_null($creditNote->id)) {
-            throw new Exception("failed");
-        }
-
-        $pdf = CreditNote::pdf($creditNote->id);
-        if (strlen($pdf) == 0) {
+        $pdf = CreditNote::pdf(self::getSuccessNoteId());
+        if (substr($pdf, 0, 4) !== "%PDF") {
             throw new Exception("failed");
         }
     }
 
     public function payment()
     {
-        $creditNote = CreditNote::create([TestCreditNote::exampleCCB()])[0];
-        if (is_null($creditNote->id)) {
-            throw new Exception("failed");
-        }
-
-        $payment = CreditNote::payment($creditNote->id);
-        if (strlen($payment) == 0) {
+        $payment = CreditNote::payment(self::getSuccessNoteId());
+        if (substr($payment, 0, 4) !== "%PDF") {
             throw new Exception("failed");
         }
     }
@@ -207,6 +197,15 @@ class TestCreditNote
             "zipCode" => "01234-567",
         ];
         return new CreditNote($params);
+    }
+
+    private static function getSuccessNoteId()
+    {
+        // pdf and payment pdf only exist for notes already signed and disbursed, which a test cannot produce on the fly
+        foreach (CreditNote::query(["status" => "success", "limit" => 1]) as $note) {
+            return $note->id;
+        }
+        throw new Exception("There are no CreditNotes with status success in the sandbox project");
     }
 }
 
