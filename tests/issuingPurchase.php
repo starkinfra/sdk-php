@@ -84,14 +84,17 @@ class TestIssuingPurchase
             return false;
         }
 
-        $description = "teste";
-        $tags = ["teste 1", "teste 2"];
+        $description = "update-" . strval(rand(0, 1000000));
+        $tags = ["update", strval(rand(0, 1000000))];
         $updatedPurchase = IssuingPurchase::update($purchases[0]->id, [
             "description" => $description,
             "tags" => $tags,
         ]);
 
         if ($updatedPurchase->description != $description) {
+            throw new Exception("failed");
+        }
+        if ($updatedPurchase->tags != $tags) {
             throw new Exception("failed");
         }
         return true;

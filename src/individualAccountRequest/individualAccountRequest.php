@@ -43,7 +43,7 @@ class IndividualAccountRequest extends Resource
 
     ## Parameters (optional):
         - tags [array of strings, default null]: list of strings for reference when searching for IndividualAccountRequests. ex: ["employees", "monthly"]
-        - birthDate [string, default null]: individual's birth date. ex: "1990-05-23"
+        - birthDate [DateTime or string, default null]: individual's birth date. ex: "1990-05-23"
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the IndividualAccountRequest is created. ex: "5189530608992256"
