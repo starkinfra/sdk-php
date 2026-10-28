@@ -19,6 +19,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 - IndividualIdentity.update now receives taxId instead of status, matching the API
 ### Fixed
 - IndividualIdentity and IndividualIdentity.Log status and type options in docstrings
+- PixInfraction.update fraudType is now optional, as it is only required when result is "agreed"
+- BusinessAttachment file size limit in docstrings, from 64 MB to 8 MB
 
 ## [0.18.0] - 2026-10-26
 ### Added

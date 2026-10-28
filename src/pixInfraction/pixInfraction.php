@@ -205,7 +205,7 @@ class PixInfraction extends Resource
     ## Return:
         - PixInfraction with updated attributes
     */
-    public static function update($id, $result, $fraudType, $params = [], $user=null)
+    public static function update($id, $result, $fraudType = null, $params = [], $user=null)
     {
         $params["result"] = $result;
         $params["fraudType"] = $fraudType;

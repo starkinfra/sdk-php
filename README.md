@@ -2182,10 +2182,11 @@ use StarkInfra\PixInfraction;
 
 $infraction = PixInfraction::update(
     "5155165527080960",
-    "agreed"
-)
+    "agreed",
+    "scam"
+);
 
-print_r($infraction)
+print_r($infraction);
 ```
 
 ### Cancel a PixInfraction
