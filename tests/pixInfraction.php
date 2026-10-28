@@ -109,7 +109,21 @@ class TestPixInfraction
             $updatedInfraction = PixInfraction::update($infraction->id, "disagreed", "mule");
             if ($updatedInfraction->result != "disagreed") {
                 throw new Exception("failed");
-            }    
+            }
+        }
+    }
+
+    public function updateWithoutFraudType()
+    {
+        $infractions = PixInfraction::query(["status" => "delivered", "limit" => 1]);
+        foreach ($infractions as $infraction) {
+            if ($infraction->status != "delivered") {
+                throw new Exception("failed");
+            }
+            $updatedInfraction = PixInfraction::update($infraction->id, "disagreed");
+            if ($updatedInfraction->result != "disagreed") {
+                throw new Exception("failed");
+            }
         }
     }
 
@@ -148,6 +162,10 @@ echo " - OK";
 
 echo "\n\t- page";
 $test->page();
+echo " - OK";
+
+echo "\n\t- update without fraudType";
+$test->updateWithoutFraudType();
 echo " - OK";
 
 echo "\n\t- update";

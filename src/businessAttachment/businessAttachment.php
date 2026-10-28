@@ -70,7 +70,7 @@ class BusinessAttachment extends Resource
     Send a BusinessAttachment for creation in the Stark Infra API. Only 1 attachment is accepted per call (the SDK still takes an array for interface consistency, but the API rejects more than one element), and each BusinessIdentity accepts at most 2 attachments in total.
 
     ## Parameters (required):
-        - attachments [array of BusinessAttachment objects]: exactly one BusinessAttachment per call — Stark Infra enforces a limit of 1 attachment per request and 2 attachments per Business Identity. Each file must be PDF, JPG or PNG and ≤ 64 MB, its name must be unique among the identity's other 'created' attachments, and the identity must be in 'created' or 'pending' status.
+        - attachments [array of BusinessAttachment objects]: exactly one BusinessAttachment per call — Stark Infra enforces a limit of 1 attachment per request and 2 attachments per Business Identity. Each file must be PDF, JPG or PNG and ≤ 8 MB, its name must be unique among the identity's other 'created' attachments, and the identity must be in 'created' or 'pending' status.
 
     ## Parameters (optional):
         - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
