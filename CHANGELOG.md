@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.19.0] - 2026-10-30
 ### Added
 - email, deliveryMethod, proofs, phone, validatorLink, sourceId, sourceType, workspaceId and updated attributes to IndividualIdentity resource
 ### Changed
