@@ -4,7 +4,6 @@ namespace Test\StaticBrcode;
 use \Exception;
 use StarkInfra\StaticBrcode;
 use StarkInfra\Utils\EndToEndId;
-use StarkInfra\Error\InvalidSignatureError;
 
 
 class TestStaticBrcode
