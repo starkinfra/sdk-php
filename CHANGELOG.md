@@ -13,6 +13,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+### Added
+- disputeId attribute to PixRequest resource
 
 ## [0.19.0] - 2026-10-30
 ### Added

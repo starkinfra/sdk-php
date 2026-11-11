@@ -4,6 +4,7 @@ namespace Test\PixRequest;
 use \Exception;
 use StarkInfra\PixRequest;
 use StarkInfra\Utils\EndToEndId;
+use StarkCore\Utils\API;
 use StarkCore\Error\InvalidSignatureError;
 
 
@@ -14,6 +15,23 @@ class TestPixRequest
         $request = PixRequest::create([TestPixRequest::example()])[0];
 
         if (is_null($request->id)) {
+            throw new Exception("failed");
+        }
+    }
+
+    public function createWithDisputeId()
+    {
+        $params = TestPixRequest::exampleParams("E20018183202202161723Y4cqxlfLFcm");
+        $params["reason"] = "fraud";
+        $params["disputeId"] = "5656565656565656";
+
+        $request = new PixRequest($params);
+        $payload = API::apiJson($request);
+
+        if ($request->reason != "fraud" || $request->disputeId != "5656565656565656") {
+            throw new Exception("failed");
+        }
+        if ($payload["reason"] != "fraud" || $payload["disputeId"] != "5656565656565656") {
             throw new Exception("failed");
         }
     }
@@ -156,7 +174,12 @@ class TestPixRequest
 
     public static function example()
     {
-        $params = [
+        return new PixRequest(TestPixRequest::exampleParams(EndToEndId::create($_SERVER["SANDBOX_BANK_CODE"])));
+    }
+
+    public static function exampleParams($endToEndId)
+    {
+        return [
             "amount" => 10,
             "externalId" => "php-" . $uuid = mt_rand(0, 0xffffffff),
             "senderAccountNumber" => "76543",
@@ -170,11 +193,10 @@ class TestPixRequest
             "receiverAccountType" => "checking",
             "receiverName" => "Daenerys Targaryen Stormborn",
             "receiverTaxId" => "01234567890",
-            "endToEndId" => EndToEndId::create($_SERVER["SANDBOX_BANK_CODE"]),
+            "endToEndId" => $endToEndId,
             "priority" => "low",
             "reason" => "subscriptionFlaw",
         ];
-        return new PixRequest($params);
     }
 }
 
@@ -184,6 +206,10 @@ $test = new TestPixRequest();
 
 echo "\n\t- create";
 $test->create();
+echo " - OK";
+
+echo "\n\t- create with disputeId";
+$test->createWithDisputeId();
 echo " - OK";
 
 echo "\n\t- query and get";
