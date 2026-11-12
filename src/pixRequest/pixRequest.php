@@ -37,6 +37,7 @@ class PixRequest extends Resource
     public $method;
     public $priority;
     public $reason;
+    public $disputeId;
     public $fee;
     public $status;
     public $flow;
@@ -83,7 +84,10 @@ class PixRequest extends Resource
         -tags [array of strings, default null]: list of strings for reference when searching for PixRequests. ex: ["employees", "monthly"]
         -method [string, default null]: execution  method for thr creation of the Pix. ex: "manual", "payerQrcode", "dynamicQrcode".
         -priority [string, default "high"]: specifies the message channel used to send the Pix Request. If set to "high", the request is sent through the primary channel; if set to "low", it uses the secondary channel. Options: "high" or "low"
-        -reason [string, default "customerRequest"]: underlying reason for the payment transaction. ex: "customerRequest", "fraud", "subscriptionFlaw"
+        -reason [string, default "customerRequest"]: underlying reason for the payment transaction. Options: "customerRequest", "subscriptionFlaw", "fraud". When reason is "fraud" (returning funds from a PixDispute), disputeId is required and senderTaxId must be your institution's organization tax ID (CNPJ).
+
+    ## Parameters (conditionally-required):
+        -disputeId [string, default null]: Id of the Pix Dispute being refunded. Required when reason is "fraud" and not allowed with any other reason. The dispute must be one you received and must be awaiting the refund, otherwise the request is refused with invalidDisputeId.
 
     ## Attributes (return-only):
         -id [string]: unique id returned when the PixRequest is created. ex: "5656565656565656"
@@ -123,6 +127,7 @@ class PixRequest extends Resource
         $this-> method = Checks::checkParam($params, "method");
         $this-> priority = Checks::checkParam($params, "priority");
         $this-> reason = Checks::checkParam($params, "reason");
+        $this-> disputeId = Checks::checkParam($params, "disputeId");
         $this-> fee = Checks::checkParam($params, "fee");
         $this-> status = Checks::checkParam($params, "status");
         $this-> flow = Checks::checkParam($params, "flow");
