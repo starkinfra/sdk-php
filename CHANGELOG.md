@@ -13,8 +13,12 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 
 ## [Unreleased]
+
+## [0.20.0] - 2026-11-12
 ### Added
 - disputeId attribute to PixRequest resource
+- PixKeyHolmes.Log sub-resource
+- PixKeyHolmes.get method
 
 ## [0.19.0] - 2026-10-30
 ### Added
@@ -28,8 +32,6 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [0.18.0] - 2026-10-26
 ### Added
-- PixKeyHolmes.Log sub-resource
-- PixKeyHolmes.get method
 - PixSubscriptionBacenId utility to generate Pix subscription bacenIds
 - CreditNote.pdf and CreditNote.payment methods
 - CreditSigner.resendToken method
