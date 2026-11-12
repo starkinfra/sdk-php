@@ -37,7 +37,7 @@ class PixKeyHolmes extends Resource
     ## Attributes (return-only):
         - id [string]: Unique id returned when the PixKeyHolmes is created. ex: "5656565656565656"
         - result [string]: Result of the investigation after the case is solved. ex: "registered", "unregistered"
-        - status [string]: Current status of the PixKeyHolmes. ex: "created", "solving", "solved", "failed"
+        - status [string]: Current status of the PixKeyHolmes. ex: "solving", "solved"
         - created [DateTime]: Creation datetime for the PixKeyHolmes.
         - updated [DateTime]: Latest update datetime for the PixKeyHolmes.
      */
@@ -72,6 +72,25 @@ class PixKeyHolmes extends Resource
     public static function create($holmes, $user = null)
     {
         return Rest::post($user, PixKeyHolmes::resource(), $holmes);
+    }
+
+    /**
+    # Retrieve a specific PixKeyHolmes
+
+    Receive a single PixKeyHolmes object previously created in the Stark Infra API by its id
+
+    ## Parameters (required):
+        - id [string]: object unique id. ex: "5656565656565656"
+
+    ## Parameters (optional):
+        - user [Organization/Project object, default null]: Organization or Project object. Not necessary if StarkInfra\Settings::setUser() was used before function call
+
+    ## Return:
+        - PixKeyHolmes object with updated attributes
+     */
+    public static function get($id, $user = null)
+    {
+        return Rest::getId($user, PixKeyHolmes::resource(), $id);
     }
 
     /**

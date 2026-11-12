@@ -40,6 +40,16 @@ class TestPixKeyHolmes
         }
     }
 
+    public function get()
+    {
+        $holmesId = iterator_to_array(PixKeyHolmes::query(["limit" => 1]))[0]->id;
+        $pixKeyHolmes = PixKeyHolmes::get($holmesId);
+
+        if ($pixKeyHolmes->id != $holmesId) {
+            throw new Exception("failed");
+        }
+    }
+
     public function queryParams()
     {
         $pixKeyHolmes = iterator_to_array(PixKeyHolmes::query([
@@ -100,6 +110,10 @@ echo " - OK";
 
 echo "\n\t- query";
 $test->query();
+echo " - OK";
+
+echo "\n\t- get";
+$test->get();
 echo " - OK";
 
 echo "\n\t- query params";
