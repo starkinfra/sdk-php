@@ -115,6 +115,21 @@ class Rest
         );
     }
 
+    public static function patchMulti($user, $resource, $entities, $query = null)
+    {
+        return \StarkCore\Utils\Rest::patchMulti(
+            self::getSdkVersion(),
+            self::getHost(),
+            self::getApiVersion(),
+            Settings::getUser($user),
+            $resource,
+            $entities,
+            Settings::getLanguage(),
+            $query,
+            Settings::getTimeout()
+        );
+    }
+
     public static function deleteId($user, $resource, $id)
     {
         return \StarkCore\Utils\Rest::deleteId(

@@ -41,6 +41,7 @@ include_once("individualIdentity.php");
 include_once("individualIdentityLog.php");
 include_once("issuingBalance.php");
 include_once("issuingCard.php");
+include_once("issuingCardWithoutHolder.php");
 include_once("issuingCardLog.php");
 include_once("issuingDesign.php");
 include_once("issuingEmbossingKit.php");
