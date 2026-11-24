@@ -8,6 +8,7 @@ use StarkCore\Utils\Resource;
 use StarkCore\Utils\StarkDate;
 use StarkInfra\CreditNote\Invoice;
 use StarkInfra\CreditNote\Rule;
+use StarkInfra\CreditNote\TemplateReplacements;
 
 
 class CreditNote extends Resource
@@ -33,6 +34,7 @@ class CreditNote extends Resource
     public $tags;
     public $expiration;
     public $rules;
+    public $templateReplacements;
     public $amount;
     public $documentId;
     public $status;
@@ -79,6 +81,7 @@ class CreditNote extends Resource
         - tags [array of strings, default []]: list of strings for reference when searching for CreditNotes. ex: ["employees", "monthly"]
         - expiration [DateTinterval or integer, default 604800 (7 days)]: time interval in seconds between scheduled date and expiration date.
         - rules [array of CreditNote\Rule objects, default []]: list of CreditNote\Rule objects for modifying transfer behavior. ex: [CreditNote\Rule(["key" => "invoiceCreationMode", "value" => "scheduled"])]
+        - templateReplacements [CreditNote\TemplateReplacements object or associative array, default null]: values that fill the placeholders of the contract template. The keys depend on the template and are not converted, so use the camelCase name of each placeholder. Keys with a null value are not sent. An array is converted to CreditNote\TemplateReplacements. ex: new CreditNote\TemplateReplacements(["guarantorName" => "Jon Snow", "guarantorTaxId" => "012.345.678-90"]) or ["guarantorName" => "Jon Snow"]
 
     ## Attributes (return-only):
         - id [string]: unique id returned when the CreditNote is created. ex: "5656565656565656"
@@ -117,6 +120,7 @@ class CreditNote extends Resource
         $this-> tags = Checks::checkParam($params, "tags");
         $this-> expiration = Checks::checkParam($params, "expiration");
         $this-> rules = CreditNote::parseRules(Checks::checkParam($params, "rules"));
+        $this-> templateReplacements = CreditNote::parseTemplateReplacements(Checks::checkParam($params, "templateReplacements"));
         $this-> amount = Checks::checkParam($params, "amount");
         $this-> documentId = Checks::checkParam($params, "documentId");
         $this-> status = Checks::checkParam($params, "status");
@@ -174,6 +178,19 @@ class CreditNote extends Resource
             array_push($parsedRules, $parsedRule($rule));
         }
         return $parsedRules;
+    }
+
+    public static function parseTemplateReplacements($templateReplacements) {
+        if (is_null($templateReplacements)) {
+            return null;
+        }
+        if ($templateReplacements instanceof TemplateReplacements) {
+            return $templateReplacements;
+        }
+        if (is_array($templateReplacements)) {
+            return new TemplateReplacements($templateReplacements);
+        }
+        throw new \Exception("templateReplacements must be a CreditNote\\TemplateReplacements, an array or null, got " . gettype($templateReplacements));
     }
 
     private static function parsePayment($payment, $paymentType)

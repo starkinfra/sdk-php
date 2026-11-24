@@ -3495,6 +3495,11 @@ $notes = CreditNote::create([
                 "value" => "scheduled"
             ])
         ],
+        "templateReplacements" => new CreditNote\TemplateReplacements([
+            "guarantorName" => "Jon Snow",
+            "guarantorTaxId" => "012.345.678-90",
+            "guarantorAddress" => "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP"
+        ]),
         "rebateAmount" => 0,
         "tags" => [
             'War supply',
@@ -3516,6 +3521,8 @@ foreach($notes as $note){
 ```
 
 **Note**: Instead of using CreditNote objects, you can also pass each element in dictionary format
+
+**Note**: templateReplacements is optional and its keys depend on your contract template. Pass a `CreditNote\TemplateReplacements` object or a raw associative array (converted to the object, with the same payload); the object keeps every key the API returns, as an attribute. Any other type raises an exception. Keys are not converted, so use the camelCase name of each placeholder, and keys with a null value are not sent. Omit the key when you have nothing to send: passing `"templateReplacements" => null` raises an `unknown parameters` error. An empty array, or one whose values are all null, is sent as an empty JSON list (`[]`), not as an object.
 
 ## Query CreditNotes
 
