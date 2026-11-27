@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "~8.2.35 || ~8.3.36 || ~8.4.27 || >=8.5.12",
-        "starkinfra/core": "^0.8.0",
+        "starkinfra/core": "^0.9.0",
         "ext-json": "*"
     },
     "keywords": [
