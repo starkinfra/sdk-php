@@ -126,6 +126,33 @@ class TestCreditNote
         }
     }
 
+    public function createWithTemplateReplacements()
+    {
+        $templateReplacements = [
+            "guarantorName" => "Jon Snow",
+            "guarantorTaxId" => "012.345.678-90",
+            "guarantorAddress" => "Av. Paulista, 200 - Bela Vista - Sao Paulo, SP"
+        ];
+        foreach ([new CreditNote\TemplateReplacements($templateReplacements), $templateReplacements] as $replacements) {
+            $note = TestCreditNote::exampleCCB($replacements);
+            $note->tags = ["sdk-test"];
+
+            $creditNote = CreditNote::create([$note])[0];
+            if (is_null($creditNote->id)) {
+                throw new Exception("failed");
+            }
+            if (!($creditNote->templateReplacements instanceof CreditNote\TemplateReplacements)) {
+                throw new Exception("failed");
+            }
+            foreach ($templateReplacements as $key => $value) {
+                if ($creditNote->templateReplacements->$key !== $value) {
+                    throw new Exception("failed");
+                }
+            }
+            CreditNote::cancel($creditNote->id);
+        }
+    }
+
     public function pdf()
     {
         $pdf = CreditNote::pdf(self::getSuccessNoteId());
@@ -142,7 +169,7 @@ class TestCreditNote
         }
     }
 
-    public function exampleCCB()
+    public function exampleCCB($templateReplacements = null)
     {
         $params = [
             "templateId" => $_SERVER["SANDBOX_TEMPLATE_ID"],
@@ -196,6 +223,9 @@ class TestCreditNote
             "stateCode" => "SP",
             "zipCode" => "01234-567",
         ];
+        if (!is_null($templateReplacements)) {
+            $params["templateReplacements"] = $templateReplacements;
+        }
         return new CreditNote($params);
     }
 
@@ -235,6 +265,10 @@ echo " - OK";
 
 echo "\n\t- debtor workspace id";
 $test->debtorWorkspaceId();
+echo " - OK";
+
+echo "\n\t- create with template replacements";
+$test->createWithTemplateReplacements();
 echo " - OK";
 
 echo "\n\t- pdf";

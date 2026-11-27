@@ -14,6 +14,8 @@ Given a version number MAJOR.MINOR.PATCH, increment:
 
 ## [Unreleased]
 ### Added
+- templateReplacements parameter to CreditNote, to fill the placeholders of the contract template
+- CreditNote\TemplateReplacements sub-resource, which keeps every key sent or returned by the API. A raw associative array is still accepted and sends the same payload
 - IssuingCard.updateMulti method, to update several cards in one request (PATCH /v2/issuing-card)
 - holderName, holderTaxId and holderExternalId options to IssuingCard.update, to assign a holder to a pending card
 ### Changed

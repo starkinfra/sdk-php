@@ -33,6 +33,7 @@ include_once("creditHolmes.php");
 include_once("creditHolmesLog.php");
 include_once("creditNote.php");
 include_once("creditNoteLog.php");
+include_once("creditNoteTemplateReplacements.php");
 include_once("creditPreview.php");
 include_once("creditSigner.php");
 include_once("dynamicBrcode.php");
